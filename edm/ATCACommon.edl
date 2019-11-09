@@ -1,0 +1,812 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 1283
+y 54
+w 600
+h 256
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-18.0"
+btnFont "helvetica-medium-r-18.0"
+fgColor index 14
+bgColor index 4
+textColor index 14
+ctlFgColor1 index 14
+ctlFgColor2 index 0
+ctlBgColor1 index 0
+ctlBgColor2 index 14
+topShadowColor index 0
+botShadowColor index 14
+endScreenProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 24
+y 4
+w 159
+h 14
+font "helvetica-bold-i-12.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "$(DEVICE) - ATCACommon"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 245
+y 100
+w 100
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "JESD Counter Mode"
+}
+autoSize
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 357
+y 98
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):JESDCNT_MODE"
+indicatorPv "$(DEVICE):JESDCNT_MODE"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 21
+y 49
+w 100
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "AMC FPGA Version"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 21
+y 74
+w 100
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "FPGA UpTimeCount"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 28
+y 99
+w 87
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Eth UpTimeCount"
+}
+autoSize
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 55
+y 158
+w 56
+h 18
+controlPv "$(DEVICE):JESD0_0"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+fieldLen "8"
+nullColor index 0
+fastUpdate
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 55
+y 186
+w 56
+h 18
+controlPv "$(DEVICE):JESD1_0"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+fieldLen "8"
+nullColor index 0
+fastUpdate
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 9
+y 163
+w 40
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "JESD[0]"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 8
+y 186
+w 40
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "JESD[1]"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 60
+y 143
+w 32
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Cnt[0]"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 122
+y 143
+w 32
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Cnt[1]"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 188
+y 143
+w 32
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Cnt[2]"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 250
+y 143
+w 32
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Cnt[3]"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 366
+y 143
+w 32
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Cnt[5]"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 304
+y 143
+w 32
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Cnt[4]"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 494
+y 143
+w 32
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Cnt[7]"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 432
+y 143
+w 32
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Cnt[6]"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 244
+y 118
+w 101
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "JESD Counter Reset"
+}
+autoSize
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 116
+y 186
+w 56
+h 18
+controlPv "$(DEVICE):JESD1_1"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+fieldLen "8"
+nullColor index 0
+fastUpdate
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 116
+y 158
+w 56
+h 18
+controlPv "$(DEVICE):JESD0_1"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+fieldLen "8"
+nullColor index 0
+fastUpdate
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 177
+y 186
+w 56
+h 18
+controlPv "$(DEVICE):JESD1_2"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+fieldLen "8"
+nullColor index 0
+fastUpdate
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 177
+y 158
+w 56
+h 18
+controlPv "$(DEVICE):JESD0_2"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+fieldLen "8"
+nullColor index 0
+fastUpdate
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 238
+y 186
+w 56
+h 18
+controlPv "$(DEVICE):JESD1_3"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+fieldLen "8"
+nullColor index 0
+fastUpdate
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 238
+y 158
+w 56
+h 18
+controlPv "$(DEVICE):JESD0_3"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+fieldLen "8"
+nullColor index 0
+fastUpdate
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 299
+y 186
+w 56
+h 18
+controlPv "$(DEVICE):JESD1_4"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+fieldLen "8"
+nullColor index 0
+fastUpdate
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 360
+y 186
+w 56
+h 18
+controlPv "$(DEVICE):JESD1_5"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+fieldLen "8"
+nullColor index 0
+fastUpdate
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 421
+y 186
+w 56
+h 18
+controlPv "$(DEVICE):JESD1_6"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+fieldLen "8"
+nullColor index 0
+fastUpdate
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 482
+y 186
+w 56
+h 18
+controlPv "$(DEVICE):JESD1_7"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+fieldLen "8"
+nullColor index 0
+fastUpdate
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 482
+y 158
+w 56
+h 18
+controlPv "$(DEVICE):JESD0_7"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+fieldLen "8"
+nullColor index 0
+fastUpdate
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 421
+y 158
+w 56
+h 18
+controlPv "$(DEVICE):JESD0_6"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+fieldLen "8"
+nullColor index 0
+fastUpdate
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 360
+y 158
+w 56
+h 18
+controlPv "$(DEVICE):JESD0_5"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+fieldLen "8"
+nullColor index 0
+fastUpdate
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 299
+y 158
+w 56
+h 18
+controlPv "$(DEVICE):JESD0_4"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+fieldLen "8"
+nullColor index 0
+fastUpdate
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 125
+y 98
+w 56
+h 18
+controlPv "$(DEVICE):AMC_ETHUPTIMECNT"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+precision 3
+fieldLen "8"
+nullColor index 0
+fastUpdate
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 125
+y 73
+w 56
+h 18
+controlPv "$(DEVICE):AMC_UPTIMECNT"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+precision 3
+fieldLen "8"
+nullColor index 0
+fastUpdate
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 125
+y 48
+w 56
+h 18
+controlPv "$(DEVICE):AMC_FPGAVERSION"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+precision 3
+fieldLen "8"
+nullColor index 0
+fastUpdate
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Update)
+object TextupdateClass
+beginObjectProperties
+major 10
+minor 0
+release 0
+x 20
+y 25
+w 512
+h 18
+controlPv "$(DEVICE):AMC_BUILDSTAMP"
+fgColor index 14
+fgAlarm
+bgColor index 2
+fill
+font "helvetica-medium-r-10.0"
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 358
+y 119
+w 64
+h 18
+fgColor index 14
+onColor index 3
+offColor index 4
+inconsistentColor index 14
+topShadowColor index 5
+botShadowColor index 14
+controlPv "$(DEVICE):JESDCNT_RESET"
+indicatorPv "$(DEVICE):JESDCNT_RESET"
+onLabel "RESET"
+offLabel "reset"
+labelType "literal"
+buttonType "push"
+3d
+font "helvetica-medium-r-10.0"
+objType "controls"
+endObjectProperties
+

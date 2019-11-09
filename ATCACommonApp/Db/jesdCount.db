@@ -1,0 +1,10 @@
+record(longin, "$(DEVICE):JESD$(JESD)_$(CNT)")
+{
+    field(DESC, "JESD Count JESD$(JESD) CNT$(CNT)")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0) jesdCnt_$(JESD)_$(CNT)")
+    field(SCAN, "I/O Intr")
+}
+
+
+

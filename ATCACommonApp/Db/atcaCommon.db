@@ -1,0 +1,57 @@
+record(longin, "$(DEVICE):AMC_UPTIMECNT")
+{
+    field(DESC, "Carrier Up Time Count")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0) uptimeCnt")
+    field(SCAN, "I/O Intr")
+}
+
+record(waveform, "$(DEVICE):AMC_BUILDSTAMP")
+{
+    field(DESC, "Firmware BuildStamp")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),0) buildStamp")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "Passive")
+    field(PINI, "YES")
+}
+
+record(longin, "$(DEVICE):AMC_FPGAVERSION")
+{
+    field(DESC, "FPGA Version")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0) fpgaVersion")
+    field(SCAN, "Passive")
+    field(PINI, "YES")
+}
+
+record(longin, "$(DEVICE):AMC_ETHUPTIMECNT")
+{
+    field(DESC, "Eth Up Time Count")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0) EthUpTimeCnt")
+    field(SCAN, "I/O Intr")
+}
+
+record(bo, "$(DEVICE):JESDCNT_RESET")
+{
+    field(DESC, "JESD Count Reset")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) jesdCntReset")
+    field(ZNAM, "Normal")
+    field(ONAM, "Reset")
+}
+
+record(bo, "$(DEVICE):JESDCNT_MODE")
+{
+    field(DESC, "JESD Count Mode")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) jesdCntMode")
+    field(ZNAM, "Firmware")
+    field(ONAM, "Incremental")
+    field(PINI, "YES")
+    info(autosaveFields, "VAL")
+}
+
+
