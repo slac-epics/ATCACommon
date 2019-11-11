@@ -14,7 +14,7 @@ INCLUDES += $(addprefix -I,$(BOOST_INCLUDE))
 ## this part is just for yaml loader driver
 INCLUDES += $(addprefix -I,$(CPSW_FRAMEWORK_INCLUDE))
 
-INCLUDES += $(addprefix -I,$(COMMONRF_INCLUDE))
+INCLUDES += $(addprefix -I,$(COMMONATCA_INCLUDE))
 
 INC += ATCACommon.h
 
@@ -28,10 +28,10 @@ ATCACommon_SRCS += ATCACommon.cpp
 
 
 cpsw_DIR = $(CPSW_FRAMEWORK_LIB)
-commonRF_DIR = $(COMMONRF_LIB)
+commonATCA_DIR = $(COMMONATCA_LIB)
 
 ATCACommon_LIBS += cpsw
-ATCACommon_LIBS += commonRF
+ATCACommon_LIBS += commonATCA
 ATCACommon_LIBS += asyn
 ATCACommon_LIBS += yamlLoader
 ATCACommon_LIBS += $(EPICS_BASE_IOC_LIBS)
