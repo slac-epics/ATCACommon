@@ -19,12 +19,15 @@ INCLUDES += $(addprefix -I,$(COMMONATCA_INCLUDE))
 INC += ATCACommon.h
 
 DBD += ATCACommon.dbd
+DBD += crossbarControl.dbd
 
 
 LIBRARY_IOC += ATCACommon
 
 ATCACommon_DBD  += ATCACommon.dbd
+ATCACommon_DBD  += crossbarControl.dbd
 ATCACommon_SRCS += ATCACommon.cpp
+ATCACommon_SRCS += crossbarControl.cpp
 
 
 cpsw_DIR = $(CPSW_FRAMEWORK_LIB)

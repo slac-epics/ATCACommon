@@ -13,6 +13,7 @@ include $(TOP)/configure/CONFIG
 #
 # ATCACommon
 DB += ATCACommon.db
+DB += crossbarCtrl.db
 
 # =======================================================================
 

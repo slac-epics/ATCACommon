@@ -1,0 +1,13 @@
+file "crossbarControl.db" {
+    pattern {    DEVICE,       PORT,    N,        DESC                        }
+            {  "$(DEV)",  "$(PORT)",  "0",   "Output control for RTM_OUT0"    }
+            {  "$(DEV)",  "$(PORT)",  "1",   "Output control for FPGA"        }
+            {  "$(DEV)",  "$(PORT)",  "2",   "Output control for BP"          }
+            {  "$(DEV)",  "$(PORT)",  "3",   "Output control for RTM_OUT1"    }
+}
+
+file "crossbarAlarm.db" {
+    pattern {     DEVICE    }
+            {    "$(DEV)"   }
+}
+

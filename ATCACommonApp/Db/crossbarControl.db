@@ -1,0 +1,19 @@
+record(mbbo, "$(DEVICE):TCRB$(N):OUTPUTCONFIG")
+{
+    field(PINI, "YES")
+    field(DESC, "$(DESC)")
+    field(DTYP, "asynInt32")
+    field(OUT, "@asyn($(PORT),0) output$(N)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "RTM_IN0 (LCLS1)")
+    field(ONST, "FPGA")
+    field(TWST, "BP")
+    field(THST, "RTM_IN1 (LCLS2)")
+    info(autosaveFields, "VAL ZRSV ONSV TWSV THSV")
+}
+
