@@ -12,7 +12,7 @@ namespace CrossbarControl {
         private:
             CrossbarControlYaml *pCrossbarApi;
         public:
-            CrossbarControlDriver(const char * _path_str);
+            CrossbarControlDriver(const char * _path_str, const char *named_root = NULL);
             void Report(void);
             void Control(const char *output_name, const char *source_name);
             CrossbarControlYaml * GetApi(void) { return pCrossbarApi; };
@@ -20,6 +20,8 @@ namespace CrossbarControl {
     
     
     class CrossbarControlAsynDriver:asynPortDriver {
+        private:
+             CrossbarControlDriver  *pDrv;
         public:
             CrossbarControlAsynDriver(const char * portName, CrossbarControlDriver *pDrv);
             asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
