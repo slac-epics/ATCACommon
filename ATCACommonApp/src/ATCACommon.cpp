@@ -324,7 +324,9 @@ static long atcaCommonAsynDriverPollThread(void *p)
 
 static long atcaCommonAsynDriverInitialize(void)
 {
-    if(!pDrvList || !ellCount(pDrvList)) return 0;
+
+    if(!(pDrvList  && ellCount(pDrvList))) return 0;
+
 
     char name[64];
 
