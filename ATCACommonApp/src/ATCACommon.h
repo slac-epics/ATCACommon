@@ -29,7 +29,7 @@ typedef struct {
 
 class ATCACommonAsynDriver:asynPortDriver {
     public:
-        ATCACommonAsynDriver(const char *portName, const char *pathString);
+        ATCACommonAsynDriver(const char *portName, const char *pathString, const char *named_root = NULL);
         ~ATCACommonAsynDriver();
         asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
 
@@ -140,6 +140,7 @@ class ATCACommonAsynDriver:asynPortDriver {
 
 typedef struct {
     ELLNODE                 node;
+    char                    *named_root;
     char                    *portName;
     char                    *pathName;
     ATCACommonAsynDriver    *pDrv;

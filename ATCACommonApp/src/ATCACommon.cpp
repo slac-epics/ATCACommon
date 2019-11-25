@@ -41,7 +41,7 @@
 static const char *driverName = "ATCACommonAsynDriver";
 static ELLLIST    *pDrvList   = (ELLLIST *) NULL;
 
-ATCACommonAsynDriver::ATCACommonAsynDriver(const char *portName, const char *pathString)
+ATCACommonAsynDriver::ATCACommonAsynDriver(const char *portName, const char *pathString, const char *named_root)
     :asynPortDriver(portName,
                      1, /* number of elements of this device */
                      NUM_ATCACOMMON_DET_PARAMS, /* number of asyn params of be cleared for each device */
@@ -56,12 +56,11 @@ ATCACommonAsynDriver::ATCACommonAsynDriver(const char *portName, const char *pat
     Path p_root;
     Path p_atcaCommon;
 
-
     port = epicsStrDup(portName);
     path = epicsStrDup(pathString);
 
     try {
-      p_root = cpswGetRoot();
+      p_root = (named_root && strlen(named_root))? cpswGetNamedRoot(named_root): cpswGetRoot();
       p_atcaCommon = p_root->findByName(pathString);
     } catch (CPSWError &e) {
         fprintf(stderr, "CPSW Error: %s, file %s, line %d\n", e.getInfo().c_str(), __FILE__, __LINE__);
@@ -286,6 +285,7 @@ static long atcaCommonAsynDriverReport(int interest)
 
     p = (drvNode_t *) ellFirst(pDrvList);
     while(p && p->pDrv) {
+        printf("named_root: %s\n", p->named_root);
         p->pDrv->report(interest);
         p = (drvNode_t *) ellNext(&p->node);
     }
@@ -354,14 +354,15 @@ epicsExportAddress(drvet, atcaCommonAsynDriver);
 
 extern "C" {
 /* consideration for Cexp */
-int cpswATCACommonAsynDriverConfigure(const char *portName, const char *pathName)
+int cpswATCACommonAsynDriverConfigure(const char *portName, const char *pathName, const char *named_root)
 {
     drvNode_t *p = (drvNode_t *) mallocMustSucceed(sizeof(drvNode_t), "ATCACommon Drvier");
 
+    p->named_root = epicsStrDup( (named_root && strlen(named_root))? named_root: cpswGetRootName() );
     p->portName = epicsStrDup(portName);
     p->pathName = epicsStrDup(pathName);
 
-    p->pDrv = new ATCACommonAsynDriver((const char *) p->portName, (const char *) p->pathName);
+    p->pDrv = new ATCACommonAsynDriver((const char *) p->portName, (const char *) p->pathName, named_root);
 
     add_drvList(p);
 
@@ -376,11 +377,13 @@ int cpswATCACommonAsynDriverConfigure(const char *portName, const char *pathName
 
 static const iocshArg    initArg0 = {"port name", iocshArgString};
 static const iocshArg    initArg1 = {"path name", iocshArgString};
-static const iocshArg    * const initArgs[] = {&initArg0, &initArg1};
-static const iocshFuncDef initFuncDef = {"cpswATCACommonAsynDriverConfigure", 2, initArgs};
+static const iocshArg    initArg2 = {"named_root (optional)", iocshArgString};
+static const iocshArg    * const initArgs[] = {&initArg0, &initArg1, &initArg2};
+static const iocshFuncDef initFuncDef = {"cpswATCACommonAsynDriverConfigure", 3, initArgs};
 static void  initCallFunc(const iocshArgBuf *args)
 {
-    cpswATCACommonAsynDriverConfigure(args[0].sval, args[1].sval);
+    cpswATCACommonAsynDriverConfigure(args[0].sval, args[1].sval,
+                                      (args[2].sval && strlen(args[2].sval))? args[2].sval: NULL );
 }
 
 void cpswATCACommonAsynDriverRegister(void)
