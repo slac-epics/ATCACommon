@@ -118,7 +118,7 @@ class ATCACommonAsynDriver:asynPortDriver {
 #define TIMESTAMP_SEC_STR          "timestamp_sec_%d"
 #define TIMESTAMP_NSEC_STR         "timestamp_nsec_%d"
 #define TRIGGERCOUNT_STR           "triggerCount_%d"
-#define DBGINPUTVALID_STR          "dbgInpuValid_%d"
+#define DBGINPUTVALID_STR          "dbgInputValid_%d"
 #define DBGLINKREADY_STR           "dbgLinkReady_%d"
 #define INPUTMUXSELECT_STR         "inputMuxSelect_%d_%d"
 #define STREAMPAUSE_STR            "streamPause_%d_%d"
