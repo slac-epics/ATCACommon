@@ -25,3 +25,23 @@ file "jesdCount.db" {
             { "$(DEV)",      1,      6     }
             { "$(DEV)",      1,      7     }
 }
+
+file "daqMux.db"  {
+    pattern { DEVICE,   CNT   }
+            { "$(DEV)",   0   }
+            { "$(DEV)",   1   }
+}
+
+file "daqMuxChn.db"  {
+    pattern {   DEVICE,    CNT,     CHN   }
+            { "$(DEV)",      0,       0   }
+            { "$(DEV)",      0,       1   }
+            { "$(DEV)",      0,       2   }
+            { "$(DEV)",      0,       3   }
+#
+            { "$(DEV)",      1,       0   }
+            { "$(DEV)",      1,       1   }
+            { "$(DEV)",      1,       2   }
+            { "$(DEV)",      1,       3   }
+            
+}

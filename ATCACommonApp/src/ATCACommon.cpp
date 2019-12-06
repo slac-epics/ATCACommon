@@ -112,7 +112,9 @@ asynStatus ATCACommonAsynDriver::writeInt32(asynUser *pasynUser, epicsInt32 valu
         else if(function == (p_daqMux+i)->p_dataBufferSize)              atcaCommon->dataBufferSize(value, i);
         else
         for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) {
-            if(function == (p_daqMux+i)->p_inputMuxSelect[j])            atcaCommon->inputMuxSelect(value, i, j);
+            if(function == (p_daqMux+i)->p_inputMuxSelect[j]) {          atcaCommon->inputMuxSelect(value, i, j);
+                                                                         setStringParam((p_daqMux+i)->p_readInpMuxSel[j], inputMuxSelString(value));
+            }
             else if(function == (p_daqMux+i)->p_formatSignWidth[j])      atcaCommon->formatSignWidth(value, i, j);
             else if(function == (p_daqMux+i)->p_formatDataWidth[j])      atcaCommon->formatDataWidth(value, i, j);
             else if(function == (p_daqMux+i)->p_enableFormatSign[j])     atcaCommon->enableFormatSign(value?1:0, i, j);
@@ -144,6 +146,7 @@ void ATCACommonAsynDriver::ParameterSetup(void)
     for(int i = 0; i < MAX_DAQMUX_CNT; i++) {
         sprintf(param_name, TRIGGERDAQ_STR,         i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_triggerDaq);
         sprintf(param_name, ARMHWTRIGGER_STR,       i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_armHwTrigger);
+        sprintf(param_name, FREEZEBUFFER_STR,       i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_freezeBuffer);
         sprintf(param_name, CLEARTRIGGERSTATUS_STR, i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_clearTriggerStatus);
         sprintf(param_name, CASCADEDTRIGGER_STR,    i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_cascadedTrigger);
         sprintf(param_name, HARDWAREAUTOREARM_STR,  i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_hardwareAutoRearm);
@@ -160,6 +163,7 @@ void ATCACommonAsynDriver::ParameterSetup(void)
 
         for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) {
             sprintf(param_name, INPUTMUXSELECT_STR, i, j); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_inputMuxSelect[j]);
+            sprintf(param_name, READINPMUXSEL_STR,  i, j); createParam(param_name, asynParamOctet, &(p_daqMux+i)->p_readInpMuxSel[j]);
             sprintf(param_name, STREAMPAUSE_STR,    i, j); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_streamPause[j]);
             sprintf(param_name, STREAMREADY_STR,    i, j); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_streamReady[j]);
             sprintf(param_name, STREAMOVERFLOW_STR, i, j); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_streamOverflow[j]);
@@ -238,6 +242,16 @@ void ATCACommonAsynDriver::getDaqMuxStatus(void)
                                                  setIntegerParam((p_daqMux+i)->p_timestamp_nsec, val[1]);
   
     }
+}
+
+const char * ATCACommonAsynDriver::inputMuxSelString(int idx)
+{
+    const char * mux_sel[] = {"Disabled", "Test",
+                              "ADC0", "ADC1", "ADC2", "ADC3", "ADC4", "ADC5", "ADC6",
+                              "DAC0", "DAC1", "DAC2", "DAC3", "DAC4", "DAC5", "DAC6",
+                              "DBG0", "DBG1", "DBG2", "DBG3" };
+
+    return mux_sel[(idx>-1 && idx <(sizeof(mux_sel)/sizeof(const char*)))?idx:(sizeof(mux_sel)/sizeof(const char*))-1];
 }
 
 void ATCACommonAsynDriver::report(int level)

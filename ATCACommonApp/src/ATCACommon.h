@@ -47,6 +47,8 @@ class ATCACommonAsynDriver:asynPortDriver {
         void getJesdCount(void);
         void getDaqMuxStatus(void);
 
+        const char *inputMuxSelString(int idx);
+
     protected:
         int firstATCACommonParam;
 #define FIRST_ATCACOMMON_PARAM   firstATCACommonParam
@@ -76,6 +78,7 @@ class ATCACommonAsynDriver:asynPortDriver {
             int p_dbgInputValid;
             int p_dbgLinkReady;
             int p_inputMuxSelect[MAX_DAQMUX_CHN_CNT];
+            int p_readInpMuxSel[MAX_DAQMUX_CHN_CNT];
             int p_streamPause[MAX_DAQMUX_CHN_CNT];
             int p_streamReady[MAX_DAQMUX_CHN_CNT];
             int p_streamOverflow[MAX_DAQMUX_CHN_CNT];
@@ -121,6 +124,7 @@ class ATCACommonAsynDriver:asynPortDriver {
 #define DBGINPUTVALID_STR          "dbgInputValid_%d"
 #define DBGLINKREADY_STR           "dbgLinkReady_%d"
 #define INPUTMUXSELECT_STR         "inputMuxSelect_%d_%d"
+#define READINPMUXSEL_STR          "readInpMuxSel_%d_%d"
 #define STREAMPAUSE_STR            "streamPause_%d_%d"
 #define STREAMREADY_STR            "streamReady_%d_%d"
 #define STREAMOVERFLOW_STR         "streamOverflow_%d_%d"
