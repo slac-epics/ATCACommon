@@ -50,8 +50,10 @@ class ATCACommonAsynDriver:asynPortDriver {
         const char *inputMuxSelString(int idx);
 
     protected:
+#if (ASYN_VERSION <<8 | ASYN_REVISION) < (4<<8 || 32)
         int firstATCACommonParam;
 #define FIRST_ATCACOMMON_PARAM   firstATCACommonParam
+#endif /* ASYN VERSION CHECK under 4.32 */
         int p_upTimeCnt;
         int p_buildStamp;
         int p_fpgaVersion;
@@ -91,12 +93,17 @@ class ATCACommonAsynDriver:asynPortDriver {
             int p_enableFormatSign[MAX_DAQMUX_CHN_CNT];
             int p_enableDecimation[MAX_DAQMUX_CHN_CNT];
         } p_daqMux[MAX_DAQMUX_CNT];
-      
+
+#if (ASYN_VERSION <<8 | ASYN_REVISION) < (4<<8 || 32)      
         int lastATCACommonParam;
 #define LAST_ATCACOMMON_PARAM   lastATCACommonParam
+#endif /* asyn version check, under 4.32 */
 };
 
+#if (ASYN_VERSION <<8 | ASYN_REVISION) < (4<<8 || 32)
 #define NUM_ATCACOMMON_DET_PARAMS ((int)(&LAST_ATCACOMMON_PARAM - &FIRST_ATCACOMMON_PARAM-1))
+#endif /* asyn version check, under 4.32 */
+
 // ATCA Common
 #define UPTIMECNT_STR              "upTimeCnt"
 #define BUILDSTAMP_STR             "buildStamp"
