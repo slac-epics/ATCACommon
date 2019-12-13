@@ -30,12 +30,12 @@ namespace CrossbarControl {
         //
         // parameter section for asynPortDriver
         //
-#if (ASYN_VERSION <<8 | ASYN_REVISION) < (4<<8 || 32)
+#if (ASYN_VERSION <<8 | ASYN_REVISION) < (4<<8 | 32)
         int firstCrossbarControlParam;
 #define FIRST_CROSSBAR_CONTROL_PARAM      firstCrossbarControlParam
 #endif /* asyn version check, under 4.32 */
         int p_outputConfig[4];      /* asynInt32, rw */
-#if (ASYN_VERSION <<8 | ASYN_REVISION) < (4<<8 || 32)
+#if (ASYN_VERSION <<8 | ASYN_REVISION) < (4<<8 | 32)
         int lastCrossbarControlParam;
 #define LAST_CROSSBAR_CONTROL_PARAM      lastCrossbarControlParam
 #endif /* asyn version check, under 4.32 */        
@@ -45,7 +45,7 @@ namespace CrossbarControl {
 
 };  /* namespace CrossbarControl */
 
-#if (ASYN_VERSION <<8 | ASYN_REVISION) < (4<<8 || 32)
+#if (ASYN_VERSION <<8 | ASYN_REVISION) < (4<<8 | 32)
 #define NUM_CROSSBAR_CONTROL_DET_PARAMS ((int)(&LAST_CROSSBAR_CONTROL_PARAM - &FIRST_CROSSBAR_CONTROL_PARAM -1))
 #endif /* asyn version check, under 4.32 */
 

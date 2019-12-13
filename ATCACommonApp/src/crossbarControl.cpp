@@ -112,7 +112,7 @@ void CrossbarControlDriver::Control(const char *output_name, const char *source_
 CrossbarControlAsynDriver::CrossbarControlAsynDriver(const char *portName, CrossbarControlDriver *p)
     : asynPortDriver(portName,
                      1, /* number of elements of this driver */
-#if (ASYN_VERSION <<8 | ASYN_REVISION) < (4<<8 || 32)
+#if (ASYN_VERSION <<8 | ASYN_REVISION) < (4<<8 | 32)
                      NUM_CROSSBAR_CONTROL_DET_PARAMS, /* number of asyn params to be cleared for each device */
 #endif /* asyn version check, under 4.32 */
                      asynInt32Mask | asynFloat64Mask | asynOctetMask | asynDrvUserMask | asynInt32ArrayMask | asynInt16ArrayMask, /* Interface mask */
