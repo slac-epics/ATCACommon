@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 725
-y 31
+x 2106
+y 65
 w 1080
 h 1080
 font "helvetica-medium-r-18.0"
@@ -1189,33 +1189,6 @@ major 4
 minor 1
 release 0
 x 169
-y 408
-w 64
-h 18
-fgColor index 14
-onColor index 3
-offColor index 4
-inconsistentColor index 14
-topShadowColor index 5
-botShadowColor index 14
-controlPv "$(DEVICE):DAQMUX0_ARMHWTRG"
-indicatorPv "$(DEVICE):DAQMUX0_ARMHWTRG"
-onLabel "ARM"
-offLabel "Arm"
-labelType "literal"
-buttonType "push"
-3d
-font "helvetica-medium-r-10.0"
-objType "controls"
-endObjectProperties
-
-# (Button)
-object activeButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 169
 y 427
 w 64
 h 18
@@ -1894,33 +1867,6 @@ value {
   "Cascaded Trigger"
 }
 autoSize
-endObjectProperties
-
-# (Button)
-object activeButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 167
-y 759
-w 64
-h 18
-fgColor index 14
-onColor index 3
-offColor index 4
-inconsistentColor index 14
-topShadowColor index 5
-botShadowColor index 14
-controlPv "$(DEVICE):DAQMUX1_ARMHWTRG"
-indicatorPv "$(DEVICE):DAQMUX1_ARMHWTRG"
-onLabel "ARM"
-offLabel "Arm"
-labelType "literal"
-buttonType "push"
-3d
-font "helvetica-medium-r-10.0"
-objType "controls"
 endObjectProperties
 
 # (Button)
@@ -5416,8 +5362,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 26
-y 365
+x 25
+y 363
 w 1018
 h 347
 lineColor index 14
@@ -5430,8 +5376,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 27
-y 717
+x 25
+y 716
 w 1016
 h 349
 lineColor index 14
@@ -5548,5 +5494,49 @@ w 235
 h 284
 lineColor index 14
 fillColor index 0
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 168
+y 407
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):DAQMUX0_ARMHWTRG"
+indicatorPv "$(DEVICE):DAQMUX0_ARMHWTRG"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 165
+y 757
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):DAQMUX1_ARMHWTRG"
+indicatorPv "$(DEVICE):DAQMUX1_ARMHWTRG"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
 endObjectProperties
 
