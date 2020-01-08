@@ -3,9 +3,9 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 2106
-y 65
-w 1080
+x 120
+y 49
+w 1791
 h 1080
 font "helvetica-medium-r-18.0"
 ctlFont "helvetica-medium-r-18.0"
@@ -5363,8 +5363,8 @@ major 4
 minor 0
 release 0
 x 25
-y 363
-w 1018
+y 366
+w 998
 h 347
 lineColor index 14
 fillColor index 0
@@ -5378,7 +5378,7 @@ minor 0
 release 0
 x 25
 y 716
-w 1016
+w 999
 h 349
 lineColor index 14
 fillColor index 0
@@ -5390,8 +5390,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 322
-y 392
+x 323
+y 391
 w 235
 h 284
 lineColor index 14
@@ -5538,5 +5538,1983 @@ controlPv "$(DEVICE):DAQMUX1_ARMHWTRG"
 indicatorPv "$(DEVICE):DAQMUX1_ARMHWTRG"
 font "helvetica-medium-r-10.0"
 orientation "horizontal"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1057
+y 421
+w 43
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Initialize"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1068
+y 401
+w 97
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Waveform Engine 0"
+}
+autoSize
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 1138
+y 416
+w 64
+h 18
+fgColor index 14
+onColor index 3
+offColor index 4
+inconsistentColor index 14
+topShadowColor index 5
+botShadowColor index 14
+controlPv "$(DEVICE):WFENG0_INIT"
+indicatorPv "$(DEVICE):WFENG0_INIT"
+onLabel "INITIALIZE"
+offLabel "Initialize"
+labelType "literal"
+buttonType "push"
+3d
+font "helvetica-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1050
+y 529
+w 54
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Mesg Dest"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1050
+y 509
+w 28
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Mode"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1050
+y 492
+w 33
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Enable"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1050
+y 564
+w 63
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "End Address"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1050
+y 546
+w 70
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Start Address"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1050
+y 585
+w 73
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Write Address"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1050
+y 608
+w 33
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Status"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1140
+y 474
+w 50
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Channel 0"
+}
+autoSize
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1140
+y 527
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG0_MSGDEST0"
+indicatorPv "$(DEVICE):WFENG0_MSGDEST0"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1140
+y 508
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG0_MODE0"
+indicatorPv "$(DEVICE):WFENG0_MODE0"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1140
+y 491
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG0_ENABLE0"
+indicatorPv "$(DEVICE):WFENG0_ENABLE0"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1140
+y 563
+w 128
+h 16
+controlPv "$(DEVICE):WFENG0_ENDADDR0"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 14
+bgColor index 5
+editable
+autoHeight
+motifWidget
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1140
+y 545
+w 128
+h 16
+controlPv "$(DEVICE):WFENG0_STARTADDR0"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 14
+bgColor index 5
+editable
+autoHeight
+motifWidget
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1140
+y 583
+w 64
+h 18
+controlPv "$(DEVICE):WFENG0_WRADDR0"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1140
+y 605
+w 64
+h 18
+controlPv "$(DEVICE):WFENG0_STATUS0"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1280
+y 475
+w 50
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Channel 1"
+}
+autoSize
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1280
+y 528
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG0_MSGDEST1"
+indicatorPv "$(DEVICE):WFENG0_MSGDEST1"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1280
+y 509
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG0_MODE1"
+indicatorPv "$(DEVICE):WFENG0_MODE1"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1280
+y 492
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG0_ENABLE1"
+indicatorPv "$(DEVICE):WFENG0_ENABLE1"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1280
+y 564
+w 128
+h 16
+controlPv "$(DEVICE):WFENG0_ENDADDR1"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 14
+bgColor index 5
+editable
+autoHeight
+motifWidget
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1280
+y 546
+w 128
+h 16
+controlPv "$(DEVICE):WFENG0_STARTADDR1"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 14
+bgColor index 5
+editable
+autoHeight
+motifWidget
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1280
+y 584
+w 64
+h 18
+controlPv "$(DEVICE):WFENG0_WRADDR1"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1280
+y 606
+w 64
+h 18
+controlPv "$(DEVICE):WFENG0_STATUS1"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1422
+y 475
+w 50
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Channel 2"
+}
+autoSize
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1422
+y 528
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG0_MSGDEST2"
+indicatorPv "$(DEVICE):WFENG0_MSGDEST2"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1422
+y 509
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG0_MODE2"
+indicatorPv "$(DEVICE):WFENG0_MODE2"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1422
+y 492
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG0_ENABLE2"
+indicatorPv "$(DEVICE):WFENG0_ENABLE2"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1422
+y 564
+w 128
+h 16
+controlPv "$(DEVICE):WFENG0_ENDADDR2"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 14
+bgColor index 5
+editable
+autoHeight
+motifWidget
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1422
+y 546
+w 128
+h 16
+controlPv "$(DEVICE):WFENG0_STARTADDR2"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 14
+bgColor index 5
+editable
+autoHeight
+motifWidget
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1422
+y 584
+w 64
+h 18
+controlPv "$(DEVICE):WFENG0_WRADDR2"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1422
+y 606
+w 64
+h 18
+controlPv "$(DEVICE):WFENG0_STATUS2"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1559
+y 474
+w 50
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Channel 3"
+}
+autoSize
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1559
+y 527
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG0_MSGDEST0"
+indicatorPv "$(DEVICE):WFENG0_MSGDEST0"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1559
+y 508
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG0_MODE3"
+indicatorPv "$(DEVICE):WFENG0_MODE3"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1559
+y 491
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG0_ENABLE3"
+indicatorPv "$(DEVICE):WFENG0_ENABLE3"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1559
+y 563
+w 128
+h 16
+controlPv "$(DEVICE):WFENG0_ENDADDR3"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 14
+bgColor index 5
+editable
+autoHeight
+motifWidget
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1559
+y 545
+w 128
+h 16
+controlPv "$(DEVICE):WFENG0_STARTADDR3"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 14
+bgColor index 5
+editable
+autoHeight
+motifWidget
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1559
+y 583
+w 64
+h 18
+controlPv "$(DEVICE):WFENG0_WRADDR3"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1559
+y 605
+w 64
+h 18
+controlPv "$(DEVICE):WFENG0_STATUS3"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1058
+y 690
+w 43
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Initialize"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1069
+y 670
+w 97
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Waveform Engine 1"
+}
+autoSize
+endObjectProperties
+
+# (Button)
+object activeButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 1139
+y 685
+w 64
+h 18
+fgColor index 14
+onColor index 3
+offColor index 4
+inconsistentColor index 14
+topShadowColor index 5
+botShadowColor index 14
+controlPv "$(DEVICE):WFENG1_INIT"
+indicatorPv "$(DEVICE):WFENG1_INIT"
+onLabel "INITIALIZE"
+offLabel "Initialize"
+labelType "literal"
+buttonType "push"
+3d
+font "helvetica-medium-r-10.0"
+objType "controls"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1051
+y 798
+w 54
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Mesg Dest"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1051
+y 778
+w 28
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Mode"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1051
+y 761
+w 33
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Enable"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1051
+y 833
+w 63
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "End Address"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1051
+y 815
+w 70
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Start Address"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1051
+y 854
+w 73
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Write Address"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1051
+y 877
+w 33
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Status"
+}
+autoSize
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1141
+y 743
+w 50
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Channel 0"
+}
+autoSize
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1141
+y 796
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG1_MSGDEST0"
+indicatorPv "$(DEVICE):WFENG1_MSGDEST0"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1141
+y 777
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG1_MODE0"
+indicatorPv "$(DEVICE):WFENG1_MODE0"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1141
+y 760
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG1_ENABLE0"
+indicatorPv "$(DEVICE):WFENG1_ENABLE0"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1141
+y 832
+w 128
+h 16
+controlPv "$(DEVICE):WFENG1_ENDADDR0"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 14
+bgColor index 5
+editable
+autoHeight
+motifWidget
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1141
+y 814
+w 128
+h 16
+controlPv "$(DEVICE):WFENG1_STARTADDR0"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 14
+bgColor index 5
+editable
+autoHeight
+motifWidget
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1141
+y 852
+w 64
+h 18
+controlPv "$(DEVICE):WFENG1_WRADDR0"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1141
+y 874
+w 64
+h 18
+controlPv "$(DEVICE):WFENG1_STATUS0"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1281
+y 744
+w 50
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Channel 1"
+}
+autoSize
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1281
+y 797
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG0_MSGDEST1"
+indicatorPv "$(DEVICE):WFENG0_MSGDEST1"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1281
+y 778
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG1_MODE1"
+indicatorPv "$(DEVICE):WFENG1_MODE1"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1281
+y 761
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG1_ENABLE1"
+indicatorPv "$(DEVICE):WFENG1_ENABLE1"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1281
+y 833
+w 128
+h 16
+controlPv "$(DEVICE):WFENG1_ENDADDR1"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 14
+bgColor index 5
+editable
+autoHeight
+motifWidget
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1281
+y 815
+w 128
+h 16
+controlPv "$(DEVICE):WFENG1_STARTADDR1"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 14
+bgColor index 5
+editable
+autoHeight
+motifWidget
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1281
+y 853
+w 64
+h 18
+controlPv "$(DEVICE):WFENG1_WRADDR1"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1281
+y 875
+w 64
+h 18
+controlPv "$(DEVICE):WFENG1_STATUS1"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1423
+y 744
+w 50
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Channel 2"
+}
+autoSize
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1423
+y 797
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG0_MSGDEST2"
+indicatorPv "$(DEVICE):WFENG0_MSGDEST2"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1423
+y 778
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG1_MODE2"
+indicatorPv "$(DEVICE):WFENG1_MODE2"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1423
+y 761
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG1_ENABLE2"
+indicatorPv "$(DEVICE):WFENG1_ENABLE2"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1423
+y 833
+w 128
+h 16
+controlPv "$(DEVICE):WFENG1_ENDADDR2"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 14
+bgColor index 5
+editable
+autoHeight
+motifWidget
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1423
+y 815
+w 128
+h 16
+controlPv "$(DEVICE):WFENG1_STARTADDR2"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 14
+bgColor index 5
+editable
+autoHeight
+motifWidget
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1423
+y 853
+w 64
+h 18
+controlPv "$(DEVICE):WFENG1_WRADDR2"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1423
+y 875
+w 64
+h 18
+controlPv "$(DEVICE):WFENG1_STATUS2"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 1560
+y 743
+w 50
+h 12
+font "helvetica-bold-r-10.0"
+fgColor index 14
+bgColor index 0
+useDisplayBg
+value {
+  "Channel 3"
+}
+autoSize
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1560
+y 796
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG1_MSGDEST0"
+indicatorPv "$(DEVICE):WFENG1_MSGDEST0"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1560
+y 777
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG1_MODE3"
+indicatorPv "$(DEVICE):WFENG1_MODE3"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Choice Button)
+object activeChoiceButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1560
+y 760
+w 128
+h 16
+fgColor index 14
+bgColor index 5
+selectColor index 16
+inconsistentColor index 14
+topShadowColor index 4
+botShadowColor index 9
+controlPv "$(DEVICE):WFENG1_ENABLE3"
+indicatorPv "$(DEVICE):WFENG1_ENABLE3"
+font "helvetica-medium-r-10.0"
+orientation "horizontal"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1560
+y 832
+w 128
+h 16
+controlPv "$(DEVICE):WFENG1_ENDADDR3"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 14
+bgColor index 5
+editable
+autoHeight
+motifWidget
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1560
+y 814
+w 128
+h 16
+controlPv "$(DEVICE):WFENG1_STARTADDR3"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 14
+bgColor index 5
+editable
+autoHeight
+motifWidget
+nullColor index 0
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1560
+y 852
+w 64
+h 18
+controlPv "$(DEVICE):WFENG1_WRADDR3"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 1560
+y 874
+w 64
+h 18
+controlPv "$(DEVICE):WFENG1_STATUS3"
+format "hex"
+font "helvetica-medium-r-10.0"
+fgColor index 15
+bgColor index 9
+nullColor index 0
+fastUpdate
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1043
+y 462
+w 230
+h 169
+lineColor index 14
+fillColor index 0
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1276
+y 462
+w 135
+h 169
+lineColor index 14
+fillColor index 0
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1417
+y 462
+w 135
+h 169
+lineColor index 14
+fillColor index 0
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1556
+y 462
+w 135
+h 169
+lineColor index 14
+fillColor index 0
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1557
+y 738
+w 135
+h 169
+lineColor index 14
+fillColor index 0
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1418
+y 738
+w 135
+h 169
+lineColor index 14
+fillColor index 0
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1277
+y 738
+w 135
+h 169
+lineColor index 14
+fillColor index 0
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1044
+y 738
+w 230
+h 169
+lineColor index 14
+fillColor index 0
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1035
+y 390
+w 666
+h 253
+lineColor index 14
+fillColor index 0
+endObjectProperties
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 1037
+y 663
+w 666
+h 253
+lineColor index 14
+fillColor index 0
 endObjectProperties
 
