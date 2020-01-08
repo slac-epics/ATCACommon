@@ -1,0 +1,144 @@
+record(longout, "$(DEVICE):DAQMUX$(CNT)_INPMUXSEL$(CHN)")
+{
+    field(DESC, "DaqMux $(CNT) Input Mux Selector for CH$(CHN)")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) inputMuxSelect_$(CNT)_$(CHN)")
+    field(SCAN, "Passive")
+    field(PINI, "YES")
+    info(autosaveFields, "VAL")
+}
+
+record(waveform, "$(DEVICE):DAQMUX$(CNT)_INPMUXSELSTR$(CHN)")
+{
+    field(DESC, "DaqMux $(CNT) Input Mux Selector for CH$(CHN)")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),0) readInpMuxSel_$(CNT)_$(CHN)")
+    field(SCAN, "I/O Intr")
+    field(FTVL, "CHAR")
+    field(NELM, "16")
+}
+
+
+record(bi, "$(DEVICE):DAQMUX$(CNT)_STRMPAUSE$(CHN)")
+{
+    field(DESC, "DaqMux $(CNT) Stream Pause for CH$(CHN)")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0) streamPause_$(CNT)_$(CHN)")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Stream")
+    field(ONAM, "Pause")
+}
+
+
+record(bi, "$(DEVICE):DAQMUX$(CNT)_STRMRDY$(CHN)")
+{
+    field(DESC, "DaqMux $(CNT) Stream Ready for CH$(CHN)")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0) streamReady_$(CNT)_$(CHN)")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Not Ready")
+    field(ONAM, "Ready")
+}
+
+
+record(bi, "$(DEVICE):DAQMUX$(CNT)_STRMOVF$(CHN)")
+{
+    field(DESC, "DaqMux $(CNT) Stream Overflow for CH$(CHN)")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0) streamOverflow_$(CNT)_$(CHN)")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Normal")
+    field(ONAM, "Overflow")
+}
+
+record(bi, "$(DEVICE):DAQMUX$(CNT)_STRMERR$(CHN)")
+{
+    field(DESC, "DaqMux $(CNT) Stream Error for CH$(CHN)")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0) streamError_$(CNT)_$(CHN)")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "No Error")
+    field(ONAM, "Error")
+}
+
+
+record(bi, "$(DEVICE):DAQMUX$(CNT)_INPDATAVALID$(CHN)")
+{
+    field(DESC, "DaqMux $(CNT) Input Data Valid for CH$(CHN)")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0) inputDataValid_$(CNT)_$(CHN)")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Invalid")
+    field(ONAM, "Valid")
+}
+
+
+record(bi, "$(DEVICE):DAQMUX$(CNT)_STRMENABLED$(CHN)")
+{
+    field(DESC, "DaqMux $(CNT) Stream Enabled for CH$(CHN)")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0) streamEnabled_$(CNT)_$(CHN)")
+    field(SCAN, "I/O Intr")
+    field(ZNAM, "Disabled")
+    field(ONAM, "Enabled")
+}
+
+record(longin, "$(DEVICE):DAQMUX$(CNT)_FRAMECNT$(CHN)")
+{
+    field(DESC, "DaqMux $(CNT) Frame Count for CH$(CHN)")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0) frameCount_$(CNT)_$(CHN)")
+    field(SCAN, "I/O Intr")
+}
+
+
+record(longout, "$(DEVICE):DAQMUX$(CNT)_FORMATSIGNWIDTH$(CHN)")
+{
+    field(DESC, "DaqMux $(CNT) Format Sign Width for CH$(CHN)")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) formatSignWidth_$(CNT)_$(CHN)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+    field(PINI, "YES")
+    info(autosaveFields, "VAL")
+}
+
+
+record(longout, "$(DEVICE):DAQMUX$(CNT)_FORMATDATAWIDTH$(CHN)")
+{
+    field(DESC, "DaqMux $(CNT) Format Data Width for CH$(CHN)")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) formatDataWidth_$(CNT)_$(CHN)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+    field(PINI, "YES")
+    info(autosaveFields, "VAL")
+}
+
+
+record(bo, "$(DEVICE):DAQMUX$(CNT)_FORMATSIGN$(CHN)")
+{
+    field(DESC, "DaqMux $(CNT) Enable Format Sign for CH$(CHN)")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT), 0) enableFormatSign_$(CNT)_$(CHN)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+    field(ZNAM, "Disable")
+    field(ONAM, "Enable")
+    field(PINI, "YES")
+    info(autosaveFields, "VAL")
+}
+
+
+record(bo, "$(DEVICE):DAQMUX$(CNT)_DECIMATION$(CHN)")
+{
+    field(DESC, "DaqMux $(CNT) Enable Decimation for CH$(CHN)")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) enableDecimation_$(CNT)_$(CHN)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+    field(ZNAM, "Disable")
+    field(ONAM, "Enable")
+    field(PINI, "YES")
+    info(autosaveFields, "VAL")
+}

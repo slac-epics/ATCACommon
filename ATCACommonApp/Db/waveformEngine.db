@@ -1,0 +1,16 @@
+# waveformEngine.db
+
+record(bo, "$(DEVICE):WFENG$(CNT)_INIT")
+{
+    field(DESC,  "Wf Engine Initialization ($(CNT))")
+    field(DTYP,  "asynInt32")
+    field(OUT,   "@asyn($(PORT),0) wfBuffInit_$(CNT)")
+    field(OMSL,  "supervisory")
+    field(SCAN,  "Passive")
+    field(ZNAM,  "initialization")
+    field(ONAM,  "INITIALIZATION")
+#    field(PINI,  "YES")
+}
+
+
+

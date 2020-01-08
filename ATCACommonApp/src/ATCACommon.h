@@ -16,6 +16,9 @@
 #include <sstream>
 #include <fstream>
 
+#define MAX_WAVEFORMENGINE_CNT 2
+#define MAX_WAVEFORMENGINE_CHN_CNT 4
+#define MAX_DBG_STREAM_CNT 8
 #define MAX_JESD_CNT       8
 #define NUM_JESD           2
 #define MAX_DAQMUX_CNT     2
@@ -46,6 +49,7 @@ class ATCACommonAsynDriver:asynPortDriver {
         void ParameterSetup(void);
         void getJesdCount(void);
         void getDaqMuxStatus(void);
+        void getWaveformEngineStatus(void);
 
         const char *inputMuxSelString(int idx);
 
@@ -93,6 +97,22 @@ class ATCACommonAsynDriver:asynPortDriver {
             int p_enableFormatSign[MAX_DAQMUX_CHN_CNT];
             int p_enableDecimation[MAX_DAQMUX_CHN_CNT];
         } p_daqMux[MAX_DAQMUX_CNT];
+
+        struct {
+            int p_startAddr[MAX_WAVEFORMENGINE_CHN_CNT];
+            int p_endAddr[MAX_WAVEFORMENGINE_CHN_CNT];
+            int p_wrAddr[MAX_WAVEFORMENGINE_CHN_CNT];
+            int p_enabled[MAX_WAVEFORMENGINE_CHN_CNT];
+            int p_mode[MAX_WAVEFORMENGINE_CHN_CNT];
+            int p_status[MAX_WAVEFORMENGINE_CHN_CNT];
+            int p_msgDest[MAX_WAVEFORMENGINE_CHN_CNT];
+            int p_framesAfterTrigger[MAX_WAVEFORMENGINE_CHN_CNT];
+            int p_initialize;
+        } p_waveformEngine[MAX_WAVEFORMENGINE_CNT];
+
+        
+        int p_dbgStream[MAX_DBG_STREAM_CNT];
+
 
 #if (ASYN_VERSION <<8 | ASYN_REVISION) < (4<<8 | 32)      
         int lastATCACommonParam;
@@ -144,7 +164,18 @@ class ATCACommonAsynDriver:asynPortDriver {
 #define ENABLEFORMATSIGN_STR       "enableFormatSign_%d_%d"
 #define ENABLEDECIMATION_STR       "enableDecimation_%d_%d"
 
+#define WFBUFSTARTADDR_STR         "wfBuffStartAddr_%d_%d"
+#define WFBUFENDADDR_STR           "wfBuffEndAddr_%d_%d"
+#define WFBUFWRADDR_STR            "wfBuffWrAddr_%d_%d"
+#define WFBUFENABLE_STR            "wfBuffEnable_%d_%d"
+#define WFBUFMODE_STR              "wfBuffMode_%d_%d"
+#define WFBUFSTATUS_STR            "wfBuffStatus_%d_%d"
+#define WFBUFMSGDEST_STR           "wfBuffMsgDest_%d_%d"
+#define WFBUFFRAFTTRG_STR          "wfBuffFramesAfterTrigger_%d_%d"
+#define WFBUFINIT_STR              "wfBuffInit_%d"
 
+// Debug Stream
+#define DBGSTREAM_STR              "dbg_stream_%d"
 
 
 
@@ -157,6 +188,7 @@ typedef struct {
     ATCACommonAsynDriver    *pDrv;
 }  drvNode_t;
 
+drvNode_t * last_drvList_ATCACommon(void);
 
 #endif /* ATCA_COMMON_ASYN_DRIVER_H */
 

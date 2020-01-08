@@ -124,6 +124,20 @@ asynStatus ATCACommonAsynDriver::writeInt32(asynUser *pasynUser, epicsInt32 valu
         }
     }
 
+    for(int i = 0; i < MAX_WAVEFORMENGINE_CNT; i++) {
+        if(function == (p_waveformEngine+i)->p_initialize      && value) atcaCommon->initWfEngine(i);
+
+        for(int j = 0; j < MAX_WAVEFORMENGINE_CHN_CNT; j++) {
+            if(function == (p_waveformEngine+i)->p_startAddr[j])         atcaCommon->setWfEngineStartAddr((uint64_t) value, i, j);
+            else if(function == (p_waveformEngine+i)->p_endAddr[j])      atcaCommon->setWfEngineEndAddr((uint64_t) value, i, j);
+            else if(function == (p_waveformEngine+i)->p_enabled[j])      atcaCommon->enableWfEngine((value)?1:0, i, j);
+            else if(function == (p_waveformEngine+i)->p_mode[j])         atcaCommon->setWfEngineMode((value)?1:0, i, j);
+            else if(function == (p_waveformEngine+i)->p_msgDest[j])      atcaCommon->setWfEngineMsgDest((value)?1:0, i, j);
+            else if(function == (p_waveformEngine+i)->p_framesAfterTrigger[j])
+                                                                         atcaCommon->setWfEngineFramesAfterTrigger(value, i, j);
+        }
+    }
+
     return status;
 }
 
@@ -179,6 +193,24 @@ void ATCACommonAsynDriver::ParameterSetup(void)
             sprintf(param_name, ENABLEDECIMATION_STR, i, j); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_enableDecimation[j]);
         }
     }
+
+    for(int i = 0; i < MAX_WAVEFORMENGINE_CNT; i++) {
+        for(int j = 0; j < MAX_WAVEFORMENGINE_CHN_CNT; j++) {
+            sprintf(param_name, WFBUFSTARTADDR_STR, i, j); createParam(param_name, asynParamInt32, &(p_waveformEngine+i)->p_startAddr[j]);
+            sprintf(param_name, WFBUFENDADDR_STR, i, j);   createParam(param_name, asynParamInt32, &(p_waveformEngine+i)->p_endAddr[j]);
+            sprintf(param_name, WFBUFWRADDR_STR, i, j);    createParam(param_name, asynParamInt32, &(p_waveformEngine+i)->p_wrAddr[j]);
+            sprintf(param_name, WFBUFENABLE_STR, i, j);    createParam(param_name, asynParamInt32, &(p_waveformEngine+i)->p_enabled[j]);
+            sprintf(param_name, WFBUFMODE_STR, i, j);      createParam(param_name, asynParamInt32, &(p_waveformEngine+i)->p_mode[j]);
+            sprintf(param_name, WFBUFSTATUS_STR, i, j);    createParam(param_name, asynParamInt32, &(p_waveformEngine+i)->p_status[j]);
+            sprintf(param_name, WFBUFMSGDEST_STR, i, j);   createParam(param_name, asynParamInt32, &(p_waveformEngine+i)->p_msgDest[j]);
+            sprintf(param_name, WFBUFFRAFTTRG_STR, i, j);  createParam(param_name, asynParamInt32, &(p_waveformEngine+i)->p_framesAfterTrigger[j]);
+        }
+        sprintf(param_name, WFBUFINIT_STR, i);             createParam(param_name, asynParamInt32, &(p_waveformEngine+i)->p_initialize);
+    }
+
+    for(int i = 0; i < MAX_DBG_STREAM_CNT; i++) {
+        sprintf(param_name, DBGSTREAM_STR, i); createParam(param_name, asynParamInt32Array, &p_dbgStream[i]);
+    }
 }
 
 void ATCACommonAsynDriver::getJesdCount(void)
@@ -207,6 +239,22 @@ void ATCACommonAsynDriver::getJesdCount(void)
         }
     }
 
+}
+
+void ATCACommonAsynDriver::getWaveformEngineStatus(void)
+{
+    uint64_t val64;
+    uint32_t val32;
+
+    for(int i = 0; i < MAX_WAVEFORMENGINE_CNT; i++) {
+        for(int j = 0; j < MAX_WAVEFORMENGINE_CHN_CNT; j++) {
+            // commet out reading of start addr and end addr since, PVs will set it up
+            // atcaCommon->getWfEngineStartAddr(&val, i, j); setIntegerParam((p_waveformEngine+i)->p_startAddr[j], (int) val);
+            // atcaCommon->getWfEngineEndAddr(&val, i, j);   setIntegerParam((p_waveformEngine+i)->p_endAddr[j], (int) val);
+            atcaCommon->getWfEngineWrAddr(&val64, i, j);    setIntegerParam((p_waveformEngine+i)->p_wrAddr[j], (int) val64);
+            atcaCommon->getWfEngineStatus(&val32, i, j);    setIntegerParam((p_waveformEngine+i)->p_status[j], (int) val32);
+        }
+    }
 }
 
 void ATCACommonAsynDriver::getDaqMuxStatus(void)
@@ -271,10 +319,22 @@ void ATCACommonAsynDriver::poll(void)
 
     getJesdCount();
     getDaqMuxStatus();
+    getWaveformEngineStatus();
 
     callParamCallbacks();
 }
 
+
+drvNode_t* last_drvList_ATCACommon(void)
+{
+    drvNode_t *p = NULL;
+
+    if(!(pDrvList && ellCount(pDrvList))) return p;
+
+    p = (drvNode_t *) ellLast(pDrvList);
+
+    return p;
+}
 
 
 static void init_drvList(void)
