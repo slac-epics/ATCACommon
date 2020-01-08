@@ -3,8 +3,8 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 120
-y 49
+x 75
+y 62
 w 1791
 h 1080
 font "helvetica-medium-r-18.0"
@@ -6317,8 +6317,8 @@ selectColor index 16
 inconsistentColor index 14
 topShadowColor index 4
 botShadowColor index 9
-controlPv "$(DEVICE):WFENG0_MSGDEST0"
-indicatorPv "$(DEVICE):WFENG0_MSGDEST0"
+controlPv "$(DEVICE):WFENG0_MSGDEST3"
+indicatorPv "$(DEVICE):WFENG0_MSGDEST3"
 font "helvetica-medium-r-10.0"
 orientation "horizontal"
 endObjectProperties
@@ -6880,8 +6880,8 @@ selectColor index 16
 inconsistentColor index 14
 topShadowColor index 4
 botShadowColor index 9
-controlPv "$(DEVICE):WFENG0_MSGDEST1"
-indicatorPv "$(DEVICE):WFENG0_MSGDEST1"
+controlPv "$(DEVICE):WFENG1_MSGDEST1"
+indicatorPv "$(DEVICE):WFENG1_MSGDEST1"
 font "helvetica-medium-r-10.0"
 orientation "horizontal"
 endObjectProperties
@@ -7058,8 +7058,8 @@ selectColor index 16
 inconsistentColor index 14
 topShadowColor index 4
 botShadowColor index 9
-controlPv "$(DEVICE):WFENG0_MSGDEST2"
-indicatorPv "$(DEVICE):WFENG0_MSGDEST2"
+controlPv "$(DEVICE):WFENG1_MSGDEST2"
+indicatorPv "$(DEVICE):WFENG1_MSGDEST2"
 font "helvetica-medium-r-10.0"
 orientation "horizontal"
 endObjectProperties
@@ -7236,8 +7236,8 @@ selectColor index 16
 inconsistentColor index 14
 topShadowColor index 4
 botShadowColor index 9
-controlPv "$(DEVICE):WFENG1_MSGDEST0"
-indicatorPv "$(DEVICE):WFENG1_MSGDEST0"
+controlPv "$(DEVICE):WFENG1_MSGDEST3"
+indicatorPv "$(DEVICE):WFENG1_MSGDEST3"
 font "helvetica-medium-r-10.0"
 orientation "horizontal"
 endObjectProperties
@@ -7426,8 +7426,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 1556
-y 462
+x 1555
+y 461
 w 135
 h 169
 lineColor index 14
@@ -7440,8 +7440,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 1557
-y 738
+x 1556
+y 737
 w 135
 h 169
 lineColor index 14
@@ -7455,7 +7455,7 @@ major 4
 minor 0
 release 0
 x 1418
-y 738
+y 736
 w 135
 h 169
 lineColor index 14
@@ -7468,8 +7468,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 1277
-y 738
+x 1278
+y 737
 w 135
 h 169
 lineColor index 14
@@ -7496,8 +7496,8 @@ beginObjectProperties
 major 4
 minor 0
 release 0
-x 1035
-y 390
+x 1037
+y 393
 w 666
 h 253
 lineColor index 14
