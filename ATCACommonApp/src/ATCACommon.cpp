@@ -363,6 +363,8 @@ static long atcaCommonAsynDriverReport(int interest)
     while(p && p->pDrv) {
         printf("named_root: %s\n", p->named_root);
         p->pDrv->report(interest);
+        if(p->pdbStream0) debugStreamAsynDriver_report(p->pdbStream0, interest);
+        if(p->pdbStream1) debugStreamAsynDriver_report(p->pdbStream1, interest);
         p = (drvNode_t *) ellNext(&p->node);
     }
 
@@ -411,6 +413,8 @@ static long atcaCommonAsynDriverInitialize(void)
                       epicsThreadGetStackSize(epicsThreadStackMedium),
                       (EPICSTHREADFUNC) atcaCommonAsynDriverPollThread, (void *) NULL);
 
+    debugStreamAsynDriver_createStreamThreads();
+
     return 0;
 }
 
@@ -438,7 +442,9 @@ int cpswATCACommonAsynDriverConfigure(const char *portName, const char *pathName
     p->portName = epicsStrDup(portName);
     p->pathName = epicsStrDup(pathName);
 
-    p->pDrv = new ATCACommonAsynDriver((const char *) p->portName, (const char *) p->pathName, named_root);
+    p->pDrv = new ATCACommonAsynDriver((const char *) p->portName, (const char *) p->pathName, (const char *)p->named_root);
+    p->pdbStream0 = NULL;
+    p->pdbStream1 = NULL;
 
     add_drvList(p);
 

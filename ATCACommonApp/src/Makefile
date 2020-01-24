@@ -27,6 +27,7 @@ LIBRARY_IOC += ATCACommon
 ATCACommon_DBD  += ATCACommon.dbd
 ATCACommon_DBD  += crossbarControl.dbd
 ATCACommon_SRCS += ATCACommon.cpp
+ATCACommon_SRCS += debugStream.cpp
 ATCACommon_SRCS += crossbarControl.cpp
 
 

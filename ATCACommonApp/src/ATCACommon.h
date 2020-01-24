@@ -16,6 +16,9 @@
 #include <sstream>
 #include <fstream>
 
+
+#include "debugStream.h"
+
 #define MAX_WAVEFORMENGINE_CNT 2
 #define MAX_WAVEFORMENGINE_CHN_CNT 4
 #define MAX_DBG_STREAM_CNT 8
@@ -186,6 +189,9 @@ typedef struct {
     char                    *portName;
     char                    *pathName;
     ATCACommonAsynDriver    *pDrv;
+
+    debugStreamNode_t       *pdbStream0;
+    debugStreamNode_t       *pdbStream1;
 }  drvNode_t;
 
 drvNode_t * last_drvList_ATCACommon(void);
