@@ -16,6 +16,13 @@
 #include <sstream>
 #include <fstream>
 
+typedef enum {
+   uint32 = 0,
+   int32,
+   uint16,
+   int16
+} stream_type_t;
+
 class DebugStreamAsynDriver:asynPortDriver {
     public:
         DebugStreamAsynDriver(const char *portName,
@@ -41,6 +48,7 @@ class DebugStreamAsynDriver:asynPortDriver {
         epicsTimeStamp time;
 
         Stream _stream[4];
+        stream_type_t  s_type[4];
 
         uint8_t *buff[4];
 
