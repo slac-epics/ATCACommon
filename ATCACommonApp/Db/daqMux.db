@@ -68,8 +68,8 @@ record(bo, "$(DEVICE):DAQMUX$(CNT)_AUTOREARM")
     field(SCAN, "Passive")
     field(ZNAM, "Disable")
     field(ONAM, "Auto Rearm")
-    field(PINI, "YES")
-    info(autosaveFields, "VAL")
+#    field(PINI, "YES")
+#    info(autosaveFields, "VAL")
 }
 
 
