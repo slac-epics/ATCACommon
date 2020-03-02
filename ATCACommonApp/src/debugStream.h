@@ -35,6 +35,7 @@ class DebugStreamAsynDriver:asynPortDriver {
                               const char *stream3 = NULL);
         ~DebugStreamAsynDriver();
         void streamPoll(void);
+        void streamPoll(const int ch);
         void report(int interest);
     private:
         void parameterSetup(void);
@@ -42,6 +43,7 @@ class DebugStreamAsynDriver:asynPortDriver {
         char *named_root;
         char *port;
         unsigned rdCnt;
+        unsigned rdCnt_perStream[4];
         unsigned rdLen[4];
         unsigned size;
         bool     header;
@@ -59,6 +61,7 @@ class DebugStreamAsynDriver:asynPortDriver {
 #endif /* ASYN VERSION CHECK, under 4.32 */
 
         int p_stream[4];
+        int p_rdCnt[4];
 
 
         int lastDebugStreamParam;
@@ -112,6 +115,7 @@ typedef struct {
 
 #pragma pack(pop)
 
-#define   STREAM_STR    "stream_%d"
+#define   STREAM_STR      "stream_%d"
+#define   READCOUNT_STR   "readCount_%d"
 
 #endif /* DEBUG_STREAM_ASYN_DRIVER_H */

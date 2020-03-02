@@ -67,6 +67,7 @@ DebugStreamAsynDriver::DebugStreamAsynDriver(const char *portName, const char *n
 
 
     for(int i = 0; i < 4; i++) {
+        this->rdCnt_perStream[i] = 0;
         this->rdLen[i] = 0;
         this->buff[i] = (uint8_t *) mallocMustSucceed(size, "DebugStreamAsynDriver");
     }
@@ -90,7 +91,8 @@ void DebugStreamAsynDriver::parameterSetup(void)
     char param_name[40];
 
     for(int i = 0; i< 4; i++) {
-        sprintf(param_name, STREAM_STR, i); createParam(param_name, asynParamInt32Array, &p_stream[i]);
+        sprintf(param_name, STREAM_STR,     i); createParam(param_name, asynParamInt32Array, &p_stream[i]);
+        sprintf(param_name, READCOUNT_STR,  i); createParam(param_name, asynParamInt32,      &p_rdCnt[i]);
     }
 }
 
@@ -121,30 +123,64 @@ void DebugStreamAsynDriver::streamPoll(void)
     }
 }
 
+void DebugStreamAsynDriver::streamPoll(const int i)
+{
+    epicsTimeStamp time;
+
+    rdLen[i] = _stream[i]->read(buff[i], size, CTimeout());
+    rdCnt++; rdCnt_perStream[i]++;
+
+    if(rdLen[i] == 0) return;
+    if(header) { 
+        stream_with_header_t *p = (stream_with_header_t *) buff[i];
+        time.nsec               = p->header.time.secPastEpoch;
+        time.secPastEpoch       = p->header.time.nsec;
+        setTimeStamp(&time);
+        doCallbacksInt32Array(&p->payload, (rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t))/sizeof(epicsInt32), p_stream[i], 0);
+    } else {
+        stream_without_header_t *p = (stream_without_header_t *) buff[i];
+        epicsTimeGetCurrent(&time);
+        setTimeStamp(&time);
+        doCallbacksInt32Array(&p->payload, (rdLen[i] - sizeof(packet_header_t))/sizeof(epicsInt32), p_stream[i], 0);
+    }
+
+}
+
 void DebugStreamAsynDriver::report(int interest)
 {
-    printf("\ttiming header: %s\n", header?"Enabled":"Disabled");
-    printf("\tread counter: %u\n", this->rdCnt);
+    printf("\ttiming header     : %s\n", header?"Enabled":"Disabled");
+/*    printf("\tread counter (total)  : %u\n", this->rdCnt); */
+    printf("\tread counter      :  %u %u %u %u\n", this->rdCnt_perStream[0], this->rdCnt_perStream[1], this->rdCnt_perStream[2], this->rdCnt_perStream[3]);
     printf("\tread buffer length: %u %u %u %u\n", this->rdLen[0], this->rdLen[1], this->rdLen[2], this->rdLen[3]);
 }
 
 
+typedef struct {
+    int ch;
+    DebugStreamAsynDriver *pDrv;
+} usrPvt_t;
+
+
 static int streamThread(void *usrPvt)
 {
-    DebugStreamAsynDriver *p = (DebugStreamAsynDriver *) usrPvt;
+    DebugStreamAsynDriver *p = (DebugStreamAsynDriver *) ((usrPvt_t *) usrPvt)->pDrv;
     while(1) {
-        p->streamPoll();
+        p->streamPoll(((usrPvt_t *)usrPvt)->ch);
     }
     return 0;
 }
 
 
-static int createStreamThread(const char *prefix_name, void *usrPvt)
+static int createStreamThread(int ch, const char *prefix_name, void *p)
 {
+    usrPvt_t *usrPvt = (usrPvt_t *) mallocMustSucceed(sizeof(usrPvt_t), "createStreamThread");
+
     char name[80];
 
-    sprintf(name, "strm_%s", prefix_name);
+    sprintf(name, "strm_%s%d", prefix_name, ch);
 
+    usrPvt->ch   = ch;
+    usrPvt->pDrv = (DebugStreamAsynDriver *) p;
     epicsThreadCreate(name, epicsThreadPriorityHigh,
                       epicsThreadGetStackSize(epicsThreadStackMedium),
                       (EPICSTHREADFUNC) streamThread, (void *) usrPvt);
@@ -159,11 +195,11 @@ static int createStreamThreads(void)
     while(p) {
         if(p->pdbStream0) {
             debugStreamNode_t *ps = p->pdbStream0;
-            createStreamThread((const char*) ps->portName, (void *) ps->pDrv);
+            for (int i = 0; i < 4; i++) { createStreamThread(i, (const char*) ps->portName, (void *) ps->pDrv); }
         }
         if(p->pdbStream1) {
             debugStreamNode_t *ps = p->pdbStream1;
-            createStreamThread((const char*) ps->portName, (void *) ps->pDrv);
+            for(int i = 0; i < 4; i++) { createStreamThread(i, (const char*) ps->portName, (void *) ps->pDrv); }
         }
         p = (drvNode_t *)ellPrevious(&p->node);
     }
