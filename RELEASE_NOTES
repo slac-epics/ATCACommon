@@ -1,3 +1,6 @@
+R1.2.0        03-03-2020  Kukhee Kim
+              Add slow update waveforms for debug stream
+
 R1.1.0        03-02-2020  Kukhee Kim 
               Use a separated thread for each stream
 

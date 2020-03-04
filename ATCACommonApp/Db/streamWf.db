@@ -8,3 +8,14 @@ record(waveform, "$(DEVICE):STREAM_$(TYPE)$(N)")
     field(NELM, "$(NELM)")
     field(TSE,  "$(TSE)")
 }
+
+
+record(waveform, "$(DEVICE):STREAM_SLOW$(TYPE)$(N)")
+{
+    field(DESC, "Stream Waveform $(N) Slow Update")
+    field(INP,  "$(DEVICE):STREAM_$(TYPE)$(N) MS NPP")
+    field(TSEL, "$(DEVICE):STREAM_$(TYPE)$(N).TIME")
+    field(SCAN, ".1 second")
+    field(FTVL, "$(FTVL)")
+    field(NELM, "$(NELM)")
+}
