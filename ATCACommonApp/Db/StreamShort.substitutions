@@ -1,0 +1,9 @@
+file "streamWf.db"  {
+    pattern {      PORT,   DEVICE,  N,    TYPE,                DTYP,      FTVL,       NELM,    TSE      }
+            { "$(PORT)", "$(DEV)",  0, "SHORT", "asynInt16ArrayOut",   "SHORT",  "$(NELM)", "$(TSE)"    }
+            { "$(PORT)", "$(DEV)",  1, "SHORT", "asynInt16ArrayOut",   "SHORT",  "$(NELM)", "$(TSE)"    }
+            { "$(PORT)", "$(DEV)",  2, "SHORT", "asynInt16ArrayOut",   "SHORT",  "$(NELM)", "$(TSE)"    }
+            { "$(PORT)", "$(DEV)",  3, "SHORT", "asynInt16ArrayOut",   "SHORT",  "$(NELM)", "$(TSE)"    }
+
+}
+
