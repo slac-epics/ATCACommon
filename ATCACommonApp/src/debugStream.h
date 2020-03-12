@@ -106,11 +106,11 @@ typedef struct {
 typedef struct {
     timing_header_t  header;
     packet_header_t  packet;
-    epicsInt32       payload;    
+    epicsInt16       payload;    
 }  stream_with_header_t;
 
 typedef struct {
-    epicsInt32       payload;
+    epicsInt16       payload;
 }  stream_without_header_t;
 
 #pragma pack(pop)

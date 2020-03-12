@@ -91,7 +91,7 @@ void DebugStreamAsynDriver::parameterSetup(void)
     char param_name[40];
 
     for(int i = 0; i< 4; i++) {
-        sprintf(param_name, STREAM_STR,     i); createParam(param_name, asynParamInt32Array, &p_stream[i]);
+        sprintf(param_name, STREAM_STR,     i); createParam(param_name, asynParamInt16Array, &p_stream[i]);
         sprintf(param_name, READCOUNT_STR,  i); createParam(param_name, asynParamInt32,      &p_rdCnt[i]);
     }
 }
@@ -113,12 +113,12 @@ void DebugStreamAsynDriver::streamPoll(void)
             this->time.secPastEpoch = p->header.time.nsec;
 
             setTimeStamp(&this->time);
-            doCallbacksInt32Array(&p->payload, (rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t))/sizeof(epicsInt32), p_stream[i], 0);
+            doCallbacksInt16Array(&p->payload, (rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t))/sizeof(epicsInt16), p_stream[i], 0);
         } else {
             stream_without_header_t *p = (stream_without_header_t *) buff[i];
             epicsTimeGetCurrent(&this->time);
             setTimeStamp(&this->time);
-            doCallbacksInt32Array(&p->payload, (rdLen[i] - sizeof(packet_header_t))/sizeof(epicsInt32), p_stream[i], 0);
+            doCallbacksInt16Array(&p->payload, (rdLen[i] - sizeof(packet_header_t))/sizeof(epicsInt16), p_stream[i], 0);
         }
     }
 }
@@ -136,12 +136,12 @@ void DebugStreamAsynDriver::streamPoll(const int i)
         time.nsec               = p->header.time.secPastEpoch;
         time.secPastEpoch       = p->header.time.nsec;
         setTimeStamp(&time);
-        doCallbacksInt32Array(&p->payload, (rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t))/sizeof(epicsInt32), p_stream[i], 0);
+        doCallbacksInt16Array(&p->payload, (rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t))/sizeof(epicsInt16), p_stream[i], 0);
     } else {
         stream_without_header_t *p = (stream_without_header_t *) buff[i];
         epicsTimeGetCurrent(&time);
         setTimeStamp(&time);
-        doCallbacksInt32Array(&p->payload, (rdLen[i] - sizeof(packet_header_t))/sizeof(epicsInt32), p_stream[i], 0);
+        doCallbacksInt16Array(&p->payload, (rdLen[i] - sizeof(packet_header_t))/sizeof(epicsInt16), p_stream[i], 0);
     }
 
 }
