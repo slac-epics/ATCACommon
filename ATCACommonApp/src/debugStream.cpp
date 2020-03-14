@@ -46,8 +46,8 @@ DebugStreamAsynDriver::DebugStreamAsynDriver(const char *portName, const char *n
 #if (ASYN_VERSION << 8 | ASYN_REVISION) < (4<<8 | 32)
                      NUM_DEBUGSTREAM_DET_PARAMS,   /* number of asyn params of be clear for each device */
 #endif /* asyn version check, under 4.32 */
-                     asynInt32Mask | asynFloat64Mask | asynOctetMask | asynDrvUserMask | asynInt16ArrayMask | asynInt32ArrayMask | asynFloat64ArrayMask, /* Interface mask */
-                     asynInt32Mask | asynFloat64Mask | asynOctetMask | asynEnumMask    | asynInt16ArrayMask | asynInt32ArrayMask | asynFloat64ArrayMask,  /* Interrupt mask */
+                     asynInt32Mask | asynFloat64Mask | asynOctetMask | asynDrvUserMask | asynInt16ArrayMask | asynInt32ArrayMask | asynFloat32ArrayMask | asynFloat64ArrayMask, /* Interface mask */
+                     asynInt32Mask | asynFloat64Mask | asynOctetMask | asynEnumMask    | asynInt16ArrayMask | asynInt32ArrayMask | asynFloat32ArrayMask | asynFloat64ArrayMask,  /* Interrupt mask */
                      1, /* asynFlags.  This driver does block and it is not multi-device, so flag is 1 */
                      1, /* Autoconnect */
                      0, /* Default priority */
@@ -69,6 +69,7 @@ DebugStreamAsynDriver::DebugStreamAsynDriver(const char *portName, const char *n
     for(int i = 0; i < 4; i++) {
         this->rdCnt_perStream[i] = 0;
         this->rdLen[i] = 0;
+        this->s_type[i] = uint32;
         this->buff[i] = (uint8_t *) mallocMustSucceed(size, "DebugStreamAsynDriver");
     }
 
@@ -91,37 +92,14 @@ void DebugStreamAsynDriver::parameterSetup(void)
     char param_name[40];
 
     for(int i = 0; i< 4; i++) {
-        sprintf(param_name, STREAM_STR,     i); createParam(param_name, asynParamInt16Array, &p_stream[i]);
-        sprintf(param_name, READCOUNT_STR,  i); createParam(param_name, asynParamInt32,      &p_rdCnt[i]);
+        sprintf(param_name, STREAMINT16_STR,     i); createParam(param_name, asynParamInt16Array,   &p_streamInt16[i]);
+        sprintf(param_name, STREAMINT32_STR,     i); createParam(param_name, asynParamInt32Array,   &p_streamInt32[i]);
+        sprintf(param_name, STREAMFLOAT32_STR,   i); createParam(param_name, asynParamFloat32Array, &p_streamFloat32[i]);
+        sprintf(param_name, STREAMTYPE_STR,      i); createParam(param_name, asynParamInt32,        &p_streamType[i]);
+        sprintf(param_name, READCOUNT_STR,       i); createParam(param_name, asynParamInt32,        &p_rdCnt[i]);
     }
 }
 
-void DebugStreamAsynDriver::streamPoll(void)
-{
-    for(int i = 0; i < 4; i++) {
-        rdLen[i] = _stream[i]->read(buff[i], size, CTimeout());
-
-    }
-
-    rdCnt++;
-
-    for(int i = 0; i < 4; i++) {
-        if(rdLen[i] == 0) continue;
-        if(header) {
-            stream_with_header_t *p = (stream_with_header_t *) buff[i];
-            this->time.nsec         = p->header.time.secPastEpoch;
-            this->time.secPastEpoch = p->header.time.nsec;
-
-            setTimeStamp(&this->time);
-            doCallbacksInt16Array(&p->payload, (rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t))/sizeof(epicsInt16), p_stream[i], 0);
-        } else {
-            stream_without_header_t *p = (stream_without_header_t *) buff[i];
-            epicsTimeGetCurrent(&this->time);
-            setTimeStamp(&this->time);
-            doCallbacksInt16Array(&p->payload, (rdLen[i] - sizeof(packet_header_t))/sizeof(epicsInt16), p_stream[i], 0);
-        }
-    }
-}
 
 void DebugStreamAsynDriver::streamPoll(const int i)
 {
@@ -136,12 +114,42 @@ void DebugStreamAsynDriver::streamPoll(const int i)
         time.nsec               = p->header.time.secPastEpoch;
         time.secPastEpoch       = p->header.time.nsec;
         setTimeStamp(&time);
-        doCallbacksInt16Array(&p->payload, (rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t))/sizeof(epicsInt16), p_stream[i], 0);
+        switch(s_type[i]) {
+            case uint32:
+            case int32:
+                doCallbacksInt32Array(&p->payload.int32, (rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t))/sizeof(epicsInt32), p_streamInt32[i], 0);
+                break;
+            case uint16:
+            case int16:
+                doCallbacksInt16Array(&p->payload.int16, (rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t))/sizeof(epicsInt16), p_streamInt16[i], 0);
+                break;
+            case float32:
+                doCallbacksFloat32Array(&p->payload.float32, (rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t))/sizeof(epicsFloat32), p_streamFloat32[i], 0);
+                break;
+            case float64:
+                doCallbacksFloat64Array(&p->payload.float64, (rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t))/sizeof(epicsFloat64), p_streamFloat64[i], 0);
+                break;
+        }
     } else {
         stream_without_header_t *p = (stream_without_header_t *) buff[i];
         epicsTimeGetCurrent(&time);
         setTimeStamp(&time);
-        doCallbacksInt16Array(&p->payload, (rdLen[i] - sizeof(packet_header_t))/sizeof(epicsInt16), p_stream[i], 0);
+        switch(s_type[i]) {
+            case uint32:
+            case int32:
+                doCallbacksInt32Array(&p->payload.int32, (rdLen[i] - sizeof(packet_header_t))/sizeof(epicsInt32), p_streamInt32[i], 0);
+                break;
+            case uint16:
+            case int16:
+                doCallbacksInt16Array(&p->payload.int16, (rdLen[i] - sizeof(packet_header_t))/sizeof(epicsInt16), p_streamInt16[i], 0);
+                break;
+            case float32:
+                doCallbacksFloat32Array(&p->payload.float32, (rdLen[i] - sizeof(packet_header_t))/sizeof(epicsFloat32), p_streamFloat32[i], 0);
+                break;
+            case float64:
+                doCallbacksFloat64Array(&p->payload.float64, (rdLen[i] - sizeof(packet_header_t))/sizeof(epicsFloat64), p_streamFloat64[i], 0);
+                break;
+        }
     }
 
 }

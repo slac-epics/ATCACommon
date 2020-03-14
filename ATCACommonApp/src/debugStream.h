@@ -20,8 +20,11 @@ typedef enum {
    uint32 = 0,
    int32,
    uint16,
-   int16
+   int16,
+   float32,
+   float64
 } stream_type_t;
+
 
 class DebugStreamAsynDriver:asynPortDriver {
     public:
@@ -34,7 +37,6 @@ class DebugStreamAsynDriver:asynPortDriver {
                               const char *stream2 = NULL,
                               const char *stream3 = NULL);
         ~DebugStreamAsynDriver();
-        void streamPoll(void);
         void streamPoll(const int ch);
         void report(int interest);
     private:
@@ -60,7 +62,11 @@ class DebugStreamAsynDriver:asynPortDriver {
 #define FIRST_DEBUGSTREAM_PARAM   firstDebugStreamParam
 #endif /* ASYN VERSION CHECK, under 4.32 */
 
-        int p_stream[4];
+        int p_streamInt16[4];
+        int p_streamInt32[4];
+        int p_streamFloat32[4];
+        int p_streamFloat64[4];
+        int p_streamType[4];
         int p_rdCnt[4];
 
 
@@ -106,16 +112,30 @@ typedef struct {
 typedef struct {
     timing_header_t  header;
     packet_header_t  packet;
-    epicsInt16       payload;    
+    union {
+        epicsInt16       int16;
+        epicsInt32       int32;
+        epicsFloat32     float32;
+        epicsFloat64     float64;
+    } payload;    
 }  stream_with_header_t;
 
 typedef struct {
-    epicsInt16       payload;
+    union {
+        epicsInt16       int16;
+        epicsInt32       int32;
+        epicsFloat32     float32;
+        epicsFloat64     float64;
+    } payload;
 }  stream_without_header_t;
 
 #pragma pack(pop)
 
-#define   STREAM_STR      "stream_%d"
-#define   READCOUNT_STR   "readCount_%d"
+#define   STREAMINT16_STR     "streamInt16_%d"
+#define   STREAMINT32_STR     "streamInt32_%d"
+#define   STREAMFLOAT32_STR   "streamFloat32_%d"
+#define   STREAMFLOAT64_STR   "streamFloat64_%d"
+#define   STREAMTYPE_STR      "streamType_%d"
+#define   READCOUNT_STR       "readCount_%d"
 
 #endif /* DEBUG_STREAM_ASYN_DRIVER_H */
