@@ -1,0 +1,21 @@
+record(mbbo, "$(DEVICE):STREAM_TYPE$(N)")
+{
+    field(DESC, "Stream Type for Ch$(N)")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT,0) streamType_$(N)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(FVVL, "5")
+    field(ZRST, "unit32 -ULONG")
+    field(ONST, "int32  -LONG")
+    field(TWST, "uint16 -USHORT")
+    field(THST, "int16  -SHORT")
+    field(FRST, "float32-FLOAT")
+    field(FVST, "float64-DOUBLE")
+}
+
