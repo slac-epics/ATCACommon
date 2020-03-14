@@ -39,6 +39,7 @@ class DebugStreamAsynDriver:asynPortDriver {
         ~DebugStreamAsynDriver();
         void streamPoll(const int ch);
         void report(int interest);
+        asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
     private:
         void parameterSetup(void);
 

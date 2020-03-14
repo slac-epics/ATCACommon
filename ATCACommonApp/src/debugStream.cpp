@@ -173,6 +173,30 @@ void DebugStreamAsynDriver::report(int interest)
 }
 
 
+asynStatus DebugStreamAsynDriver::writeInt32(asynUser *pasynUser, epicsInt32 value)
+{
+    int function = pasynUser->reason;
+    asynStatus status = asynSuccess;
+    const char *functionName = "writeInt32";
+
+    /* set the parameter in the parameter library */
+    status = (asynStatus) setIntegerParam(function, value);
+
+    switch(function) {
+        default:
+            break;
+    }
+
+    for(int i = 0; i< 4; i++) {
+        if(function == p_streamType[i]) {
+            s_type[i] = (stream_type_t) value;
+            break;
+        }
+    }
+
+    return status;
+}
+
 typedef struct {
     int ch;
     DebugStreamAsynDriver *pDrv;
