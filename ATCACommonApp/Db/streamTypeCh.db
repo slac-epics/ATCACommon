@@ -2,7 +2,7 @@ record(mbbo, "$(DEVICE):STREAM_TYPE$(N)")
 {
     field(DESC, "Stream Type for Ch$(N)")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT,0) streamType_$(N)")
+    field(OUT,  "@asyn($(PORT),0) streamType_$(N)")
     field(OMSL, "supervisory")
     field(SCAN, "Passive")
     field(ZRVL, "0")
