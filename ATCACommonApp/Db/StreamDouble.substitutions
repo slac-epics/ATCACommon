@@ -1,0 +1,9 @@
+file "streamWf.db"  {
+    pattern {      PORT,   DEVICE,    WIDTH,  N,   TYPE,                DTYP,      FTVL,       NELM,    TSE      }
+            { "$(PORT)", "$(DEV)",  "Float64", 0, "DOUBLE", "asynFloat64ArrayOut",   "DOUBLE",  "$(NELM)", "$(TSE)"    }
+            { "$(PORT)", "$(DEV)",  "Float64", 1, "DOUBLE", "asynFloat64ArrayOut",   "DOUBLE",  "$(NELM)", "$(TSE)"    }
+            { "$(PORT)", "$(DEV)",  "Float64", 2, "DOUBLE", "asynFloat64ArrayOut",   "DOUBLE",  "$(NELM)", "$(TSE)"    }
+            { "$(PORT)", "$(DEV)",  "Float64", 3, "DOUBLE", "asynFloat64ArrayOut",   "DOUBLE",  "$(NELM)", "$(TSE)"    }
+
+}
+

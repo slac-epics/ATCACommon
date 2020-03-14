@@ -17,6 +17,9 @@ DB += crossbarCtrl.db
 DB += StreamLong.db
 DB += StreamUlong.db
 DB += StreamShort.db
+DB += StreamUshort.db
+DB += StreamFloat.db
+DB += StreamDouble.db
 
 # =======================================================================
 

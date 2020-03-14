@@ -2,7 +2,7 @@ record(waveform, "$(DEVICE):STREAM_$(TYPE)$(N)")
 {
     field(DESC, "Stream Waveform $(N)")
     field(DTYP, "$(DTYP)")
-    field(INP,  "@asyn($(PORT),0) stream_$(N)")
+    field(INP,  "@asyn($(PORT),0) stream$(WIDTH)_$(N)")
     field(SCAN, "I/O Intr")
     field(FTVL, "$(FTVL)")
     field(NELM, "$(NELM)")
