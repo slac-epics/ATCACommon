@@ -39,6 +39,12 @@
 #include "debugStream.h"
 
 static const char *driverName = "DebugStreamAsynDriver";
+static const char *stream_type_str[] = {"uint32 -ULONG",
+                                        "int32  -LONG",
+                                        "unt16  -USHORT",
+                                        "int16  -SHORT",
+                                        "float32-FLOAT",
+                                        "float64-DOUBLE" };
 
 DebugStreamAsynDriver::DebugStreamAsynDriver(const char *portName, const char *named_root, const unsigned size, const bool header, const char *stream0, const char *stream1, const char *stream2, const char *stream3)
     : asynPortDriver(portName,
@@ -159,6 +165,10 @@ void DebugStreamAsynDriver::report(int interest)
     printf("\ttiming header     : %s\n", header?"Enabled":"Disabled");
 /*    printf("\tread counter (total)  : %u\n", this->rdCnt); */
     printf("\tread counter      :  %u %u %u %u\n", this->rdCnt_perStream[0], this->rdCnt_perStream[1], this->rdCnt_perStream[2], this->rdCnt_perStream[3]);
+    printf("\tstream types      : %16s %16s %16s %16s\n", stream_type_str[(int)(this->s_type[0])],
+                                                          stream_type_str[(int)(this->s_type[1])],
+                                                          stream_type_str[(int)(this->s_type[2])],
+                                                          stream_type_str[(int)(this->s_type[3])]);
     printf("\tread buffer length: %u %u %u %u\n", this->rdLen[0], this->rdLen[1], this->rdLen[2], this->rdLen[3]);
 }
 
