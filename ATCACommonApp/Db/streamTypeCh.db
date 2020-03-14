@@ -17,5 +17,6 @@ record(mbbo, "$(DEVICE):STREAM_TYPE$(N)")
     field(THST, "int16  -SHORT")
     field(FRST, "float32-FLOAT")
     field(FVST, "float64-DOUBLE")
+    info(autosaveFields, "VAL")
 }
 
