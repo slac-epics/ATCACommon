@@ -22,6 +22,7 @@
 #include <epicsMutex.h>
 #include <epicsEvent.h>
 #include <epicsPrint.h>
+#include <epicsExit.h>
 #include <ellLib.h>
 #include <iocsh.h>
 
@@ -40,6 +41,8 @@
 
 static const char *driverName = "ATCACommonAsynDriver";
 static ELLLIST    *pDrvList   = (ELLLIST *) NULL;
+static bool       stopLoop    = false;
+static epicsEventId shutdownEvent;
 
 ATCACommonAsynDriver::ATCACommonAsynDriver(const char *portName, const char *pathString, const char *named_root)
     :asynPortDriver(portName,
@@ -391,12 +394,20 @@ static long atcaCommonAsynDriverPoll(void)
 
 static long atcaCommonAsynDriverPollThread(void *p)
 {
-    while(1) {
+    while(!stopLoop) {
         atcaCommonAsynDriverPoll();
         epicsThreadSleep(.5);
     }
 
+    epicsEventSignal(shutdownEvent);
     return 0;
+}
+
+static void stopPollThread(void *p)
+{
+    stopLoop = true;
+    epicsEventWait(shutdownEvent);
+    epicsPrintf("atcaCommonAsuynDriver: Stop pollThread (%s)\n", (char*) p);
 }
 
 
@@ -409,10 +420,11 @@ static long atcaCommonAsynDriverInitialize(void)
     char name[64];
 
     sprintf(name, "mon_%s", driverName);
+    shutdownEvent = epicsEventMustCreate(epicsEventEmpty);
     epicsThreadCreate(name, epicsThreadPriorityHigh - 10,
                       epicsThreadGetStackSize(epicsThreadStackMedium),
                       (EPICSTHREADFUNC) atcaCommonAsynDriverPollThread, (void *) NULL);
-
+    epicsAtExit3((epicsExitFunc) stopPollThread, (void*) epicsStrDup(name), epicsStrDup(name));
     debugStreamAsynDriver_createStreamThreads();
 
     return 0;
