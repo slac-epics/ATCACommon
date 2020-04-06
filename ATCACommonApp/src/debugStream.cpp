@@ -22,6 +22,7 @@
 #include <epicsMutex.h>
 #include <epicsEvent.h>
 #include <epicsPrint.h>
+#include <epicsExit.h>
 #include <ellLib.h>
 #include <iocsh.h>
 
@@ -214,20 +215,33 @@ asynStatus DebugStreamAsynDriver::writeInt32(asynUser *pasynUser, epicsInt32 val
 }
 
 typedef struct {
-    int ch;
+    char          *name;
+    int            ch;
+    bool           stopLoop;
+    epicsEventId   shutdownEvent;
     DebugStreamAsynDriver *pDrv;
 } usrPvt_t;
 
 
-static int streamThread(void *usrPvt)
+static int streamThread(void *u)
 {
-    DebugStreamAsynDriver *p = (DebugStreamAsynDriver *) ((usrPvt_t *) usrPvt)->pDrv;
-    while(1) {
+    usrPvt_t *usrPvt =  (usrPvt_t*) u;
+    DebugStreamAsynDriver *p = (DebugStreamAsynDriver *) usrPvt->pDrv;
+    while(!usrPvt->stopLoop) {
         p->streamPoll(((usrPvt_t *)usrPvt)->ch);
     }
+
+    epicsEventSignal(usrPvt->shutdownEvent);
     return 0;
 }
 
+static void streamStop(void *u)
+{
+    usrPvt_t *usrPvt = (usrPvt_t*) u;
+    usrPvt->stopLoop = true;
+    epicsEventWait(usrPvt->shutdownEvent);
+    epicsPrintf("debugStreamAsynDriver: Stop %s\n", usrPvt->name);
+}
 
 static int createStreamThread(int ch, const char *prefix_name, void *p)
 {
@@ -236,12 +250,16 @@ static int createStreamThread(int ch, const char *prefix_name, void *p)
     char name[80];
 
     sprintf(name, "strm_%s%d", prefix_name, ch);
+    usrPvt->name = epicsStrDup(name);
 
     usrPvt->ch   = ch;
+    usrPvt->stopLoop = false;
+    usrPvt->shutdownEvent = epicsEventMustCreate(epicsEventEmpty);
     usrPvt->pDrv = (DebugStreamAsynDriver *) p;
     epicsThreadCreate(name, epicsThreadPriorityHigh,
                       epicsThreadGetStackSize(epicsThreadStackMedium),
                       (EPICSTHREADFUNC) streamThread, (void *) usrPvt);
+    epicsAtExit3((epicsExitFunc) streamStop, (void*) usrPvt, usrPvt->name);
 
     return 0;
 }
