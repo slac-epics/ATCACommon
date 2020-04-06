@@ -1,3 +1,11 @@
+R1.3.0-BR-R0:  04-06-2020   Kukhee Kim
+               use 2 second timeout for stream thread (to prepare a graceful shutdown)
+               implement a graceful shutdown for debug strams
+               implement a graceful shutdown for atcaCommonAsyn polling Threads
+ 
+debug-stream:  03-12-2020   Kukhee Kim
+               branched out from R1.3.0 to improve debug stream epics interface
+
 R1.3.0        03-10-2020  Kukhee Kim
               Change data type for stream - Int32Array to Int16Array
               Add SHORT type waveform for the debug stream
