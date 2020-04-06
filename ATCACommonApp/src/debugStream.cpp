@@ -63,6 +63,7 @@ DebugStreamAsynDriver::DebugStreamAsynDriver(const char *portName, const char *n
 
     this->port       = epicsStrDup(portName);
     this->named_root = epicsStrDup(named_root);
+    this->timeoutCnt = 0;
     this->rdCnt      = 0;
 
 
@@ -74,6 +75,7 @@ DebugStreamAsynDriver::DebugStreamAsynDriver(const char *portName, const char *n
 
     for(int i = 0; i < 4; i++) {
         this->rdCnt_perStream[i] = 0;
+        this->timeoutCnt_perStream[i] = 0;
         this->rdLen[i] = 0;
         this->s_type[i] = uint32;
         this->buff[i] = (uint8_t *) mallocMustSucceed(size, "DebugStreamAsynDriver");
@@ -111,10 +113,18 @@ void DebugStreamAsynDriver::streamPoll(const int i)
 {
     epicsTimeStamp time;
 
-    rdLen[i] = _stream[i]->read(buff[i], size, CTimeout());
+    rdLen[i] = _stream[i]->read(buff[i], size, CTimeout(2000000));
+
+    if(rdLen[i] == 0 ) {
+        timeoutCnt ++;
+        timeoutCnt_perStream[i] ++;
+        return;
+    }
+
+
     rdCnt++; rdCnt_perStream[i]++;
 
-    if(rdLen[i] == 0) return;
+
     if(header) { 
         stream_with_header_t *p = (stream_with_header_t *) buff[i];
         time.nsec               = p->header.time.secPastEpoch;
@@ -163,8 +173,14 @@ void DebugStreamAsynDriver::streamPoll(const int i)
 void DebugStreamAsynDriver::report(int interest)
 {
     printf("\ttiming header     : %s\n", header?"Enabled":"Disabled");
-/*    printf("\tread counter (total)  : %u\n", this->rdCnt); */
-    printf("\tread counter      :  %u %u %u %u\n", this->rdCnt_perStream[0], this->rdCnt_perStream[1], this->rdCnt_perStream[2], this->rdCnt_perStream[3]);
+    printf("\ttimeout counter   :  %u %u %u %u\n", this->timeoutCnt_perStream[0],
+                                                   this->timeoutCnt_perStream[1],
+                                                   this->timeoutCnt_perStream[2],
+                                                   this->timeoutCnt_perStream[3]);
+    printf("\tread counter      :  %u %u %u %u\n", this->rdCnt_perStream[0], 
+                                                   this->rdCnt_perStream[1], 
+                                                   this->rdCnt_perStream[2], 
+                                                   this->rdCnt_perStream[3]);
     printf("\tstream types      : %16s %16s %16s %16s\n", stream_type_str[(int)(this->s_type[0])],
                                                           stream_type_str[(int)(this->s_type[1])],
                                                           stream_type_str[(int)(this->s_type[2])],

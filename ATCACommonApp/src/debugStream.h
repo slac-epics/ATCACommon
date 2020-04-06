@@ -45,6 +45,8 @@ class DebugStreamAsynDriver:asynPortDriver {
 
         char *named_root;
         char *port;
+        unsigned timeoutCnt;
+        unsigned timeoutCnt_perStream[4];
         unsigned rdCnt;
         unsigned rdCnt_perStream[4];
         unsigned rdLen[4];
