@@ -1,3 +1,8 @@
+gen2_support   06-26-2020   Kukhee Kim
+               branch out from R1.3.0-BR-R0 (debug_stgream branch) to support Gen2 UpConverter development
+               temporal branch, will be merged to master soon
+               - build with commonATCA gen2_support
+
 R1.3.0-BR-R0:  04-06-2020   Kukhee Kim
                use 2 second timeout for stream thread (to prepare a graceful shutdown)
                implement a graceful shutdown for debug strams
