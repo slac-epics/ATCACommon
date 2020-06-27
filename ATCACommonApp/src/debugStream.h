@@ -52,6 +52,7 @@ class DebugStreamAsynDriver:asynPortDriver {
         unsigned rdLen[4];
         unsigned size;
         bool     header;
+        int      counterPacketsToDump;
         epicsTimeStamp time;
 
         Stream _stream[4];

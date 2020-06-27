@@ -71,6 +71,9 @@ DebugStreamAsynDriver::DebugStreamAsynDriver(const char *portName, const char *n
     this->size      = size;
     this->header    = header;
 
+    this->counterPacketsToDump = 3;
+
+
     parameterSetup();
 
 
@@ -125,6 +128,26 @@ void DebugStreamAsynDriver::streamPoll(const int i)
 
     rdCnt++; rdCnt_perStream[i]++;
 
+    // Counters for loop
+    std::size_t aaa; // To get rid of compiler warning messages
+    int buf_idx;
+
+            if (counterPacketsToDump && i==1) {
+                printf("\nBSA stream dump - %d packets remaining\n", counterPacketsToDump-1);
+                printf("Message size: %d\n", rdLen[i]);
+                //for (aaa=0; aaa<size;++aaa) {
+                for (aaa=0; aaa<136;++aaa) {
+                    if (!(aaa % 8)) {
+                        printf("\n%lu   ", aaa/8);
+                    }
+                    // Fix for endianess
+                    //buf_idx = static_cast<int>(4*floor(aaa/4.0)+3-aaa%4);
+                    buf_idx = aaa;
+                    printf ("%02X ", buff[i][buf_idx]);
+                }
+                --counterPacketsToDump;
+                printf("\n");
+            }
 
     if(header) { 
         stream_with_header_t *p = (stream_with_header_t *) buff[i];
