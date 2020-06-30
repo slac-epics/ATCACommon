@@ -1,4 +1,4 @@
 driver(atcaCommonAsynDriver)
 registrar(cpswATCACommonAsynDriverRegister)
 registrar(cpswDebugStreamAsynDriverRegister)
-
+variable(Gen2UpConvYaml, int)

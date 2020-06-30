@@ -445,6 +445,12 @@ epicsExportAddress(drvet, atcaCommonAsynDriver);
 
 
 extern "C" {
+
+extern int32_t Gen2UpConvYaml;
+epicsExportAddress(int, Gen2UpConvYaml);
+
+
+
 /* consideration for Cexp */
 int cpswATCACommonAsynDriverConfigure(const char *portName, const char *pathName, const char *named_root)
 {
