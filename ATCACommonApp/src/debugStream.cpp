@@ -71,7 +71,7 @@ DebugStreamAsynDriver::DebugStreamAsynDriver(const char *portName, const char *n
     this->size      = size;
     this->header    = header;
 
-    this->counterPacketsToDump = 3;
+    this->counterPacketsToDump = 10;
 
 
     parameterSetup();
@@ -131,23 +131,6 @@ void DebugStreamAsynDriver::streamPoll(const int i)
     // Counters for loop
     std::size_t aaa; // To get rid of compiler warning messages
     int buf_idx;
-
-            if (counterPacketsToDump && i==1) {
-                printf("\nBSA stream dump - %d packets remaining\n", counterPacketsToDump-1);
-                printf("Message size: %d\n", rdLen[i]);
-                //for (aaa=0; aaa<size;++aaa) {
-                for (aaa=0; aaa<136;++aaa) {
-                    if (!(aaa % 8)) {
-                        printf("\n%lu   ", aaa/8);
-                    }
-                    // Fix for endianess
-                    //buf_idx = static_cast<int>(4*floor(aaa/4.0)+3-aaa%4);
-                    buf_idx = aaa;
-                    printf ("%02X ", buff[i][buf_idx]);
-                }
-                --counterPacketsToDump;
-                printf("\n");
-            }
 
     if(header) { 
         stream_with_header_t *p = (stream_with_header_t *) buff[i];
@@ -237,15 +220,6 @@ asynStatus DebugStreamAsynDriver::writeInt32(asynUser *pasynUser, epicsInt32 val
     return status;
 }
 
-typedef struct {
-    char          *name;
-    int            ch;
-    bool           stopLoop;
-    epicsEventId   shutdownEvent;
-    DebugStreamAsynDriver *pDrv;
-} usrPvt_t;
-
-
 static int streamThread(void *u)
 {
     usrPvt_t *usrPvt =  (usrPvt_t*) u;
@@ -258,7 +232,7 @@ static int streamThread(void *u)
     return 0;
 }
 
-static void streamStop(void *u)
+void streamStop(void *u)
 {
     usrPvt_t *usrPvt = (usrPvt_t*) u;
     usrPvt->stopLoop = true;
@@ -266,7 +240,7 @@ static void streamStop(void *u)
     epicsPrintf("debugStreamAsynDriver: Stop %s\n", usrPvt->name);
 }
 
-static int createStreamThread(int ch, const char *prefix_name, void *p)
+int createStreamThread(int ch, const char *prefix_name, void *p, int (*streamThreadFunc)(void *))
 {
     usrPvt_t *usrPvt = (usrPvt_t *) mallocMustSucceed(sizeof(usrPvt_t), "createStreamThread");
 
@@ -281,26 +255,17 @@ static int createStreamThread(int ch, const char *prefix_name, void *p)
     usrPvt->pDrv = (DebugStreamAsynDriver *) p;
     epicsThreadCreate(name, epicsThreadPriorityHigh,
                       epicsThreadGetStackSize(epicsThreadStackMedium),
-                      (EPICSTHREADFUNC) streamThread, (void *) usrPvt);
+                      (EPICSTHREADFUNC) streamThreadFunc, (void *) usrPvt);
     epicsAtExit3((epicsExitFunc) streamStop, (void*) usrPvt, usrPvt->name);
 
     return 0;
 }
 
 
-static int createStreamThreads(void)
+int createStreamThreads(debugStreamNode_t *p, int (*streamThreadFunc)(void *))
 {
-    drvNode_t *p = last_drvList_ATCACommon();
-    while(p) {
-        if(p->pdbStream0) {
-            debugStreamNode_t *ps = p->pdbStream0;
-            for (int i = 0; i < 4; i++) { createStreamThread(i, (const char*) ps->portName, (void *) ps->pDrv); }
-        }
-        if(p->pdbStream1) {
-            debugStreamNode_t *ps = p->pdbStream1;
-            for(int i = 0; i < 4; i++) { createStreamThread(i, (const char*) ps->portName, (void *) ps->pDrv); }
-        }
-        p = (drvNode_t *)ellPrevious(&p->node);
+    for (int i = 0; i < 4; i++) { 
+        createStreamThread(i, (const char*) p->portName, (void *) p->pDrv, streamThreadFunc); 
     }
 
     return 0;
@@ -318,11 +283,6 @@ static int report(debugStreamNode_t *p, int interest)
 
 
 extern "C" {
-
-int debugStreamAsynDriver_createStreamThreads(void)
-{
-    return createStreamThreads();
-}
 
 int debugStreamAsynDriver_report(debugStreamNode_t *p, int interest)
 {
@@ -346,8 +306,14 @@ int cpswDebugStreamAsynDriverConfigure(const char *portName, unsigned size, cons
                                               pStream->streamNames[1],
                                               pStream->streamNames[2],
                                               pStream->streamNames[3]);
-    if(!pList->pdbStream0)        pList->pdbStream0 = pStream;
-    else if (!pList->pdbStream1)   pList->pdbStream1 = pStream;
+    if(!pList->pdbStream0) {
+        pList->pdbStream0 = pStream;
+        createStreamThreads(pList->pdbStream0, streamThread);
+    }
+    else if (!pList->pdbStream1) { 
+        pList->pdbStream1 = pStream;
+        createStreamThreads(pList->pdbStream1, streamThread);
+    }
     else {   /* exception, two stream sub-driver instances are already launched */
     }
 
