@@ -134,7 +134,7 @@ void DebugStreamAsynDriver::parameterSetup(void)
 void DebugStreamAsynDriver::streamPoll(const int i)
 {
     // First check if the user created the channel
-    if(!_stream[ch]) {
+    if(!_stream[i]) {
         return;
     }
 
