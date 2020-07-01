@@ -26,7 +26,7 @@ typedef enum {
 } stream_type_t;
 
 
-class DebugStreamAsynDriver:asynPortDriver {
+class DebugStreamAsynDriver: public asynPortDriver {
     public:
         DebugStreamAsynDriver(const char *portName,
                               const char *named_root,
@@ -45,22 +45,20 @@ class DebugStreamAsynDriver:asynPortDriver {
 
         char *named_root;
         char *port;
+
+    protected:
+        unsigned rdLen[4];
+        Stream _stream[4];
+        uint8_t *buff[4];
+        unsigned size;
         unsigned timeoutCnt;
         unsigned timeoutCnt_perStream[4];
         unsigned rdCnt;
         unsigned rdCnt_perStream[4];
-        unsigned rdLen[4];
-        unsigned size;
-        bool     header;
         int      counterPacketsToDump;
+        bool     header;
         epicsTimeStamp time;
-
-        Stream _stream[4];
         stream_type_t  s_type[4];
-
-        uint8_t *buff[4];
-
-    protected:
 #if (ASYN_VERSION <<8 | ASYN_REVISION) < (4<<8 | 32)
         int firstDebugStreamParam;
 #define FIRST_DEBUGSTREAM_PARAM   firstDebugStreamParam
@@ -89,6 +87,18 @@ typedef struct {
     char *streamNames[4];
     DebugStreamAsynDriver *pDrv;
 } debugStreamNode_t;
+
+typedef struct {
+    char          *name;
+    int            ch;
+    bool           stopLoop;
+    epicsEventId   shutdownEvent;
+    DebugStreamAsynDriver *pDrv;
+} usrPvt_t;
+
+void streamStop(void *u);
+int createStreamThread(int ch, const char *prefix_name, void *p, int (*streamThreadFunc)(void *));
+int createStreamThreads(debugStreamNode_t *p, int (*streamThreadFunc)(void *));
 
 extern "C" {
 int debugStreamAsynDriver_createStreamThreads(void);
