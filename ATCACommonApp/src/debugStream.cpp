@@ -84,14 +84,32 @@ DebugStreamAsynDriver::DebugStreamAsynDriver(const char *portName, const char *n
         this->s_type[i] = uint32;
         this->buff[i] = (uint8_t *) mallocMustSucceed(size, "DebugStreamAsynDriver");
     }
-
     try {
         p_root = (named_root && strlen(named_root))? cpswGetNamedRoot(named_root):cpswGetRoot();
-        _stream[0] = IStream::create(p_root->findByName(stream0));
-        _stream[1] = IStream::create(p_root->findByName(stream1));
-        _stream[2] = IStream::create(p_root->findByName(stream2));
-        _stream[3] = IStream::create(p_root->findByName(stream3));
+    } catch (CPSWError &e) {
+        fprintf(stderr, "CPSW Error: %s, file: %s, line: %d\n", e.getInfo().c_str(), __FILE__, __LINE__);
+    }
 
+    try {
+        _stream[0] = IStream::create(p_root->findByName(stream0));
+    } catch (CPSWError &e) {
+        fprintf(stderr, "CPSW Error: %s, file: %s, line: %d\n", e.getInfo().c_str(), __FILE__, __LINE__);
+    }
+
+    try {
+        _stream[1] = IStream::create(p_root->findByName(stream1));
+    } catch (CPSWError &e) {
+        fprintf(stderr, "CPSW Error: %s, file: %s, line: %d\n", e.getInfo().c_str(), __FILE__, __LINE__);
+    }
+
+    try {
+        _stream[2] = IStream::create(p_root->findByName(stream2));
+    } catch (CPSWError &e) {
+        fprintf(stderr, "CPSW Error: %s, file: %s, line: %d\n", e.getInfo().c_str(), __FILE__, __LINE__);
+    }
+
+    try{
+        _stream[3] = IStream::create(p_root->findByName(stream3));
     } catch (CPSWError &e) {
         fprintf(stderr, "CPSW Error: %s, file: %s, line: %d\n", e.getInfo().c_str(), __FILE__, __LINE__);
     }
@@ -115,8 +133,12 @@ void DebugStreamAsynDriver::parameterSetup(void)
 
 void DebugStreamAsynDriver::streamPoll(const int i)
 {
-    epicsTimeStamp time;
+    // First check if the user created the channel
+    if(!_stream[ch]) {
+        return;
+    }
 
+    epicsTimeStamp time;
     rdLen[i] = _stream[i]->read(buff[i], size, CTimeout(2000000));
 
     if(rdLen[i] == 0 ) {
