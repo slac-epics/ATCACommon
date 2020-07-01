@@ -1,3 +1,6 @@
+R1.3.0-BR-R1:  06-29-2020   Kukhee Kim
+               build with commonATCA R1.2.0 to support epics variable Gen2UpConvYaml
+
 R1.3.0-BR-R0:  04-06-2020   Kukhee Kim
                use 2 second timeout for stream thread (to prepare a graceful shutdown)
                implement a graceful shutdown for debug strams
