@@ -425,8 +425,8 @@ static long atcaCommonAsynDriverInitialize(void)
                       epicsThreadGetStackSize(epicsThreadStackMedium),
                       (EPICSTHREADFUNC) atcaCommonAsynDriverPollThread, (void *) NULL);
     epicsAtExit3((epicsExitFunc) stopPollThread, (void*) epicsStrDup(name), epicsStrDup(name));
-    debugStreamAsynDriver_createStreamThreads();
-
+//    debugStreamAsynDriver_createStreamThreads();
+//gmdDebugStream_createStreamThreads();
     return 0;
 }
 
