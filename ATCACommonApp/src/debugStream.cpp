@@ -169,16 +169,25 @@ void DebugStreamAsynDriver::streamPoll(const int i)
         return;
     }
 
-    epicsTimeStamp time;
-    rdLen[i] = _stream[i]->read(buff[i], size, CTimeout(2000000));
-
-    if(rdLen[i] == 0 ) {
+    try {
+        rdLen[i] = _stream[i]->read(buff[i], size, CTimeout(2000000));
+    }
+    catch (IOError &e) {
+        // A timeout happened
         timeoutCnt ++;
         timeoutCnt_perStream[i] ++;
+    }
+    catch (CPSWError &e) {
+        // Don't print, as we are inside a polling. Wait for the next try, as
+        // rdLen[i] will be zero.
+    }
+
+    if(rdLen[i] == 0 ) {
         return;
     }
 
-
+    epicsTimeStamp time;
+    
     rdCnt++; rdCnt_perStream[i]++;
 
     // Counters for loop
