@@ -40,9 +40,9 @@ class DebugStreamAsynDriver: public asynPortDriver {
         void streamPoll(const int ch);
         void report(int interest);
         asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
+        bool isChannelValid(int ch);
     private:
         void parameterSetup(void);
-
         char *named_root;
         char *port;
 

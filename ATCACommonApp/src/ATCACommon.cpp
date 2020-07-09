@@ -85,8 +85,12 @@ ATCACommonAsynDriver::ATCACommonAsynDriver(const char *portName, const char *pat
     char     bs[256];
     uint32_t v;
 
-    atcaCommon->getBuildStamp((uint8_t *) bs); setStringParam(p_buildStamp, bs);
-    atcaCommon->getFpgaVersion(&v);            setIntegerParam(p_fpgaVersion, v);
+    try {
+        atcaCommon->getBuildStamp((uint8_t *) bs); setStringParam(p_buildStamp, bs);
+        atcaCommon->getFpgaVersion(&v);            setIntegerParam(p_fpgaVersion, v);
+    } catch (CPSWError &e) {
+        fprintf(stderr, "CPSW Error: %s, file %s, line %d\n", e.getInfo().c_str(), __FILE__, __LINE__);
+    }
 
     callParamCallbacks();
 }
@@ -316,15 +320,20 @@ void ATCACommonAsynDriver::poll(void)
 {
     uint32_t val;
 
+    try {
+        atcaCommon->getUpTimeCnt(&val);    setIntegerParam(p_upTimeCnt, val);
+        atcaCommon->getEthUpTimeCnt(&val); setIntegerParam(p_EthUpTimeCnt, val);
 
-    atcaCommon->getUpTimeCnt(&val);    setIntegerParam(p_upTimeCnt, val);
-    atcaCommon->getEthUpTimeCnt(&val); setIntegerParam(p_EthUpTimeCnt, val);
+        getJesdCount();
+        getDaqMuxStatus();
+        getWaveformEngineStatus();
 
-    getJesdCount();
-    getDaqMuxStatus();
-    getWaveformEngineStatus();
-
-    callParamCallbacks();
+        callParamCallbacks();
+    }
+    catch (...) {
+        // Should not print anything as we are inside a poll. Just keep going
+        // to the next shot.
+    }
 }
 
 

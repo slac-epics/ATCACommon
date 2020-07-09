@@ -84,6 +84,7 @@ DebugStreamAsynDriver::DebugStreamAsynDriver(const char *portName, const char *n
         this->s_type[i] = uint32;
         this->buff[i] = (uint8_t *) mallocMustSucceed(size, "DebugStreamAsynDriver");
     }
+
     try {
         p_root = (named_root && strlen(named_root))? cpswGetNamedRoot(named_root):cpswGetRoot();
     } catch (CPSWError &e) {
@@ -97,25 +98,31 @@ DebugStreamAsynDriver::DebugStreamAsynDriver(const char *portName, const char *n
     }
 
     try {
-        _stream[1] = IStream::create(p_root->findByName(stream1));
+       _stream[1] = IStream::create(p_root->findByName(stream1));
     } catch (CPSWError &e) {
         fprintf(stderr, "CPSW Error: %s, file: %s, line: %d\n", e.getInfo().c_str(), __FILE__, __LINE__);
     }
 
     try {
-        _stream[2] = IStream::create(p_root->findByName(stream2));
+       _stream[2] = IStream::create(p_root->findByName(stream2));
     } catch (CPSWError &e) {
         fprintf(stderr, "CPSW Error: %s, file: %s, line: %d\n", e.getInfo().c_str(), __FILE__, __LINE__);
     }
 
     try{
-        _stream[3] = IStream::create(p_root->findByName(stream3));
+       _stream[3] = IStream::create(p_root->findByName(stream3));
     } catch (CPSWError &e) {
         fprintf(stderr, "CPSW Error: %s, file: %s, line: %d\n", e.getInfo().c_str(), __FILE__, __LINE__);
     }
 }
 
 DebugStreamAsynDriver::~DebugStreamAsynDriver() {}
+
+bool DebugStreamAsynDriver::isChannelValid(int ch)
+{
+    // Using only return(_stream[ch]) didn't work
+    return (_stream[ch]? true : false);
+}
 
 void DebugStreamAsynDriver::parameterSetup(void)
 {
@@ -134,7 +141,7 @@ void DebugStreamAsynDriver::parameterSetup(void)
 void DebugStreamAsynDriver::streamPoll(const int i)
 {
     // First check if the user created the channel
-    if(!_stream[i]) {
+    if(! _stream[i]) {
         return;
     }
 
@@ -264,8 +271,17 @@ void streamStop(void *u)
 
 int createStreamThread(int ch, const char *prefix_name, void *p, int (*streamThreadFunc)(void *))
 {
-    usrPvt_t *usrPvt = (usrPvt_t *) mallocMustSucceed(sizeof(usrPvt_t), "createStreamThread");
+    DebugStreamAsynDriver* tmpPDrv = (DebugStreamAsynDriver*) p;
 
+    // Create thread only if the channel was created correctly.
+    // If any error prevented the channel to be created, we should not
+    // have a thread running.
+    if (! tmpPDrv->isChannelValid(ch)) {
+        return 0;
+    }
+
+    usrPvt_t *usrPvt = (usrPvt_t *) mallocMustSucceed(sizeof(usrPvt_t), "createStreamThread");
+    
     char name[80];
 
     sprintf(name, "strm_%s%d", prefix_name, ch);
@@ -274,7 +290,7 @@ int createStreamThread(int ch, const char *prefix_name, void *p, int (*streamThr
     usrPvt->ch   = ch;
     usrPvt->stopLoop = false;
     usrPvt->shutdownEvent = epicsEventMustCreate(epicsEventEmpty);
-    usrPvt->pDrv = (DebugStreamAsynDriver *) p;
+    usrPvt->pDrv = tmpPDrv;
     epicsThreadCreate(name, epicsThreadPriorityHigh,
                       epicsThreadGetStackSize(epicsThreadStackMedium),
                       (EPICSTHREADFUNC) streamThreadFunc, (void *) usrPvt);
