@@ -91,27 +91,51 @@ DebugStreamAsynDriver::DebugStreamAsynDriver(const char *portName, const char *n
         fprintf(stderr, "CPSW Error: %s, file: %s, line: %d\n", e.getInfo().c_str(), __FILE__, __LINE__);
     }
 
+    // ***************** Try to create _stream[0]
     try {
         _stream[0] = IStream::create(p_root->findByName(stream0));
-    } catch (CPSWError &e) {
+    } 
+    catch (InvalidArgError &e) {
+        // Don't print error if the stream name is empty, as the user didn't
+        // want to create this channel anyway.
+    }
+    catch (CPSWError &e) {
         fprintf(stderr, "CPSW Error: %s, file: %s, line: %d\n", e.getInfo().c_str(), __FILE__, __LINE__);
     }
 
+    // ***************** Try to create _stream[1]
     try {
        _stream[1] = IStream::create(p_root->findByName(stream1));
-    } catch (CPSWError &e) {
+    }
+    catch (InvalidArgError &e) {
+        // Don't print error if the stream name is empty, as the user didn't
+        // want to create this channel anyway.
+    }
+    catch (CPSWError &e) {
         fprintf(stderr, "CPSW Error: %s, file: %s, line: %d\n", e.getInfo().c_str(), __FILE__, __LINE__);
     }
 
+    // ***************** Try to create _stream[2]
     try {
        _stream[2] = IStream::create(p_root->findByName(stream2));
-    } catch (CPSWError &e) {
+    } 
+    catch (InvalidArgError &e) {
+        // Don't print error if the stream name is empty, as the user didn't
+        // want to create this channel anyway.
+    }
+    catch (CPSWError &e) {
         fprintf(stderr, "CPSW Error: %s, file: %s, line: %d\n", e.getInfo().c_str(), __FILE__, __LINE__);
     }
 
+    // ***************** Try to create _stream[3]
     try{
        _stream[3] = IStream::create(p_root->findByName(stream3));
-    } catch (CPSWError &e) {
+    }
+    catch (InvalidArgError &e) {
+        // Don't print error if the stream name is empty, as the user didn't
+        // want to create this channel anyway.
+    }
+    catch (CPSWError &e) {
         fprintf(stderr, "CPSW Error: %s, file: %s, line: %d\n", e.getInfo().c_str(), __FILE__, __LINE__);
     }
 }
@@ -332,10 +356,10 @@ int cpswDebugStreamAsynDriverConfigure(const char *portName, unsigned size, cons
     drvNode_t *pList = last_drvList_ATCACommon();
     debugStreamNode_t *pStream = (debugStreamNode_t *) mallocMustSucceed(sizeof(debugStreamNode_t), "Debugstream Driver");
     pStream->portName =  epicsStrDup(portName);
-    pStream->streamNames[0] = (stream0 && strlen(stream0))? epicsStrDup(stream0): NULL;
-    pStream->streamNames[1] = (stream1 && strlen(stream1))? epicsStrDup(stream1): NULL;
-    pStream->streamNames[2] = (stream2 && strlen(stream2))? epicsStrDup(stream2): NULL;
-    pStream->streamNames[3] = (stream3 && strlen(stream3))? epicsStrDup(stream3): NULL;
+    pStream->streamNames[0] = (stream0 && strlen(stream0))? epicsStrDup(stream0): epicsStrDup("");
+    pStream->streamNames[1] = (stream1 && strlen(stream1))? epicsStrDup(stream1): epicsStrDup("");
+    pStream->streamNames[2] = (stream2 && strlen(stream2))? epicsStrDup(stream2): epicsStrDup("");
+    pStream->streamNames[3] = (stream3 && strlen(stream3))? epicsStrDup(stream3): epicsStrDup("");
     pStream->pDrv = new DebugStreamAsynDriver(pStream->portName,
                                               (pList && pList->named_root)?pList->named_root: NULL,
                                               size,
