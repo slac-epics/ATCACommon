@@ -19,14 +19,6 @@
 
 #include "debugStream.h"
 
-#define MAX_WAVEFORMENGINE_CNT 2
-#define MAX_WAVEFORMENGINE_CHN_CNT 4
-#define MAX_DBG_STREAM_CNT 8
-#define MAX_JESD_CNT       8
-#define NUM_JESD           2
-#define MAX_DAQMUX_CNT     2
-#define MAX_DAQMUX_CHN_CNT 4
-
 typedef struct {
     uint32_t    ref_cnt;     // reference
     uint32_t    curr_cnt;    // current count value

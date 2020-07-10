@@ -16,6 +16,14 @@
 #include <sstream>
 #include <fstream>
 
+#define MAX_WAVEFORMENGINE_CNT 2
+#define MAX_WAVEFORMENGINE_CHN_CNT 4
+#define MAX_DBG_STREAM_CNT 8
+#define MAX_JESD_CNT       8
+#define NUM_JESD           2
+#define MAX_DAQMUX_CNT     2
+#define MAX_DAQMUX_CHN_CNT 4
+
 typedef enum {
    uint32 = 0,
    int32,
@@ -25,6 +33,10 @@ typedef enum {
    float64
 } stream_type_t;
 
+struct dumpStreamInfo_t {
+    int remainingPackets;
+    int wordQty;
+};
 
 class DebugStreamAsynDriver: public asynPortDriver {
     public:
@@ -41,10 +53,11 @@ class DebugStreamAsynDriver: public asynPortDriver {
         void report(int interest);
         asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
         bool isChannelValid(int ch);
+        void dumpStreamContents(int ch, int wordQty, int packQty);
     private:
-        void parameterSetup(void);
         char *named_root;
         char *port;
+        void parameterSetup(void);
 
     protected:
         unsigned rdLen[4];
@@ -55,10 +68,10 @@ class DebugStreamAsynDriver: public asynPortDriver {
         unsigned timeoutCnt_perStream[4];
         unsigned rdCnt;
         unsigned rdCnt_perStream[4];
-        int      counterPacketsToDump;
         bool     header;
         epicsTimeStamp time;
         stream_type_t  s_type[4];
+        dumpStreamInfo_t dumpStreamInfo[MAX_WAVEFORMENGINE_CHN_CNT];
 #if (ASYN_VERSION <<8 | ASYN_REVISION) < (4<<8 | 32)
         int firstDebugStreamParam;
 #define FIRST_DEBUGSTREAM_PARAM   firstDebugStreamParam

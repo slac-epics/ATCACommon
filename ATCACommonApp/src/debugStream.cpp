@@ -71,8 +71,6 @@ DebugStreamAsynDriver::DebugStreamAsynDriver(const char *portName, const char *n
     this->size      = size;
     this->header    = header;
 
-    this->counterPacketsToDump = 10;
-
 
     parameterSetup();
 
@@ -83,6 +81,7 @@ DebugStreamAsynDriver::DebugStreamAsynDriver(const char *portName, const char *n
         this->rdLen[i] = 0;
         this->s_type[i] = uint32;
         this->buff[i] = (uint8_t *) mallocMustSucceed(size, "DebugStreamAsynDriver");
+        this->dumpStreamInfo[i].remainingPackets = 0;
     }
 
     try {
@@ -190,9 +189,25 @@ void DebugStreamAsynDriver::streamPoll(const int i)
     
     rdCnt++; rdCnt_perStream[i]++;
 
-    // Counters for loop
-    std::size_t aaa; // To get rid of compiler warning messages
-    int buf_idx;
+    if (dumpStreamInfo[i].remainingPackets) {
+        // Counter for loop
+        std::size_t aaa; // To get rid of compiler warning messages
+        // How many bytes to print during dump
+        std::size_t byteQty = (std::size_t) dumpStreamInfo[i].wordQty * 8 > rdLen[i] ? rdLen[i] : dumpStreamInfo[i].wordQty * 8;
+
+        printf("\nATCA Common stream dump - %d packets remaining\n", dumpStreamInfo[i].remainingPackets-1);
+        printf("Message size: %d bytes\n", rdLen[i]);
+        for (aaa=0; aaa<byteQty; ++aaa) {
+            // Print word number on first column
+            if (!(aaa % 8)) {
+                printf("\n%lu   ", aaa/8);
+            }
+
+            printf ("%02X ", buff[i][aaa]);
+        }
+
+        printf("\n");
+    }
 
     if(header) { 
         stream_with_header_t *p = (stream_with_header_t *) buff[i];
@@ -215,6 +230,15 @@ void DebugStreamAsynDriver::streamPoll(const int i)
                 doCallbacksFloat64Array(&p->payload.float64, (rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t))/sizeof(epicsFloat64), p_streamFloat64[i], 0);
                 break;
         }
+
+        // Print data decoded from stream dump
+        if (dumpStreamInfo[i].remainingPackets > 0) {
+            printf("\nATCA Common mapped data:\n");
+            printf("time.sec = %u\n", p->header.time.secPastEpoch);
+            printf("time.nsec = %u\n", p->header.time.nsec);
+            printf("\n");
+        }
+
     } else {
         stream_without_header_t *p = (stream_without_header_t *) buff[i];
         epicsTimeGetCurrent(&time);
@@ -235,6 +259,11 @@ void DebugStreamAsynDriver::streamPoll(const int i)
                 doCallbacksFloat64Array(&p->payload.float64, (rdLen[i] - sizeof(packet_header_t))/sizeof(epicsFloat64), p_streamFloat64[i], 0);
                 break;
         }
+    }
+
+    // Decrement dump packets counter in the end
+    if (dumpStreamInfo[i].remainingPackets > 0) {
+        --dumpStreamInfo[i].remainingPackets;
     }
 
 }
@@ -281,6 +310,25 @@ asynStatus DebugStreamAsynDriver::writeInt32(asynUser *pasynUser, epicsInt32 val
 
     return status;
 }
+
+/*
+ * During the polling of channel zero, the stream content will be dump to
+ * screen with wordQty 64-bit words. packQty packets will be dump.
+ */
+void DebugStreamAsynDriver::dumpStreamContents(int ch, int wordQty, int packQty)
+{
+    if ((ch > MAX_WAVEFORMENGINE_CHN_CNT - 1) ||
+        (ch < 0) ||
+        (wordQty <= 0) || 
+        (packQty <= 0))
+    {
+        return;
+    }
+
+    dumpStreamInfo[ch].wordQty = wordQty;
+    dumpStreamInfo[ch].remainingPackets = packQty;
+}
+
 
 static int streamThread(void *u)
 {
@@ -391,6 +439,33 @@ int cpswDebugStreamAsynDriverConfigure(const char *portName, unsigned size, cons
     return 0;
 }
 
+int cpswDebugStreamDump (const char* stream_portName, int ch, int wordQty, int packQty) {
+    drvNode_t* pList = last_drvList_ATCACommon();
+
+    if (pList) {
+        debugStreamNode_t* debugStream;
+
+        // Search for port name in pdbStream0 or pdbStream1
+        if ((pList->pdbStream0) && ! strcmp(stream_portName, pList->pdbStream0->portName)) {
+            debugStream = pList->pdbStream0;
+        } else {
+            if ((pList->pdbStream1) && ! strcmp(stream_portName, pList->pdbStream1->portName)) {
+                debugStream = pList->pdbStream1;
+            } 
+            else {
+                printf("Stream driver not initialized for port %s\n", stream_portName);
+                return 0;
+            }
+        }
+
+        debugStream->pDrv->dumpStreamContents(ch, wordQty, packQty);
+
+    } else {
+        printf("ATCACommon driver not initialized. Please use cpswATCACommonAsynDriverConfigure before calling cpswDebugStreamDump\n");
+    }
+
+    return 0;
+}
 
 } /* extern C */
 
@@ -424,9 +499,30 @@ static void initCallFunc(const iocshArgBuf *args)
 }
 
 
+
+/* ioc shell command to dump stream contents on screen */
+
+static const iocshArg   streamDumpArg0 = {"Stream port name", iocshArgString};
+static const iocshArg   streamDumpArg1 = {"Channel number", iocshArgInt};
+static const iocshArg   streamDumpArg2 = {"Number of 64-bit words to dump", iocshArgInt};
+static const iocshArg   streamDumpArg3 = {"Number of sequential packets",  iocshArgInt};
+static const iocshArg   *const streamDumpArgs[] = { &streamDumpArg0,
+                                                    &streamDumpArg1,
+                                                    &streamDumpArg2,
+                                                    &streamDumpArg3 };
+static const iocshFuncDef streamDumpFuncDef = {"cpswDebugStreamDump", 4, streamDumpArgs};
+
+static void streamDumpCallFunc(const iocshArgBuf *args)
+{
+    cpswDebugStreamDump(args[0].sval,
+                        args[1].ival,
+                        args[2].ival,
+                        args[3].ival);
+}
 static void cpswDebugStreamAsynDriverRegister(void)
 {
     iocshRegister(&initFuncDef, initCallFunc);
+    iocshRegister(&streamDumpFuncDef, streamDumpCallFunc);
 }
 
 
