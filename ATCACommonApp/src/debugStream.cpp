@@ -439,18 +439,37 @@ int cpswDebugStreamAsynDriverConfigure(const char *portName, unsigned size, cons
     return 0;
 }
 
-int cpswDebugStreamDump (const char* stream_portName, int ch, int wordQty, int packQty) {
-    drvNode_t* pList = last_drvList_ATCACommon();
+int cpswDebugStreamDump (const char* driver_portName, const char* stream_portName, int ch, int wordQty, int packQty)
+{
+    bool driverInitialized = false;
 
-    if (pList) {
+    drvNode_t* p = last_drvList_ATCACommon();
+
+    driverInitialized = p ? true: false;
+
+    if (driverInitialized) {
+        // Look for drvNode that contains driver_portName
+        while(p && p->pDrv) {
+            if (strcmp(p->portName, driver_portName)) {
+                p = (drvNode_t *) ellPrevious(&p->node);
+            }
+            else {
+                break;
+            }
+        }
+
+        driverInitialized = p? true : false;
+    }
+
+    if (driverInitialized) {
         debugStreamNode_t* debugStream;
 
         // Search for port name in pdbStream0 or pdbStream1
-        if ((pList->pdbStream0) && ! strcmp(stream_portName, pList->pdbStream0->portName)) {
-            debugStream = pList->pdbStream0;
+        if ((p->pdbStream0) && ! strcmp(stream_portName, p->pdbStream0->portName)) {
+            debugStream = p->pdbStream0;
         } else {
-            if ((pList->pdbStream1) && ! strcmp(stream_portName, pList->pdbStream1->portName)) {
-                debugStream = pList->pdbStream1;
+            if ((p->pdbStream1) && ! strcmp(stream_portName, p->pdbStream1->portName)) {
+                debugStream = p->pdbStream1;
             } 
             else {
                 printf("Stream driver not initialized for port %s\n", stream_portName);
@@ -461,7 +480,7 @@ int cpswDebugStreamDump (const char* stream_portName, int ch, int wordQty, int p
         debugStream->pDrv->dumpStreamContents(ch, wordQty, packQty);
 
     } else {
-        printf("ATCACommon driver not initialized. Please use cpswATCACommonAsynDriverConfigure before calling cpswDebugStreamDump\n");
+        printf("ATCACommon driver %s not initialized. Please use cpswATCACommonAsynDriverConfigure before calling cpswDebugStreamDump.\n", driver_portName);
     }
 
     return 0;
@@ -502,22 +521,25 @@ static void initCallFunc(const iocshArgBuf *args)
 
 /* ioc shell command to dump stream contents on screen */
 
-static const iocshArg   streamDumpArg0 = {"Stream port name", iocshArgString};
-static const iocshArg   streamDumpArg1 = {"Channel number", iocshArgInt};
-static const iocshArg   streamDumpArg2 = {"Number of 64-bit words to dump", iocshArgInt};
-static const iocshArg   streamDumpArg3 = {"Number of sequential packets",  iocshArgInt};
+static const iocshArg   streamDumpArg0 = {"Stream driver asyn port name", iocshArgString};
+static const iocshArg   streamDumpArg1 = {"Stream port name", iocshArgString};
+static const iocshArg   streamDumpArg2 = {"Channel number", iocshArgInt};
+static const iocshArg   streamDumpArg3 = {"Number of 64-bit words to dump", iocshArgInt};
+static const iocshArg   streamDumpArg4 = {"Number of sequential packets",  iocshArgInt};
 static const iocshArg   *const streamDumpArgs[] = { &streamDumpArg0,
                                                     &streamDumpArg1,
                                                     &streamDumpArg2,
-                                                    &streamDumpArg3 };
-static const iocshFuncDef streamDumpFuncDef = {"cpswDebugStreamDump", 4, streamDumpArgs};
+                                                    &streamDumpArg3,
+                                                    &streamDumpArg4 };
+static const iocshFuncDef streamDumpFuncDef = {"cpswDebugStreamDump", 5, streamDumpArgs};
 
 static void streamDumpCallFunc(const iocshArgBuf *args)
 {
     cpswDebugStreamDump(args[0].sval,
-                        args[1].ival,
+                        args[1].sval,
                         args[2].ival,
-                        args[3].ival);
+                        args[3].ival,
+                        args[4].ival);
 }
 static void cpswDebugStreamAsynDriverRegister(void)
 {
