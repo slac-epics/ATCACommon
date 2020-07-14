@@ -80,6 +80,8 @@ DebugStreamAsynDriver::DebugStreamAsynDriver(const char *portName, const char *n
         this->rdLen[i] = 0;
         this->s_type[i] = uint32;
         this->buff[i] = (uint8_t *) mallocMustSucceed(size, "DebugStreamAsynDriver");
+        this->cb_func[i] = (void (*)(void*, unsigned int, epicsTimeStamp, void*)) NULL;   // put null pointer for callback function
+        this->cb_usr[i] = (void *) NULL;
     }
 
     try {
@@ -109,6 +111,16 @@ void DebugStreamAsynDriver::parameterSetup(void)
     }
 }
 
+int  DebugStreamAsynDriver:: registerCallback(const int i, const void *cb_func, const void *cb_usr)
+{
+    if(cb_func && !(this->cb_func[i]) && !(this->cb_usr[i])) {
+        this->cb_func[i] = (void (*)(void*, unsigned int, epicsTimeStamp, void*)) cb_func;
+        this->cb_usr[i]  = (void *) cb_usr;
+    }
+    else  return -1;
+
+    return 0;
+}
 
 void DebugStreamAsynDriver::streamPoll(const int i)
 {
@@ -147,6 +159,8 @@ void DebugStreamAsynDriver::streamPoll(const int i)
                 doCallbacksFloat64Array(&p->payload.float64, (rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t))/sizeof(epicsFloat64), p_streamFloat64[i], 0);
                 break;
         }
+       if(this->cb_func[i] && this->cb_usr[i]) 
+           (*(this->cb_func[i]))(&(p->payload), rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t), time, this->cb_usr[i]);  // run callback, if it is not a null
     } else {
         stream_without_header_t *p = (stream_without_header_t *) buff[i];
         epicsTimeGetCurrent(&time);
@@ -167,6 +181,8 @@ void DebugStreamAsynDriver::streamPoll(const int i)
                 doCallbacksFloat64Array(&p->payload.float64, (rdLen[i] - sizeof(packet_header_t))/sizeof(epicsFloat64), p_streamFloat64[i], 0);
                 break;
         }
+        if(this->cb_func[i] && this->cb_usr[i]) 
+            (*(this->cb_func[i]))(&(p->payload), rdLen[i] - sizeof(packet_header_t), time, this->cb_usr[i]); // run callback, if it is not a null
     }
 
 }

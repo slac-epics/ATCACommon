@@ -37,6 +37,7 @@ class DebugStreamAsynDriver:asynPortDriver {
                               const char *stream2 = NULL,
                               const char *stream3 = NULL);
         ~DebugStreamAsynDriver();
+        int  registerCallback(const int ch, const void *cb_func, const void *cb_usr);
         void streamPoll(const int ch);
         void report(int interest);
         asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
@@ -53,6 +54,9 @@ class DebugStreamAsynDriver:asynPortDriver {
         unsigned size;
         bool     header;
         epicsTimeStamp time;
+
+        void (*cb_func[4]) (void *pBuf, unsigned size,  epicsTimeStamp time, void *usr);
+        void *cb_usr[4];
 
         Stream _stream[4];
         stream_type_t  s_type[4];
