@@ -203,6 +203,12 @@ void DebugStreamAsynDriver::report(int interest)
                                                           stream_type_str[(int)(this->s_type[2])],
                                                           stream_type_str[(int)(this->s_type[3])]);
     printf("\tread buffer length: %u %u %u %u\n", this->rdLen[0], this->rdLen[1], this->rdLen[2], this->rdLen[3]);
+
+    if(interest > 4) {
+        for(int i = 0; i < 4; i++) {
+            printf("\t callback [%d]:  function (%p), usr pvt (%p)\n", (void *) this->cb_func[i], (void *) this->cb_usr[i]);
+        }
+    }
 }
 
 
