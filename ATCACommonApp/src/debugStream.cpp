@@ -114,7 +114,7 @@ void DebugStreamAsynDriver::parameterSetup(void)
 int  DebugStreamAsynDriver:: registerCallback(const int i, const void *cb_func, const void *cb_usr)
 {
     if(cb_func && !(this->cb_func[i]) && !(this->cb_usr[i])) {
-        this->cb_func[i] = (void (*)(void*, unsigned int, epicsTimeStamp, void*)) cb_func;
+        this->cb_func[i] = (STREAM_CALLBACK_FUNCTION) cb_func;
         this->cb_usr[i]  = (void *) cb_usr;
     }
     else  return -1;
