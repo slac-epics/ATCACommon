@@ -17,6 +17,7 @@ INCLUDES += $(addprefix -I,$(CPSW_FRAMEWORK_INCLUDE))
 INCLUDES += $(addprefix -I,$(COMMONATCA_INCLUDE))
 
 INC += ATCACommon.h
+INC += debugStreamInterface.h
 
 DBD += ATCACommon.dbd
 DBD += crossbarControl.dbd

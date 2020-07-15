@@ -16,6 +16,8 @@
 #include <sstream>
 #include <fstream>
 
+#include "debugStreamInterface.h"
+
 typedef enum {
    uint32 = 0,
    int32,
@@ -55,7 +57,7 @@ class DebugStreamAsynDriver:asynPortDriver {
         bool     header;
         epicsTimeStamp time;
 
-        void (*cb_func[4]) (void *pBuf, unsigned size,  epicsTimeStamp time, void *usr);
+        STREAM_CALLBACK_FUNCTION  cb_func[4];
         void *cb_usr[4];
 
         Stream _stream[4];

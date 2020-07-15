@@ -80,7 +80,7 @@ DebugStreamAsynDriver::DebugStreamAsynDriver(const char *portName, const char *n
         this->rdLen[i] = 0;
         this->s_type[i] = uint32;
         this->buff[i] = (uint8_t *) mallocMustSucceed(size, "DebugStreamAsynDriver");
-        this->cb_func[i] = (void (*)(void*, unsigned int, epicsTimeStamp, void*)) NULL;   // put null pointer for callback function
+        this->cb_func[i] = (STREAM_CALLBACK_FUNCTION) NULL;   // put null pointer for callback function
         this->cb_usr[i] = (void *) NULL;
     }
 
