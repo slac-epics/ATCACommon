@@ -4,7 +4,7 @@
 #include <epicsTime.h>
 #include <epicsTypes.h>
 
-typedef  void (*STREAM_CALLBACK_FUNCTION)(void *pBuf, unsigned size,  epicsTimeStamp time, void *usr);
+typedef  void (*STREAM_CALLBACK_FUNCTION)(void *pBuf, unsigned size,  epicsTimeStamp time, int timeslot, void *usr);
 
 #ifdef __cplusplus
 extern "C" {

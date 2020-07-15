@@ -125,6 +125,7 @@ int  DebugStreamAsynDriver:: registerCallback(const int i, const void *cb_func, 
 void DebugStreamAsynDriver::streamPoll(const int i)
 {
     epicsTimeStamp time;
+    int timeslot;
 
     rdLen[i] = _stream[i]->read(buff[i], size, CTimeout(2000000));
 
@@ -142,6 +143,7 @@ void DebugStreamAsynDriver::streamPoll(const int i)
         stream_with_header_t *p = (stream_with_header_t *) buff[i];
         time.nsec               = p->header.time.secPastEpoch;
         time.secPastEpoch       = p->header.time.nsec;
+        timeslot = ((p->header.mod[3] >> 29) & 0x00000007);  // extract timeslot information from the timing pattern modifier
         setTimeStamp(&time);
         switch(s_type[i]) {
             case uint32:
@@ -160,10 +162,11 @@ void DebugStreamAsynDriver::streamPoll(const int i)
                 break;
         }
        if(this->cb_func[i] && this->cb_usr[i]) 
-           (*(this->cb_func[i]))(&(p->payload), rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t), time, this->cb_usr[i]);  // run callback, if it is not a null
+           (*(this->cb_func[i]))(&(p->payload), rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t), time, timeslot, this->cb_usr[i]);  // run callback, if it is not a null
     } else {
         stream_without_header_t *p = (stream_without_header_t *) buff[i];
         epicsTimeGetCurrent(&time);
+        timeslot = -1;     // no timeslot information
         setTimeStamp(&time);
         switch(s_type[i]) {
             case uint32:
@@ -182,7 +185,7 @@ void DebugStreamAsynDriver::streamPoll(const int i)
                 break;
         }
         if(this->cb_func[i] && this->cb_usr[i]) 
-            (*(this->cb_func[i]))(&(p->payload), rdLen[i] - sizeof(packet_header_t), time, this->cb_usr[i]); // run callback, if it is not a null
+            (*(this->cb_func[i]))(&(p->payload), rdLen[i] - sizeof(packet_header_t), time, timeslot, this->cb_usr[i]); // run callback, if it is not a null
     }
 
 }
