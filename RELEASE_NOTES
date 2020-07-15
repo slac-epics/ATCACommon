@@ -1,5 +1,6 @@
 R1.3.0-BR-R2:  07-12-2020   Kukhee Kim
                add callback mechanism for raw waveform processing
+               add callback register API: void (*cb_func[4]) (void *pBuf, unsigned size,  epicsTimeStamp time, void *usr)
 
 R1.3.0-BR-R1:  06-29-2020   Kukhee Kim
                build with commonATCA R1.2.0 to support epics variable Gen2UpConvYaml

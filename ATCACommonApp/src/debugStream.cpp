@@ -206,7 +206,7 @@ void DebugStreamAsynDriver::report(int interest)
 
     if(interest > 4) {
         for(int i = 0; i < 4; i++) {
-            printf("\t callback [%d]:  function (%p), usr pvt (%p)\n", (void *) this->cb_func[i], (void *) this->cb_usr[i]);
+            printf("\t callback [%d]:  function (%p), usr pvt (%p)\n", i, (void *) this->cb_func[i], (void *) this->cb_usr[i]);
         }
     }
 }
@@ -326,6 +326,32 @@ int debugStreamAsynDriver_createStreamThreads(void)
 int debugStreamAsynDriver_report(debugStreamNode_t *p, int interest)
 {
     return report(p, interest);
+}
+
+
+int registerStreamCallback(const char *portName, const int stream_channel, void *cb_func, void *cb_usr)
+{
+    drvNode_t *pList = last_drvList_ATCACommon();
+    debugStreamNode_t *pStream;
+
+    while(pList) {
+        pStream = pList->pdbStream0;
+        if(pStream && !strcmp(pStream->portName, portName)) break;  // found matched port
+
+        pStream = pList->pdbStream0;
+        if(pStream && !strcmp(pStream->portName, portName)) break;  // found matched port
+
+        pList = (drvNode_t *) ellPrevious(&pList->node);
+    }
+
+    if(pList && pStream && pStream->pDrv) {
+        DebugStreamAsynDriver *pDrv = pStream->pDrv;
+        pDrv->registerCallback(stream_channel, cb_func, cb_usr);
+        return 0;
+    }
+
+
+    return -1;
 }
 
 int cpswDebugStreamAsynDriverConfigure(const char *portName, unsigned size, const char *header, const char *stream0, const char *stream1, const char *stream2, const char *stream3)
