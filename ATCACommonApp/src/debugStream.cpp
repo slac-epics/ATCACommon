@@ -82,6 +82,8 @@ DebugStreamAsynDriver::DebugStreamAsynDriver(const char *portName, const char *n
         this->s_type[i] = uint32;
         this->buff[i] = (uint8_t *) mallocMustSucceed(size, "DebugStreamAsynDriver");
         this->dumpStreamInfo[i].remainingPackets = 0;
+        this->cb_func[i] = (STREAM_CALLBACK_FUNCTION) NULL;   // put null pointer for callback function
+        this->cb_usr[i] = (void *) NULL;
     }
 
     try {
@@ -160,6 +162,16 @@ void DebugStreamAsynDriver::parameterSetup(void)
     }
 }
 
+int  DebugStreamAsynDriver:: registerCallback(const int i, const void *cb_func, const void *cb_usr)
+{
+    if(cb_func && !(this->cb_func[i]) && !(this->cb_usr[i])) {
+        this->cb_func[i] = (STREAM_CALLBACK_FUNCTION) cb_func;
+        this->cb_usr[i]  = (void *) cb_usr;
+    }
+    else  return -1;
+
+    return 0;
+}
 
 void DebugStreamAsynDriver::streamPoll(const int i)
 {
@@ -167,6 +179,9 @@ void DebugStreamAsynDriver::streamPoll(const int i)
     if(! _stream[i]) {
         return;
     }
+
+    epicsTimeStamp time;
+    int timeslot;
 
     try {
         rdLen[i] = _stream[i]->read(buff[i], size, CTimeout(2000000));
@@ -185,8 +200,6 @@ void DebugStreamAsynDriver::streamPoll(const int i)
         return;
     }
 
-    epicsTimeStamp time;
-    
     rdCnt++; rdCnt_perStream[i]++;
 
     if (dumpStreamInfo[i].remainingPackets) {
@@ -213,6 +226,7 @@ void DebugStreamAsynDriver::streamPoll(const int i)
         stream_with_header_t *p = (stream_with_header_t *) buff[i];
         time.nsec               = p->header.time.secPastEpoch;
         time.secPastEpoch       = p->header.time.nsec;
+        timeslot = ((p->header.mod[3] >> 29) & 0x00000007);  // extract timeslot information from the timing pattern modifier
         setTimeStamp(&time);
         switch(s_type[i]) {
             case uint32:
@@ -239,9 +253,12 @@ void DebugStreamAsynDriver::streamPoll(const int i)
             printf("\n");
         }
 
+       if(this->cb_func[i] && this->cb_usr[i]) 
+           (*(this->cb_func[i]))(&(p->payload), rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t), time, timeslot, this->cb_usr[i]);  // run callback, if it is not a null
     } else {
         stream_without_header_t *p = (stream_without_header_t *) buff[i];
         epicsTimeGetCurrent(&time);
+        timeslot = -1;     // no timeslot information
         setTimeStamp(&time);
         switch(s_type[i]) {
             case uint32:
@@ -259,6 +276,8 @@ void DebugStreamAsynDriver::streamPoll(const int i)
                 doCallbacksFloat64Array(&p->payload.float64, (rdLen[i] - sizeof(packet_header_t))/sizeof(epicsFloat64), p_streamFloat64[i], 0);
                 break;
         }
+        if(this->cb_func[i] && this->cb_usr[i]) 
+            (*(this->cb_func[i]))(&(p->payload), rdLen[i] - sizeof(packet_header_t), time, timeslot, this->cb_usr[i]); // run callback, if it is not a null
     }
 
     // Decrement dump packets counter in the end
@@ -284,6 +303,12 @@ void DebugStreamAsynDriver::report(int interest)
                                                           stream_type_str[(int)(this->s_type[2])],
                                                           stream_type_str[(int)(this->s_type[3])]);
     printf("\tread buffer length: %u %u %u %u\n", this->rdLen[0], this->rdLen[1], this->rdLen[2], this->rdLen[3]);
+
+    if(interest > 4) {
+        for(int i = 0; i < 4; i++) {
+            printf("\t callback [%d]:  function (%p), usr pvt (%p)\n", i, (void *) this->cb_func[i], (void *) this->cb_usr[i]);
+        }
+    }
 }
 
 
@@ -406,6 +431,32 @@ extern "C" {
 int debugStreamAsynDriver_report(debugStreamNode_t *p, int interest)
 {
     return report(p, interest);
+}
+
+
+int registerStreamCallback(const char *portName, const int stream_channel, void *cb_func, void *cb_usr)
+{
+    drvNode_t *pList = last_drvList_ATCACommon();
+    debugStreamNode_t *pStream;
+
+    while(pList) {
+        pStream = pList->pdbStream0;
+        if(pStream && !strcmp(pStream->portName, portName)) break;  // found matched port
+
+        pStream = pList->pdbStream0;
+        if(pStream && !strcmp(pStream->portName, portName)) break;  // found matched port
+
+        pList = (drvNode_t *) ellPrevious(&pList->node);
+    }
+
+    if(pList && pStream && pStream->pDrv) {
+        DebugStreamAsynDriver *pDrv = pStream->pDrv;
+        pDrv->registerCallback(stream_channel, cb_func, cb_usr);
+        return 0;
+    }
+
+
+    return -1;
 }
 
 int cpswDebugStreamAsynDriverConfigure(const char *portName, unsigned size, const char *header, const char *stream0, const char *stream1, const char *stream2, const char *stream3)

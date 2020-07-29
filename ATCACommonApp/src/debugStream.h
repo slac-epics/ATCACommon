@@ -16,6 +16,8 @@
 #include <sstream>
 #include <fstream>
 
+#include "debugStreamInterface.h"
+
 #define MAX_WAVEFORMENGINE_CNT 2
 #define MAX_WAVEFORMENGINE_CHN_CNT 4
 #define MAX_DBG_STREAM_CNT 8
@@ -49,6 +51,7 @@ class DebugStreamAsynDriver: public asynPortDriver {
                               const char *stream2 = NULL,
                               const char *stream3 = NULL);
         ~DebugStreamAsynDriver();
+        int  registerCallback(const int ch, const void *cb_func, const void *cb_usr);
         void streamPoll(const int ch);
         void report(int interest);
         asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
@@ -61,7 +64,6 @@ class DebugStreamAsynDriver: public asynPortDriver {
 
     protected:
         unsigned rdLen[4];
-        Stream _stream[4];
         uint8_t *buff[4];
         unsigned size;
         unsigned timeoutCnt;
@@ -70,6 +72,11 @@ class DebugStreamAsynDriver: public asynPortDriver {
         unsigned rdCnt_perStream[4];
         bool     header;
         epicsTimeStamp time;
+
+        STREAM_CALLBACK_FUNCTION  cb_func[4];
+        void *cb_usr[4];
+
+        Stream _stream[4];
         stream_type_t  s_type[4];
         dumpStreamInfo_t dumpStreamInfo[MAX_WAVEFORMENGINE_CHN_CNT];
 #if (ASYN_VERSION <<8 | ASYN_REVISION) < (4<<8 | 32)

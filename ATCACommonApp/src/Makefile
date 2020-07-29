@@ -18,6 +18,7 @@ INCLUDES += $(addprefix -I,$(COMMONATCA_INCLUDE))
 
 INC += ATCACommon.h
 INC += debugStream.h
+INC += debugStreamInterface.h
 
 DBD += ATCACommon.dbd
 DBD += crossbarControl.dbd
