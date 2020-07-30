@@ -162,7 +162,7 @@ void DebugStreamAsynDriver::parameterSetup(void)
     }
 }
 
-int  DebugStreamAsynDriver:: registerCallback(const int i, const void *cb_func, const void *cb_usr)
+int  DebugStreamAsynDriver:: registerCallback(const int i, STREAM_CALLBACK_FUNCTION cb_func, const void *cb_usr)
 {
     if(cb_func && !(this->cb_func[i]) && !(this->cb_usr[i])) {
         this->cb_func[i] = (STREAM_CALLBACK_FUNCTION) cb_func;
@@ -464,7 +464,7 @@ int debugStreamAsynDriver_report(debugStreamNode_t *p, int interest)
 }
 
 
-int registerStreamCallback(const char *portName, const int stream_channel, void *cb_func, void *cb_usr)
+int registerStreamCallback(const char *portName, const int stream_channel, STREAM_CALLBACK_FUNCTION cb_func, void *cb_usr)
 {
     DebugStreamAsynDriver* pDrv = NULL;
 

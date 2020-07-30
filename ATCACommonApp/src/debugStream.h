@@ -51,7 +51,7 @@ class DebugStreamAsynDriver: public asynPortDriver {
                               const char *stream2 = NULL,
                               const char *stream3 = NULL);
         ~DebugStreamAsynDriver();
-        int  registerCallback(const int ch, const void *cb_func, const void *cb_usr);
+        int  registerCallback(const int ch, STREAM_CALLBACK_FUNCTION cb_func, const void *cb_usr);
         void streamPoll(const int ch);
         void report(int interest);
         asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
@@ -119,6 +119,7 @@ typedef struct {
 void streamStop(void *u);
 int createStreamThread(int ch, const char *prefix_name, void *p, int (*streamThreadFunc)(void *));
 int createStreamThreads(debugStreamNode_t *p, int (*streamThreadFunc)(void *));
+int searchDebugStreamDriver(const char* streamPortName, DebugStreamAsynDriver** pDrv);
 
 extern "C" {
 int debugStreamAsynDriver_createStreamThreads(void);

@@ -10,7 +10,7 @@ typedef  void (*STREAM_CALLBACK_FUNCTION)(void *pBuf, unsigned size,  epicsTimeS
 extern "C" {
 #endif
 
-int registerStreamCallback(const char *portName, const int stream_channel, void *cb_func, void *cb_usr);
+int registerStreamCallback(const char *portName, const int stream_channel, STREAM_CALLBACK_FUNCTION cb_func, void *cb_usr);
 
 #ifdef __cplusplus
 }
