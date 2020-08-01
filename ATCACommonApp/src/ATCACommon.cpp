@@ -416,7 +416,7 @@ static void stopPollThread(void *p)
 {
     stopLoop = true;
     epicsEventWait(shutdownEvent);
-    epicsPrintf("atcaCommonAsuynDriver: Stop pollThread (%s)\n", (char*) p);
+    epicsPrintf("atcaCommonAsynDriver: Stop pollThread (%s)\n", (char*) p);
 }
 
 
