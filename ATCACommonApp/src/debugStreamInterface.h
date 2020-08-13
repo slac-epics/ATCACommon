@@ -5,6 +5,11 @@
 #include <epicsTypes.h>
 
 typedef  void (*STREAM_CALLBACK_FUNCTION)(void *pBuf, unsigned size,  epicsTimeStamp time, int timeslot, void *usr);
+typedef struct {
+    ELLNODE                     node;
+    STREAM_CALLBACK_FUNCTION    cb_func [ MAX_WAVEFORMENGINE_CHN_CNT ];
+    void*                       cb_usr  [ MAX_WAVEFORMENGINE_CHN_CNT ];
+} callback_node_t;
 
 #ifdef __cplusplus
 extern "C" {

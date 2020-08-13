@@ -16,8 +16,6 @@
 #include <sstream>
 #include <fstream>
 
-#include "debugStreamInterface.h"
-
 #define MAX_WAVEFORMENGINE_CNT 2
 #define MAX_WAVEFORMENGINE_CHN_CNT 4
 #define MAX_DBG_STREAM_CNT 8
@@ -25,6 +23,8 @@
 #define NUM_JESD           2
 #define MAX_DAQMUX_CNT     2
 #define MAX_DAQMUX_CHN_CNT 4
+
+#include "debugStreamInterface.h"
 
 typedef enum {
    uint32 = 0,
@@ -61,6 +61,7 @@ class DebugStreamAsynDriver: public asynPortDriver {
         char *named_root;
         char *port;
         void parameterSetup(void);
+        ELLLIST* callback_list;
 
     protected:
         unsigned rdLen[4];
@@ -73,8 +74,10 @@ class DebugStreamAsynDriver: public asynPortDriver {
         bool     header;
         epicsTimeStamp time;
 
-        STREAM_CALLBACK_FUNCTION  cb_func[4];
-        void *cb_usr[4];
+        // Call all registered functions
+        int triggerCallbacks();
+        //STREAM_CALLBACK_FUNCTION  cb_func[4];
+        //void *cb_usr[4];
 
         Stream _stream[4];
         stream_type_t  s_type[4];
