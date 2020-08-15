@@ -57,6 +57,7 @@ class DebugStreamAsynDriver: public asynPortDriver {
         asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
         bool isChannelValid(int ch);
         void dumpStreamContents(int ch, int wordQty, int packQty);
+        bool hasHeader();
     private:
         char *named_root;
         char *port;

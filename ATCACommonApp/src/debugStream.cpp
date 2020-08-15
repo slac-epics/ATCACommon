@@ -401,6 +401,11 @@ void DebugStreamAsynDriver::dumpStreamContents(int ch, int wordQty, int packQty)
     dumpStreamInfo[ch].remainingPackets = packQty;
 }
 
+/* Return if the stream packets contain a header or not */
+bool DebugStreamAsynDriver::hasHeader()
+{
+    return header;
+}
 
 static int streamThread(void *u)
 {
