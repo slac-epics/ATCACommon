@@ -166,7 +166,7 @@ void DebugStreamAsynDriver::parameterSetup(void)
 
 int  DebugStreamAsynDriver::registerCallback(const int ch, STREAM_CALLBACK_FUNCTION cb_func, const void *cb_usr)
 {
-    if ((ch < 0) || (ch > MAX_WAVEFORMENGINE_CHN_CNT)) {
+    if ((ch < 0) || (ch > MAX_WAVEFORMENGINE_CHN_CNT) || (! cb_func)) {
         return -1;
     } else {
         callback_node_t* newFunction = 
