@@ -82,11 +82,10 @@ DebugStreamAsynDriver::DebugStreamAsynDriver(const char *portName, const char *n
         this->s_type[i] = uint32;
         this->buff[i] = (uint8_t *) mallocMustSucceed(size, "DebugStreamAsynDriver");
         this->dumpStreamInfo[i].remainingPackets = 0;
-        //this->cb_func[i] = (STREAM_CALLBACK_FUNCTION) NULL;   // put null pointer for callback function
-        //this->cb_usr[i] = (void *) NULL;
     }
 
     // Initialize linked list of callback functions
+    callback_list = (ELLLIST*) mallocMustSucceed(sizeof(ELLLIST*), "DebugStreamAsynDriver");
     ellInit(callback_list);
 
     try {
@@ -167,26 +166,42 @@ void DebugStreamAsynDriver::parameterSetup(void)
 
 int  DebugStreamAsynDriver::registerCallback(const int ch, STREAM_CALLBACK_FUNCTION cb_func, const void *cb_usr)
 {
-    callback_node_t* newFunction = 
-        (callback_node_t *) mallocMustSucceed(  sizeof(callback_node_t), 
-                                    "debugStream callback linked list");
+    if ((ch < 0) || (ch > MAX_WAVEFORMENGINE_CHN_CNT)) {
+        return -1;
+    } else {
+        callback_node_t* newFunction = 
+            (callback_node_t *) mallocMustSucceed ( sizeof(callback_node_t), 
+                                        "debugStream callback linked list");
 
-    newFunction->cb_func[ch] = cb_func;
-    newFunction->cb_usr[ch] = (void*) cb_usr;
+        newFunction->cb_func[ch] = cb_func;
+        newFunction->cb_usr[ch] = (void*) cb_usr;
 
-/*    if(cb_func && !(this->cb_func[i]) && !(this->cb_usr[i])) {
-        this->cb_func[i] = (STREAM_CALLBACK_FUNCTION) cb_func;
-        this->cb_usr[i]  = (void *) cb_usr;
+        ellAdd(callback_list, (ELLNODE*) newFunction);
     }
-    else  return -1;
-*/
+
     return 0;
 }
 
-int  DebugStreamAsynDriver::triggerCallbacks() 
+/* Call every function that was registered to receive callbacks, given an
+ * specific channel.
+ */
+int  DebugStreamAsynDriver::triggerCallbacks(int ch, void *pBuf, unsigned size,  epicsTimeStamp time, int timeslot) 
 {
-//    if(this->cb_func[i] && this->cb_usr[i])
-//               (*(this->cb_func[i]))(&(p->payload), rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t), time, timeslot, this->cb_usr[i]);
+    if ((ch < 0) || (ch > MAX_WAVEFORMENGINE_CHN_CNT)) {
+        return -1;
+    } else {
+        callback_node_t* callback_node;
+        STREAM_CALLBACK_FUNCTION function;
+        ELLNODE* node = ellFirst(callback_list);
+
+        while (node) {
+            callback_node = (callback_node_t*) node;
+            function = *(callback_node->cb_func[ch]);
+            function(pBuf, size, time, timeslot, callback_node->cb_usr[ch]);
+
+            node = ellNext(node);
+        }
+    }
 
     return 0;
 }
@@ -271,9 +286,8 @@ void DebugStreamAsynDriver::streamPoll(const int i)
             printf("\n");
         }
 
-        triggerCallbacks();
-       //if(this->cb_func[i] && this->cb_usr[i]) 
-         //  (*(this->cb_func[i]))(&(p->payload), rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t), time, timeslot, this->cb_usr[i]);  // run callback, if it is not a null
+        triggerCallbacks(i, &(p->payload), rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t), time, timeslot);
+
     } else {
         stream_without_header_t *p = (stream_without_header_t *) buff[i];
         epicsTimeGetCurrent(&time);
@@ -296,9 +310,7 @@ void DebugStreamAsynDriver::streamPoll(const int i)
                 break;
         }
 
-        triggerCallbacks();
-        //if(this->cb_func[i] && this->cb_usr[i]) 
-        //    (*(this->cb_func[i]))(&(p->payload), rdLen[i] - sizeof(packet_header_t), time, timeslot, this->cb_usr[i]); // run callback, if it is not a null
+        triggerCallbacks(i, &(p->payload), rdLen[i] - sizeof(packet_header_t), time, timeslot);
     }
 
     // Decrement dump packets counter in the end
@@ -325,12 +337,25 @@ void DebugStreamAsynDriver::report(int interest)
                                                           stream_type_str[(int)(this->s_type[3])]);
     printf("\tread buffer length: %u %u %u %u\n", this->rdLen[0], this->rdLen[1], this->rdLen[2], this->rdLen[3]);
 
-    // TODO: put new callback structure here
-    /*if(interest > 4) {
+    if(interest > 4) {
+        callback_node_t* callback_node;
+           
         for(int i = 0; i < 4; i++) {
-            printf("\t callback [%d]:  function (%p), usr pvt (%p)\n", i, (void *) this->cb_func[i], (void *) this->cb_usr[i]);
-        }
-    }*/
+            printf("\tCallbacks for channel %d:\n", i);
+            
+            ELLNODE* node = ellFirst(callback_list);
+            while (node) {
+                callback_node = (callback_node_t*) node;
+                if (callback_node->cb_func[i]) {
+                    printf("\t\t function (%p), usr pvt (%p)\n", 
+                        (void *) callback_node->cb_func[i], 
+                        (void *) callback_node->cb_usr[i]);
+                }
+                node = ellNext(node);
+            }   
+        } // for(int i = 0; i < 4; i++)
+
+    } // if(interest > 4)
 }
 
 

@@ -75,7 +75,7 @@ class DebugStreamAsynDriver: public asynPortDriver {
         epicsTimeStamp time;
 
         // Call all registered functions
-        int triggerCallbacks();
+        int triggerCallbacks(int ch, void *pBuf, unsigned size,  epicsTimeStamp time, int timeslot);
         //STREAM_CALLBACK_FUNCTION  cb_func[4];
         //void *cb_usr[4];
 
