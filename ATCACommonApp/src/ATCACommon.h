@@ -63,6 +63,7 @@ class ATCACommonAsynDriver:asynPortDriver {
 #endif /* ASYN VERSION CHECK under 4.32 */
         int p_upTimeCnt;
         int p_buildStamp;
+        int p_gitHash;
         int p_fpgaVersion;
         int p_EthUpTimeCnt;
         int p_jesdCnt_reset;
@@ -132,6 +133,7 @@ class ATCACommonAsynDriver:asynPortDriver {
 #define BUILDSTAMP_STR             "buildStamp"
 #define FPGAVERSION_STR            "fpgaVersion"
 #define ETH_UPTIMECNT_STR          "EthUpTimeCnt"
+#define GITHASH_STR                "GitHash"
 // JESD
 #define JESDCNT_RESET_STR          "jesdCntReset"
 #define JESDCNT_MODE_STR           "jesdCntMode"
