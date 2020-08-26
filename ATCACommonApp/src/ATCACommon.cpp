@@ -83,10 +83,12 @@ ATCACommonAsynDriver::ATCACommonAsynDriver(const char *portName, const char *pat
     }
 
     char     bs[256];
+    char     gh[64];
     uint32_t v;
 
     try {
         atcaCommon->getBuildStamp((uint8_t *) bs); setStringParam(p_buildStamp, bs);
+        atcaCommon->getGitHash((uint8_t *) gh);    setStringParam(p_gitHash,    gh);
         atcaCommon->getFpgaVersion(&v);            setIntegerParam(p_fpgaVersion, v);
     } catch (CPSWError &e) {
         fprintf(stderr, "CPSW Error: %s, file %s, line %d\n", e.getInfo().c_str(), __FILE__, __LINE__);
@@ -155,6 +157,7 @@ void ATCACommonAsynDriver::ParameterSetup(void)
 
     sprintf(param_name, UPTIMECNT_STR);     createParam(param_name, asynParamInt32, &p_upTimeCnt);
     sprintf(param_name, BUILDSTAMP_STR);    createParam(param_name, asynParamOctet, &p_buildStamp);
+    sprintf(param_name, GITHASH_STR);       createParam(param_name, asynParamOctet, &p_gitHash);
     sprintf(param_name, FPGAVERSION_STR);   createParam(param_name, asynParamInt32, &p_fpgaVersion);
     sprintf(param_name, ETH_UPTIMECNT_STR); createParam(param_name, asynParamInt32, &p_EthUpTimeCnt);
     sprintf(param_name, JESDCNT_RESET_STR); createParam(param_name, asynParamInt32, &p_jesdCnt_reset);

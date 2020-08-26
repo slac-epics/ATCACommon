@@ -17,6 +17,18 @@ record(waveform, "$(DEVICE):AMC_BUILDSTAMP")
     field(PINI, "YES")
 }
 
+record(waveform, "$(DEVICE):AMC_GITHASH")
+{
+    field(DESC, "Firmware GitHash")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),0) GitHash")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "Passive")
+    field(PINI, "YES")
+}
+
+
 record(longin, "$(DEVICE):AMC_FPGAVERSION")
 {
     field(DESC, "FPGA Version")
