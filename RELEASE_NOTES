@@ -1,3 +1,17 @@
+R1.4.0:        08-26-2020  Marcio Donadio
+               - Merged debug_stream and extensible_debug_stream branches.
+               - ATCACommon class can now be inherited by other modules that
+                 wants to process an application specific debug stream.
+               - Placed try-catch and if in various parts of the code to improve
+                 protection against segmentation fault.
+               - Fixed bug where an user calling the debug stream configure
+                 function without 4 stream stings would generate a segmentation
+                 fault.
+               - Multi callback functions can now be created per stream channel.
+               - New function cpswDebugStreamDump to print contents of the stream
+                 debug on the IOC shell.
+               - Created README contents.
+
 R1.3.0-BR-R3:  08-22-2020  Kukhee Kim
                add GITHASH PV
                build with commonATCA R1.3.0
