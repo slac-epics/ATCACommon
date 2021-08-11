@@ -1,3 +1,6 @@
+R1.3.0-BR-R4:  08-11-2021  Kukhee Kim
+               support crossbar control path starting PCIe:/ for PCIe TPR
+
 R1.3.0-BR-R3:  08-22-2020  Kukhee Kim
                add GITHASH PV
                build with commonATCA R1.3.0
