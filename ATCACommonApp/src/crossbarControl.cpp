@@ -55,14 +55,43 @@ static const char * driverName = "crossbarControlAsynDriver";
 
 CrossbarControlDriver::CrossbarControlDriver(const char *_path_str, const char *named_root)
 {
+    char * __path_str;
     if(named_root && !strlen(named_root)) named_root = NULL;
 
-    pCrossbarApi = new CrossbarControlYaml(((!named_root)?cpswGetRoot():cpswGetNamedRoot(named_root))->findByName(_path_str));
+    if(!strncmp(_path_str, "PCIe:/", 6) || !strncmp(_path_str, "pcie:/", 6)) {
+                         /* supporting PCIe */
+        busType = _pcie;
+        __path_str = (char *)_path_str +6;
+    } else {
+                         /* supporting ATCA */
+        busType = _atca;
+        __path_str = (char *)_path_str;
+    }
+
+    pCrossbarApi = new CrossbarControlYaml(((!named_root)?cpswGetRoot():cpswGetNamedRoot(named_root))->findByName(__path_str));
+
+    if(busType == _pcie) {   /* setup cross bar controls for PCIe TPR */
+        /*
+              config#       output                   possilbe inputs
+                    0       LCLS1 SFP                0: LCLS1 SFP, 1: LCLS2 SFP, 2: FPGA (LCLS1), 3, FPGA (LCLS2)
+                    1       LCLS2 SFP                "
+                    2       FPGA (LCLS1)             "
+                    3       FPGA (LCLS2)             "
+        */
+        pCrossbarApi->SetOutputConfig0(0);     // make loopback for LCLS1 SFP
+        pCrossbarApi->SetOutputConfig1(1);     // make loopback for LCLS2 SFP
+        pCrossbarApi->SetOutputConfig2(0);     // get LCLS1 timing from fiber
+        pCrossbarApi->SetOutputConfig3(1);     // get LCLS2 timing from fiber
+    }
 }
 
 void CrossbarControlDriver::Report(void)
 {
     printf("Timing Crossbar Status\n");
+    if(busType == _pcie) {
+    printf("PCIe TPR configuraiton: accept both SFP inputs, and loopback to SFP outputs\n");
+        return;
+    }
     printf("OutputConfig[0]: %s <--- %s\n", timing_out_string[0].timing_name, timing_source_string[pCrossbarApi->GetOutputConfig0()].timing_name);
     printf("OutputConfig[1]: %s <-- -%s\n", timing_out_string[1].timing_name, timing_source_string[pCrossbarApi->GetOutputConfig1()].timing_name);
     printf("OutputConfig[2]: %s <--- %s\n", timing_out_string[2].timing_name, timing_source_string[pCrossbarApi->GetOutputConfig2()].timing_name);

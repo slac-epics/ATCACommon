@@ -11,6 +11,7 @@ namespace CrossbarControl {
     class CrossbarControlDriver {
         private:
             CrossbarControlYaml *pCrossbarApi;
+            enum {_atca, _pcie} busType;
         public:
             CrossbarControlDriver(const char * _path_str, const char *named_root = NULL);
             void Report(void);
