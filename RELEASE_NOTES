@@ -1,3 +1,8 @@
+R1.5.0:        09-10-2021  Kukhee Kim
+               - merge recent changes in debug_stream and stensible_debug_stream braches
+               - support PCIe (MemDev) in croosbarControl
+               - build against yamlLoader R2.2.0 to support overriding of device file name for PCIe (MemDev)
+
 R1.4.0:        08-26-2020  Marcio Donadio
                - Merged debug_stream and extensible_debug_stream branches.
                - ATCACommon class can now be inherited by other modules that
@@ -11,6 +16,12 @@ R1.4.0:        08-26-2020  Marcio Donadio
                - New function cpswDebugStreamDump to print contents of the stream
                  debug on the IOC shell.
                - Created README contents.
+
+R1.3.0-BR-R5:  09-10-2021  Kukhee Kim
+               buid against yamlLoader R2.2.0
+
+R1.3.0-BR-R4:  08-11-2021  Kukhee Kim
+               support crossbar control path starting PCIe:/ for PCIe TPR
 
 R1.3.0-BR-R3:  08-22-2020  Kukhee Kim
                add GITHASH PV
