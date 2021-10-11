@@ -1,3 +1,7 @@
+
+R1.5.1:        10-11-2021  M. Dunning
+               - Upgrade to asyn R4.39-0.0.1
+
 R1.5.0:        09-10-2021  Kukhee Kim
                - merge recent changes in debug_stream and stensible_debug_stream braches
                - support PCIe (MemDev) in croosbarControl
