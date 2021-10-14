@@ -1,18 +1,23 @@
-#!../../bin/linuxRT-x86_64/sioc-b084-atcaCommon01
+#!../../bin/linuxRT-x86_64/ATCACommonExample
 
-#- You may have to change sioc-b084-atcaCommon01 to something else
-#- everywhere it appears in this file
+< envPaths
 
-#< envPaths
+epicsEnvSet("FPGA_IP","10.0.1.105")
+
+# YAML directory
+epicsEnvSet("YAML_DIR","${IOC_DATA}/${IOC}/yaml")
+epicsEnvSet("TOP_YAML","${YAML_DIR}/000TopLevel.yaml")
 
 ## Register all support components
-dbLoadDatabase("../../dbd/sioc-b084-atcaCommon01.dbd",0,0)
-sioc_b084_atcaCommon01_registerRecordDeviceDriver(pdbbase) 
+dbLoadDatabase("../../dbd/ATCACommonExample.dbd",0,0)
+ATCACommonExample_registerRecordDeviceDriver(pdbbase) 
 
-## Load record instances
-dbLoadRecords("../../db/sioc-b084-atcaCommon01.db","user=marcio")
+## Yaml Downloader
+#DownloadYamlFile("${FPGA_IP}", "${YAML_DIR}")
+
+cpswLoadYamlFile("${TOP_YAML}", "NetIODev", "", "${FPGA_IP}")
 
 iocInit()
 
-## Start any sequence programs
-#seq sncsioc-b084-atcaCommon01,"user=marcio"
+# atcaCheckFirmwareVersion [Stop IOC? Y/N] [any number of desired gitHash or fpgaVersion, each item between quotes]
+atcaCheckFirmwareVersion "N" "abcd" "efgh" "ijkl" 
