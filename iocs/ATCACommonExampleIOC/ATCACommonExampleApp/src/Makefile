@@ -7,12 +7,11 @@ USR_CXXFLAGS += -DHAVE_YAML
 #----------------------------------------
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 #=============================
-INCLUDES += $(addprefix -I,$(YAML_INCLUDE))
 INCLUDES += $(addprefix -I,$(BOOST_INCLUDE))
-
-## this part is just for yaml loader driver
 INCLUDES += $(addprefix -I,$(CPSW_FRAMEWORK_INCLUDE))
-
+INCLUDES += $(addprefix -I,$(YAML_INCLUDE))
+INCLUDES += $(addprefix -I,$(CPSW_DEVICE_LIBRARY_INCLUDE))
+INCLUDES += $(addprefix -I,$(YAMLREADER_INCLUDE))
 INCLUDES += $(addprefix -I,$(COMMONATCA_INCLUDE))
 
 #=============================
@@ -29,13 +28,21 @@ ATCACommonExample_DBD += base.dbd
 ATCACommonExample_DBD += system.dbd
 ATCACommonExample_DBD += asyn.dbd
 ATCACommonExample_DBD += yamlLoader.dbd
+ATCACommonExample_DBD += yamlDownloader.dbd
 ATCACommonExample_DBD += ATCACommon.dbd
 
 # Add all the support libraries needed by this IOC
+ATCACommonExample_LIBS += yamlDownloader
 ATCACommonExample_LIBS += yamlLoader
 #ATCACommonExample_LIBS += crossbarControl
 ATCACommonExample_LIBS += ATCACommon
 ATCACommonExample_LIBS += asyn
+
+yamlReader_DIR = $(YAMLREADER_LIB)
+ATCACommonExample_LIBS += yamlReader
+
+deviceLib_DIR = $(CPSW_DEVICE_LIBRARY_LIB)
+ATCACommonExample_LIBS += deviceLib
 
 cpsw_DIR = $(CPSW_FRAMEWORK_LIB)
 ATCACommonExample_LIBS += cpsw
