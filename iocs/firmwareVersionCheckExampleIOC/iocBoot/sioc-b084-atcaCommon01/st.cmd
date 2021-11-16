@@ -13,7 +13,7 @@ dbLoadDatabase("../../dbd/ATCACommonExample.dbd",0,0)
 ATCACommonExample_registerRecordDeviceDriver(pdbbase) 
 
 ## Yaml Downloader
-#DownloadYamlFile("${FPGA_IP}", "${YAML_DIR}")
+DownloadYamlFile("${FPGA_IP}", "${YAML_DIR}")
 
 cpswLoadYamlFile("${TOP_YAML}", "NetIODev", "", "${FPGA_IP}")
 
