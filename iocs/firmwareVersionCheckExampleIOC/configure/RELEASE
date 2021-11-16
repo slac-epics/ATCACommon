@@ -1,0 +1,61 @@
+# RELEASE - Location of external support modules
+#
+# IF YOU CHANGE ANY PATHS in this file or make API changes to
+# any modules it refers to, you should do a "make rebuild" in
+# this application's top level directory.
+#
+# The EPICS build process does not check dependencies against
+# any files from outside the application, so it is safest to
+# rebuild it completely if any modules it depends on change.
+#
+# Host- or target-specific settings can be given in files named
+#  RELEASE.$(EPICS_HOST_ARCH).Common
+#  RELEASE.Common.$(T_A)
+#  RELEASE.$(EPICS_HOST_ARCH).$(T_A)
+#
+# This file is parsed by both GNUmake and an EPICS Perl script,
+# so it may ONLY contain definititions of paths to other support
+# modules, variable definitions that are used in module paths,
+# and include statements that pull in other RELEASE files.
+# Variables may be used before their values have been set.
+# Build variables that are NOT used in paths should be set in
+# the CONFIG_SITE file.
+
+# Read definitions of:
+#       EPICS_SITE_TOP
+#       BASE_MODULE_VERSION
+#       EPICS_MODULES
+# from one of the following options
+-include $(TOP)/RELEASE_SITE
+-include $(TOP)/../../RELEASE_SITE
+-include $(TOP)/../../../../RELEASE_SITE
+
+# Check that EPICS_MODULES was defined in a RELEASE_SITE file
+-include $(TOP)/../../RELEASE_SITE.check
+
+# Variables and paths to dependent modules:
+YAMLLOADER_VERSION=R2.1.0
+YAMLDOWNLOADER_MODULE_VERSION=R1.2.0
+ASYN_MODULE_VERSION=R4.32-1.0.0
+
+#MODULES = /path/to/modules
+YAMLLOADER=$(EPICS_MODULES)/yamlLoader/$(YAMLLOADER_VERSION)
+YAMLDOWNLOADER=$(EPICS_MODULES)/yamlDownloader/$(YAMLDOWNLOADER_MODULE_VERSION)
+ASYN=$(EPICS_MODULES)/asyn/$(ASYN_MODULE_VERSION)
+ATCACOMMON = $(TOP)/../..
+
+# If using the sequencer, point SNCSEQ at its top directory:
+#SNCSEQ = $(MODULES)/seq-ver
+
+# EPICS_BASE should appear last so earlier modules can override stuff:
+EPICS_BASE = /afs/slac/g/lcls/epics/base/R7.0.3.1-1.0
+
+# Set RULES here if you want to use build rules from somewhere
+# other than EPICS_BASE:
+#RULES = $(MODULES)/build-rules
+
+# These lines allow developers to override these RELEASE settings
+# without having to modify this file directly.
+-include $(TOP)/../RELEASE.local
+-include $(TOP)/../RELEASE.$(EPICS_HOST_ARCH).local
+-include $(TOP)/configure/RELEASE.local

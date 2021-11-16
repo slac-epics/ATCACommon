@@ -31,7 +31,7 @@ ATCACommon_DBD  += crossbarControl.dbd
 ATCACommon_SRCS += ATCACommon.cpp
 ATCACommon_SRCS += debugStream.cpp
 ATCACommon_SRCS += crossbarControl.cpp
-
+ATCACommon_SRCS += versionComparator.cpp
 
 cpsw_DIR = $(CPSW_FRAMEWORK_LIB)
 commonATCA_DIR = $(COMMONATCA_LIB)

@@ -1,0 +1,24 @@
+The IOC shell function atcaCheckFirmwareVersion receives a list of strings
+containing the firmware versions that are compatible with the IOC. Once the
+function is called, it reads the firmware data from the registers fpgaVersion
+and gitHash and compares with each of the strings from the function arguments. 
+
+If all of the strings mismatch the firmware version, two outcomes are possible:
+- print a warning message on the shell.
+- print the warning message and exit the IOC.
+
+The function has this format:
+atcaCheckFirmwareVersion [Stop IOC? Y/N] [any number of desired gitHash or fpgaVersion, each item between quotes]
+
+Example:
+atcaCheckFirmwareVersion "Y" "879c14487f9f78a7f369190b260f2ea295f106d6" "50528256" "0x3030000" 
+
+If using the fpgaVersion in hexadecimal format, 0x is required in the beginning
+of the number. In the example above, "50528256" decimal is equal to "0x3030000",
+so the same result would be obtained with either one or the other.
+
+The example IOC found in iocs/firmwareVersionCheckExampleIOC contains all the
+necessary modules and packages to connect to an ATCA crate and have the IOC
+started as atcaCheckFirmwareVersion can be run. Please, use this IOC example's
+configure/RELEASE, configure/CONFIG_SITE*, Makefiles, and st.cmd as a reference
+for your own IOC.
