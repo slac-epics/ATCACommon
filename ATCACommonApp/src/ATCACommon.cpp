@@ -159,6 +159,7 @@ void ATCACommonAsynDriver::ParameterSetup(void)
     sprintf(param_name, BUILDSTAMP_STR);    createParam(param_name, asynParamOctet, &p_buildStamp);
     sprintf(param_name, GITHASH_STR);       createParam(param_name, asynParamOctet, &p_gitHash);
     sprintf(param_name, FPGAVERSION_STR);   createParam(param_name, asynParamInt32, &p_fpgaVersion);
+    sprintf(param_name, FPGATEMP_STR);      createParam(param_name, asynParamFloat64, &p_fpgaTemp);
     sprintf(param_name, ETH_UPTIMECNT_STR); createParam(param_name, asynParamInt32, &p_EthUpTimeCnt);
     sprintf(param_name, JESDCNT_RESET_STR); createParam(param_name, asynParamInt32, &p_jesdCnt_reset);
     sprintf(param_name, JESDCNT_MODE_STR);  createParam(param_name, asynParamInt32, &p_jesdCnt_mode);
@@ -221,6 +222,20 @@ void ATCACommonAsynDriver::ParameterSetup(void)
     for(int i = 0; i < MAX_DBG_STREAM_CNT; i++) {
         sprintf(param_name, DBGSTREAM_STR, i); createParam(param_name, asynParamInt32Array, &p_dbgStream[i]);
     }
+}
+
+void ATCACommonAsynDriver::getFpgaTemperature(void)
+{
+    uint32_t adc;
+    double   t;
+
+    atcaCommon->getFpgaTemperature(&adc);
+
+    t = adc * (501.3743 / 4096.0);
+    t -= 273.6777;
+
+    setDoubleParam(p_fpgaTemp, t);
+
 }
 
 void ATCACommonAsynDriver::getJesdCount(void)
@@ -327,6 +342,7 @@ void ATCACommonAsynDriver::poll(void)
         atcaCommon->getUpTimeCnt(&val);    setIntegerParam(p_upTimeCnt, val);
         atcaCommon->getEthUpTimeCnt(&val); setIntegerParam(p_EthUpTimeCnt, val);
 
+        getFpgaTemperature();
         getJesdCount();
         getDaqMuxStatus();
         getWaveformEngineStatus();

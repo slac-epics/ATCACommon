@@ -42,6 +42,7 @@ class ATCACommonAsynDriver:asynPortDriver {
         jesd_cnt_t  jesdCnt[NUM_JESD][MAX_JESD_CNT];
         uint32_t    jesdCnt_reset;
         void ParameterSetup(void);
+        void getFpgaTemperature(void);
         void getJesdCount(void);
         void getDaqMuxStatus(void);
         void getWaveformEngineStatus(void);
@@ -57,6 +58,7 @@ class ATCACommonAsynDriver:asynPortDriver {
         int p_buildStamp;
         int p_gitHash;
         int p_fpgaVersion;
+        int p_fpgaTemp;
         int p_EthUpTimeCnt;
         int p_jesdCnt_reset;
         int p_jesdCnt_mode;
@@ -124,6 +126,7 @@ class ATCACommonAsynDriver:asynPortDriver {
 #define UPTIMECNT_STR              "upTimeCnt"
 #define BUILDSTAMP_STR             "buildStamp"
 #define FPGAVERSION_STR            "fpgaVersion"
+#define FPGATEMP_STR               "fpgaTemp"
 #define ETH_UPTIMECNT_STR          "EthUpTimeCnt"
 #define GITHASH_STR                "GitHash"
 // JESD
