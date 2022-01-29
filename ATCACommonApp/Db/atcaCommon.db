@@ -38,6 +38,16 @@ record(longin, "$(DEVICE):AMC_FPGAVERSION")
     field(PINI, "YES")
 }
 
+record(ai, "$(DEVICE):AMC_FPGATEMP")
+{
+    field(DESC, "FPGA Temperature")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),0) fpgaTemp")
+    field(SCAN, "I/O Intr")
+    field(PREC, "4")
+    field(EGU, "DegreeC")
+}
+
 record(longin, "$(DEVICE):AMC_ETHUPTIMECNT")
 {
     field(DESC, "Eth Up Time Count")
