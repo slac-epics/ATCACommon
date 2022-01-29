@@ -230,7 +230,8 @@ void ATCACommonAsynDriver::getFpgaTemperature(void)
     double   t;
 
     atcaCommon->getFpgaTemperature(&adc);
-
+    
+    adc >>= 4;
     t = adc * (501.3743 / 4096.0);
     t -= 273.6777;
 
