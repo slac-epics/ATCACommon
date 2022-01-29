@@ -1,3 +1,7 @@
+R1.6.2:        01-28-2022  Kukhee Kim
+               - add FPGA temperature monitoring
+               - build against commonATCA R1.3.1
+
 R1.6.1:        11-16-2021  Marcio Donadio
                - Same as version R1.6.0, but using asyn R4.39-1.0.1
 
