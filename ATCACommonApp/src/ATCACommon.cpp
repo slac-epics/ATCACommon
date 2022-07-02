@@ -89,6 +89,7 @@ ATCACommonAsynDriver::ATCACommonAsynDriver(const char *portName, const char *pat
     try {
         atcaCommon->getBuildStamp((uint8_t *) bs); setStringParam(p_buildStamp, bs);
         atcaCommon->getGitHash((uint8_t *) gh);    setStringParam(p_gitHash,    gh);
+        setStringParam(p_cpswReleaseTag,    CPSWRealease());
         atcaCommon->getFpgaVersion(&v);            setIntegerParam(p_fpgaVersion, v);
     } catch (CPSWError &e) {
         fprintf(stderr, "CPSW Error: %s, file %s, line %d\n", e.getInfo().c_str(), __FILE__, __LINE__);
@@ -158,6 +159,7 @@ void ATCACommonAsynDriver::ParameterSetup(void)
     sprintf(param_name, UPTIMECNT_STR);     createParam(param_name, asynParamInt32, &p_upTimeCnt);
     sprintf(param_name, BUILDSTAMP_STR);    createParam(param_name, asynParamOctet, &p_buildStamp);
     sprintf(param_name, GITHASH_STR);       createParam(param_name, asynParamOctet, &p_gitHash);
+    sprintf(param_name, CPSWRELEASETAG_STR);createParam(param_name, asynParamOctet, &p_cpswReleaseTag);
     sprintf(param_name, FPGAVERSION_STR);   createParam(param_name, asynParamInt32, &p_fpgaVersion);
     sprintf(param_name, FPGATEMP_STR);      createParam(param_name, asynParamFloat64, &p_fpgaTemp);
     sprintf(param_name, ETH_UPTIMECNT_STR); createParam(param_name, asynParamInt32, &p_EthUpTimeCnt);
@@ -501,7 +503,7 @@ int cpswATCACommonAsynDriverConfigure(const char *portName, const char *pathName
 } /* end of extern C */
 
 
-/* EPICS ioc shell command */
+/* EPICS ioc shell commands */
 
 static const iocshArg    initArg0 = {"port name", iocshArgString};
 static const iocshArg    initArg1 = {"path name", iocshArgString};
@@ -520,5 +522,20 @@ void cpswATCACommonAsynDriverRegister(void)
 }
 
 epicsExportRegistrar(cpswATCACommonAsynDriverRegister);
+
+
+
+static const iocshFuncDef initReleaseFuncDef = {"cpswRelease", 0, NULL};
+static void  initReleaseCallFunc(const iocshArgBuf *args)
+{
+    printf("%s\n",CPSWRealease());
+}
+
+void cpswReleaseRegister(void)
+{
+    iocshRegister(&initReleaseFuncDef, initReleaseCallFunc);
+}
+
+epicsExportRegistrar(cpswReleaseRegister);
 
 

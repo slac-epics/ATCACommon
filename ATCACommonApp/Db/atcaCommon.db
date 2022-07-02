@@ -77,3 +77,13 @@ record(bo, "$(DEVICE):JESDCNT_MODE")
 }
 
 
+record(waveform, "$(DEVICE):CPSW_RELEASE_TAG")
+{
+    field(DESC, "CPSW release tag")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),0) CPSWReleaseTag")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "Passive")
+    field(PINI, "YES")
+}

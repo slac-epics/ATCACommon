@@ -57,6 +57,7 @@ class ATCACommonAsynDriver:asynPortDriver {
         int p_upTimeCnt;
         int p_buildStamp;
         int p_gitHash;
+        int p_cpswReleaseTag;
         int p_fpgaVersion;
         int p_fpgaTemp;
         int p_EthUpTimeCnt;
@@ -129,6 +130,8 @@ class ATCACommonAsynDriver:asynPortDriver {
 #define FPGATEMP_STR               "fpgaTemp"
 #define ETH_UPTIMECNT_STR          "EthUpTimeCnt"
 #define GITHASH_STR                "GitHash"
+// CPSW
+#define CPSWRELEASETAG_STR         "CPSWReleaseTag"
 // JESD
 #define JESDCNT_RESET_STR          "jesdCntReset"
 #define JESDCNT_MODE_STR           "jesdCntMode"
