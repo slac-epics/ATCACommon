@@ -227,7 +227,7 @@ If you changed the start and end addresses, as described above, now you also nee
 
 - AppTop:
     - DaqMuxV2:
-        - DataBufferSize: !<value> 0x400
+        - DataBufferSize: !<value> 0x800
 
 Back to the screen, in the "DaqMux Settings" tab:
     - Other configurations can be set in the interface as follows: 
