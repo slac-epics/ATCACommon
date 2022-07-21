@@ -129,50 +129,108 @@ float64-DOUBLE
 
 The configured data type is autosaved and you will need to do this only once.
 
-On the main screen, click on the "DatMux Settings Setup" button.
+On the main screen, click on the "DaqMux Settings Setup" button.
 
 3.1) Waveform Engine Settings:
 
-On the "Waveform Engine Settings" use the following values for Start and End addresses (this usually works with all the firmwares but you may need to check with the firmware engineer):
-DaqMux0:
-    CH 0:
-        Start: 0x0
-        End: 0x00004000
-    CH 1:
-        Start: 0x10000000
-        End: 0x10004000
-    CH 2:
-        Start: 0x20000000
-        End: 0x20004000
-    CH 3:
-        Start: 0x30000000
-        End: 0x30004000
-DaqMux1:
-    CH 0:
-        Start: 0x40000000
-        End: 0x40004000
-    CH 1:
-        Start: 0x50000000
-        End: 0x50004000
-    CH 2:
-        Start: 0x60000000
-        End: 0x60004000
-    CH 3:
-        Start: 0x70000000
-        End: 0x70004000
+In previous versions of the ATCACommon module it was possible to change the parameters of the Waveform Engine on the screen. This was a source of confusion and generated waste of time with people copying the configuration of one IOC to another. Also, choosing wrong values for the addresses could interfere with the BSA data.
 
-For all channels activate the 3 buttons "Enable", "DoneWhenFull", and "Auto-Readout".
+To fix this, we decided to remove the PVs that give access to the Waveform Engine parameters. You still see them on screen as disconnected PVs, as the LLRF screen was not updated, yet. 
 
-All the above configuration is autosaved.
+The Waveform Engine configurations now are done in a Configuration YAML file, and are not exposed as PVs. In a future version of ATCACommon, the user can provide the number of samples for the DaqMux in an IOC shell function during the boot, and all the configuration described below will be done in the backstage by the software.
 
-Click on the "Initialize" button for DaqMux0 and DaqMux1. This is not autosaved and you will need to press this button everytime the IOC boots, or put this on st.cmd:
+Your firmware engineer should have provided you with a default configuration YAML file that has the following configurations set:
+"Enable", "DoneWhenFull", and "Auto-Readout", and a choice of start and end memory addresses for each ADC.
+
+This is an example of what your firmware engineer should have provided as a minimum in the default YAML configuration file:
+
+- AmcCarrierCore:
+    - AmcCarrierBsa:
+        - BsaWaveformEngine:
+            - WaveformEngineBuffers:
+                - FramesAfterTrigger: !<value> 0x0000
+                - MsgDest: !<value> Auto-Readout
+                - SoftTrigger: !<value> 0x0
+                - Init: !<value> 0x0
+                - Mode: !<value> DoneWhenFull
+                - Enabled: !<value>
+                    - 0x0
+                    - 0x0
+                    - 0x0
+                    - 0x0
+                    - 0x1
+                    - 0x1
+                    - 0x1
+                    - 0x1
+                - EndAddr: !<value>
+                    - 0x0000000100002000
+                    - 0x0000000120002000
+                    - 0x0000000140002000
+                    - 0x0000000160002000
+                    - 0x0000000180002000
+                    - 0x00000001a0002000
+                    - 0x00000001c0002000
+                    - 0x00000001e0002000
+                - StartAddr: !<value>
+                    - 0x0000000100000000
+                    - 0x0000000120000000
+                    - 0x0000000140000000
+                    - 0x0000000160000000
+                    - 0x0000000180000000
+                    - 0x00000001a0000000
+                    - 0x00000001c0000000
+                    - 0x00000001e0000000
+
+If you want to modify the number of samples collected by each ADC and don't use the suggestion from the firmware engineer, you need to create an additional YAML configuration file and calculate a new set for the start and end addresses. There are several requirements that must be followed:
+ 1 - The byte addresses must be between the 4GB (0x100000000) and the 8GB (0x200000000) address space
+ 2 - The difference between the start and end address (bytes) should be identical in all four channels of a 
+     single waveform engine
+ 3 - The difference between the start and end address (bytes) should be identical to the corresponding 
+     daqMux buffer size (see below). Note that the DaqMux buffer size is in unit words of 32-bits.
+
+This is an example of the new YAML configuration file that you need to create, following the rules above when defining the start and end addresses:
+
+- AmcCarrierCore:
+    - AmcCarrierBsa:
+        - BsaWaveformEngine:
+            - WaveformEngineBuffers:
+                - EndAddr: !<value>
+                    - 0x0000000100002000
+                    - 0x0000000120002000
+                    - 0x0000000140002000
+                    - 0x0000000160002000
+                    - 0x0000000180002000
+                    - 0x00000001a0002000
+                    - 0x00000001c0002000
+                    - 0x00000001e0002000
+                - StartAddr: !<value>
+                    - 0x0000000100000000
+                    - 0x0000000120000000
+                    - 0x0000000140000000
+                    - 0x0000000160000000
+                    - 0x0000000180000000
+                    - 0x00000001a0000000
+                    - 0x00000001c0000000
+                    - 0x00000001e0000000
+
+This YAML now need to be loaded in the IOC boot, using the IOC shell function cpswLoadConfigFile in the st.cmd file.
+
+Now back to the user interface, click on the "Initialize" button for the waveform engine. This is not autosaved and you will need to press this button everytime the IOC boots, or put this on st.cmd:
 dbpf $(DEV):WFENG0_INIT 1
 dbpf $(DEV):WFENG1_INIT 1
 
 3.2) DaqMux Settings:
-Now in the "DaqMux Settings" tab:
-    - Set "Buffer Size" to 4096. This usually works with all the firmwares. If not, check with the firmware engineer of your application.
-    - Set the buttons like this: 
+
+The same as with the Waveform Engine configuration, the firmware engineer should have provided in the YAML configuration default file, a definition of the buffer size of the DaqMux following the rules described before.
+
+If you changed the start and end addresses, as described above, now you also need to configure the DaqMux buffer size accordingly. This can be done in the same YAML configuration file that you've created in 3.1 above. Just add this in the end, with the correct value for the DataBufferSize:
+
+- AppTop:
+    - DaqMuxV2:
+        - DataBufferSize: !<value> 0x400
+
+Back to the screen, in the "DaqMux Settings" tab:
+    - Other configurations can be set in the interface as follows: 
         - Cascaded Trigger "Disable"
         - "Auto Rearm"
         - "Trigger"
