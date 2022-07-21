@@ -580,7 +580,7 @@ int cpswDebugStreamDump (const char* stream_portName, int ch, int wordQty, int p
 /* epics ioc shell command */
 
 static const iocshArg   initArg0 = {"portName", iocshArgString};
-static const iocshArg   initArg1 = {"buffer size (samples)", iocshArgInt};
+static const iocshArg   initArg1 = {"buffer size (Bytes)", iocshArgInt};
 static const iocshArg   initArg2 = {"header (header_enable/header_disable)", iocshArgString};
 static const iocshArg   initArg3 = {"stream0",  iocshArgString};
 static const iocshArg   initArg4 = {"stream1",  iocshArgString};

@@ -167,14 +167,7 @@ class ATCACommonAsynDriver:asynPortDriver {
 #define ENABLEFORMATSIGN_STR       "enableFormatSign_%d_%d"
 #define ENABLEDECIMATION_STR       "enableDecimation_%d_%d"
 
-#define WFBUFSTARTADDR_STR         "wfBuffStartAddr_%d_%d"
-#define WFBUFENDADDR_STR           "wfBuffEndAddr_%d_%d"
-#define WFBUFWRADDR_STR            "wfBuffWrAddr_%d_%d"
-#define WFBUFENABLE_STR            "wfBuffEnable_%d_%d"
-#define WFBUFMODE_STR              "wfBuffMode_%d_%d"
 #define WFBUFSTATUS_STR            "wfBuffStatus_%d_%d"
-#define WFBUFMSGDEST_STR           "wfBuffMsgDest_%d_%d"
-#define WFBUFFRAFTTRG_STR          "wfBuffFramesAfterTrigger_%d_%d"
 #define WFBUFINIT_STR              "wfBuffInit_%d"
 
 // Debug Stream
