@@ -13,8 +13,8 @@ applications:
 
 1.1) configure/RELEASE
 ATCA_COMMON_MODULE_VERSION=<module version>
-CROSSBARCONTROL=$(EPICS_MODULES)/crossbarControl/$(CROSSBARCONTROL_MODULE_VERSION)
- 
+ATCACOMMON=$(EPICS_MODULES)/ATCACommon/$(ATCACOMMON_MODULE_VERSION)
+
 1.2) configure/CONFIG_SITE
 # ATCA COMMON API
 COMMONATCA_PACKAGE_NAME=atca/commonATCA
@@ -28,10 +28,11 @@ USR_INCLUDES += -I$(COMMONATCA_INCLUDE)
 commonATCA_DIR = $(COMMONATCA_LIB)
 USR_LIBS_Linux += commonATCA
 <app>_DBD += ATCACommon.dbd
+<app>_DBD += crossbarControl.dbd
 <app>_LIBS += ATCACommon
  
 1.4) Db/Makefile
-You need do verify what type of data is being sent through the DaqMux waveforms. Pick up the right database file for your case:
+You need to verify what type of data is being sent through the DaqMux waveforms. Pick up the right database file for your case:
 
 # ATCA common
 DB_INSTALLS += $(ATCACOMMON)/db/crossbarCtrl.db
