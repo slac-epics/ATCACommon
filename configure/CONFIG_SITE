@@ -58,7 +58,10 @@ $(error LINUX_KERNEL_MODULES Not found: $(LINUX_KERNEL_MODULES))
 endif
 
 LINUXRT_BUILDROOT_VERSION=buildroot-2019.08
-LINUX_VERSION=rhel6
+ifdef T_A
+PKG_ARCH=$(T_A)
+endif
+
 
 # CPSW
 CPSW_FRAMEWORK_PACKAGE_NAME=cpsw/framework
