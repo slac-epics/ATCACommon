@@ -53,6 +53,9 @@ STATIC_BUILD=YES
 
 # Location of Linux Kernel Modules:
 LINUX_KERNEL_MODULES=$(PACKAGE_SITE_TOP)/linuxKernel_Modules
+ifeq ($(wildcard $(LINUX_KERNEL_MODULES)/*),)
+$(error LINUX_KERNEL_MODULES Not found: $(LINUX_KERNEL_MODULES))
+endif
 
 LINUXRT_BUILDROOT_VERSION=buildroot-2019.08
 LINUX_VERSION=rhel6
