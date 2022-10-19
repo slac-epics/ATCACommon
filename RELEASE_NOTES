@@ -1,3 +1,7 @@
+R1.6.3:        10-19-2022  Bruce Hill
+                Updated build to work for both LCLS and PCDS
+                Build w/ yamlLoader/R2.3.2
+
 R1.6.2:        01-28-2022  Kukhee Kim
                - add FPGA temperature monitoring
                - build against commonATCA R1.3.1
