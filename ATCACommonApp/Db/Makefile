@@ -21,6 +21,10 @@ DB += StreamUshort.db
 DB += StreamFloat.db
 DB += StreamDouble.db
 DB += StreamType.db
+# Waveform manipulation
+DB += StreamSize.db
+DB += StreamEGU.db
+DB += StreamGainControl.db
 
 # =======================================================================
 
