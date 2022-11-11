@@ -29,10 +29,11 @@ class ATCACommonAsynDriver:asynPortDriver {
     public:
         ATCACommonAsynDriver(const char *portName, const char *pathString, const char *named_root = NULL);
         ~ATCACommonAsynDriver();
-        asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
+        virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
 
         void report(int level);
         void poll(void);
+        ATCACommonFw getAtcaCommonAPI();
 
     private:
         char *port;

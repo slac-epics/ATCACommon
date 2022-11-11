@@ -47,6 +47,8 @@ static const char *stream_type_str[] = {"uint32 -ULONG",
                                         "float32-FLOAT",
                                         "float64-DOUBLE" };
 
+static int searchATCACommonDriver(const char* streamPortName, ATCACommonAsynDriver** pDrv);
+
 DebugStreamAsynDriver::DebugStreamAsynDriver(const char *portName, const char *named_root, const unsigned size, const bool header, const char *stream0, const char *stream1, const char *stream2, const char *stream3)
     : asynPortDriver(portName,
                      1,  /* number of elements of the device */
@@ -68,9 +70,9 @@ DebugStreamAsynDriver::DebugStreamAsynDriver(const char *portName, const char *n
     this->rdCnt      = 0;
 
 
-    this->size      = size;
-    this->header    = header;
-
+    this->size        = size;
+    this->header      = header;
+    this->daqMuxIndex = -1;
 
     parameterSetup();
 
@@ -368,14 +370,42 @@ asynStatus DebugStreamAsynDriver::writeInt32(asynUser *pasynUser, epicsInt32 val
     /* set the parameter in the parameter library */
     status = (asynStatus) setIntegerParam(function, value);
 
-    switch(function) {
-        default:
-            break;
-    }
-
     for(int i = 0; i< 4; i++) {
         if(function == p_streamType[i]) {
             s_type[i] = (stream_type_t) value;
+            int daqMuxIndex = getDaqMuxIndex();
+            if (-1 != daqMuxIndex)
+            {
+                ATCACommonAsynDriver* pDrv;
+                if(0 != searchATCACommonDriver(port, &pDrv))
+                {
+                    printf("%s:L%d Impossible case reached. Could not locate ATCACommonDriver.\n", __func__, __LINE__);
+                    return asynError;
+                }
+                switch (value)
+                {
+                    case int32:
+                        pDrv->getAtcaCommonAPI()->enableFormatSign(1, daqMuxIndex, i);
+                        pDrv->getAtcaCommonAPI()->formatDataWidth(0, daqMuxIndex, i);
+                        pDrv->getAtcaCommonAPI()->formatSignWidth(31, daqMuxIndex, i);
+                        break;                    
+                    case uint16:
+                        pDrv->getAtcaCommonAPI()->enableFormatSign(0, daqMuxIndex, i);
+                        pDrv->getAtcaCommonAPI()->formatDataWidth(1, daqMuxIndex, i);
+                        pDrv->getAtcaCommonAPI()->formatSignWidth(0, daqMuxIndex, i);
+                        break;                    
+                    case int16:
+                        pDrv->getAtcaCommonAPI()->enableFormatSign(1, daqMuxIndex, i);
+                        pDrv->getAtcaCommonAPI()->formatDataWidth(1, daqMuxIndex, i);
+                        pDrv->getAtcaCommonAPI()->formatSignWidth(15, daqMuxIndex, i);
+                        break;     
+                    case uint32:
+                    default:
+                        pDrv->getAtcaCommonAPI()->enableFormatSign(0, daqMuxIndex, i);
+                        pDrv->getAtcaCommonAPI()->formatDataWidth(0, daqMuxIndex, i);
+                        pDrv->getAtcaCommonAPI()->formatSignWidth(0, daqMuxIndex, i);                    
+                }
+            }
             break;
         }
     }
@@ -407,6 +437,16 @@ bool DebugStreamAsynDriver::hasHeader()
     return header;
 }
 
+void DebugStreamAsynDriver::setDaqMuxIndex(int index)
+{
+    daqMuxIndex = index;
+}
+
+int DebugStreamAsynDriver::getDaqMuxIndex()
+{
+    return daqMuxIndex;
+}
+
 static int streamThread(void *u)
 {
     usrPvt_t *usrPvt =  (usrPvt_t*) u;
@@ -418,6 +458,9 @@ static int streamThread(void *u)
     epicsEventSignal(usrPvt->shutdownEvent);
     return 0;
 }
+
+
+
 
 void streamStop(void *u)
 {
@@ -451,6 +494,25 @@ int searchDebugStreamDriver(const char* streamPortName, DebugStreamAsynDriver** 
 
     if(pList && pStream && pStream->pDrv) {
         *pDrv = pStream->pDrv;
+        return 0;
+    }
+
+    return -1;
+}
+
+static int searchATCACommonDriver(const char* streamPortName, ATCACommonAsynDriver** pDrv)
+{
+    // Prevents seg fault if the pointer to char is NULL
+    if (! streamPortName) return -1;
+
+    drvNode_t *pList = last_drvList_ATCACommon();
+    while(pList) {
+        if(!strcmp(pList->portName, streamPortName)) break;  // found matched port
+        pList = (drvNode_t *) ellPrevious(&pList->node);
+    }
+
+    if(pList && pList->pDrv) {
+        *pDrv = pList->pDrv;
         return 0;
     }
 
@@ -549,13 +611,57 @@ int cpswDebugStreamAsynDriverConfigure(const char *portName, unsigned size, cons
     if(!pList->pdbStream0) {
         pList->pdbStream0 = pStream;
         createStreamThreads(pList->pdbStream0, streamThread);
-    }
+    } 
     else if (!pList->pdbStream1) { 
         pList->pdbStream1 = pStream;
         createStreamThreads(pList->pdbStream1, streamThread);
     }
     else {   /* exception, two stream sub-driver instances are already launched */
     }
+
+    return 0;
+}
+
+int DaqMuxAsynDriverConfigure(const char *portName, unsigned daqMuxIndex)
+{
+    ATCACommonAsynDriver* pCommonATCADrv = NULL;
+    DebugStreamAsynDriver* pDebugStreamDrv = NULL;
+    const char *daqMux0ChannelNames[4] = {"Stream0", "Stream1", "Stream2", "Stream3"};
+    const char *daqMux1ChannelNames[4] = {"Stream4", "Stream5", "Stream6", "Stream7"};
+    const char **daqMuxChannelNames;
+    switch (daqMuxIndex)
+    {
+        case 0: daqMuxChannelNames = daqMux0ChannelNames; break;
+        case 1: daqMuxChannelNames = daqMux1ChannelNames; break;
+        default:
+            printf("%s daqMuxIndex value not recognized. Must be 0 or 1.\n", __func__);
+            return -1;
+    }
+    if (0 != cpswDebugStreamAsynDriverConfigure(portName, 
+                                                (DAQMUX_SAMPLES+DAQMUX_HEADER) * sizeof(uint32_t),
+                                                "header_enabled", 
+                                                daqMuxChannelNames[0], 
+                                                daqMuxChannelNames[1], 
+                                                daqMuxChannelNames[2], 
+                                                daqMuxChannelNames[3]) )
+    {
+        printf("cpswDebugStreamAsynDriverConfigure failed. Exiting.\n");
+        return -1;
+    }
+    /* Reset waveform engine to defaults */
+    if(0 != searchATCACommonDriver(portName, &pCommonATCADrv))
+    {
+        printf("DaqMuxAsynDriverConfigure could not locate ATCACommonDriver. Exiting.\n");
+        return -1;
+    }
+    /* Set defaults */
+    pCommonATCADrv->getAtcaCommonAPI()->setupWaveformEngines(daqMuxIndex);
+    pCommonATCADrv->getAtcaCommonAPI()->dataBufferSize(DAQMUX_SAMPLES+DAQMUX_HEADER, daqMuxIndex);
+
+    if (searchDebugStreamDriver(portName, &pDebugStreamDrv)) {
+        printf("DaqMuxAsynDriverConfigure could not locate DebugStreamDriver. Exiting.\n");
+        return -1;
+    } 
 
     return 0;
 }
@@ -586,6 +692,7 @@ static const iocshArg   initArg3 = {"stream0",  iocshArgString};
 static const iocshArg   initArg4 = {"stream1",  iocshArgString};
 static const iocshArg   initArg5 = {"stream2",  iocshArgString};
 static const iocshArg   initArg6 = {"stream3",  iocshArgString};
+static const iocshArg   initArg7 = {"Stream datatype",  iocshArgString};
 static const iocshArg   *const initArgs[] = {&initArg0,
                                              &initArg1,
                                              &initArg2,
@@ -606,7 +713,24 @@ static void initCallFunc(const iocshArgBuf *args)
                                        args[6].sval );
 }
 
+static const iocshArg   daqMuxInitArg0 = {"portName", iocshArgString};
+static const iocshArg   daqMuxInitArg1 = {"DaqMux number (1/2)",  iocshArgInt};
+static const iocshArg   *const daqMuxInitArg[] = {&daqMuxInitArg0,
+                                                  &daqMuxInitArg1 };
+                                             
+static const iocshFuncDef daqMuxInitFuncDef = {"DaqMuxAsynDriverConfigure", 2, daqMuxInitArg};
 
+static void DaqMuxAsynDriverConfigureFunc(const iocshArgBuf *args)
+{
+    DaqMuxAsynDriverConfigure(args[0].sval, args[1].ival);
+}
+
+static void DaqMuxAsynDriverRegister(void)
+{
+    iocshRegister(&daqMuxInitFuncDef, DaqMuxAsynDriverConfigureFunc);
+}
+
+epicsExportRegistrar(DaqMuxAsynDriverRegister);
 
 /* ioc shell command to dump stream contents on screen */
 

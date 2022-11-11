@@ -314,6 +314,11 @@ void ATCACommonAsynDriver::report(int level)
     printf("Driver Class: %s, (port, %s, path: %s)\n", driverName, port, path);
 }
 
+ATCACommonFw ATCACommonAsynDriver::getAtcaCommonAPI()
+{
+    return atcaCommon;
+}
+
 void ATCACommonAsynDriver::poll(void)
 {
     uint32_t val;

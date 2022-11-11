@@ -24,6 +24,8 @@
 #define MAX_DAQMUX_CNT     2
 #define MAX_DAQMUX_CHN_CNT 4
 
+#define DAQMUX_SAMPLES     4096UL
+#define DAQMUX_HEADER      14UL
 #include "debugStreamInterface.h"
 
 typedef enum {
@@ -58,11 +60,14 @@ class DebugStreamAsynDriver: public asynPortDriver {
         bool isChannelValid(int ch);
         void dumpStreamContents(int ch, int wordQty, int packQty);
         bool hasHeader();
+        void setDaqMuxIndex(int);
+        int  getDaqMuxIndex(void);
     private:
         char *named_root;
         char *port;
         void parameterSetup(void);
         ELLLIST* callback_list;
+        int8_t daqMuxIndex;
 
     protected:
         unsigned rdLen[4];
@@ -124,6 +129,7 @@ void streamStop(void *u);
 int createStreamThread(int ch, const char *prefix_name, void *p, int (*streamThreadFunc)(void *));
 int createStreamThreads(debugStreamNode_t *p, int (*streamThreadFunc)(void *));
 int searchDebugStreamDriver(const char* streamPortName, DebugStreamAsynDriver** pDrv);
+
 
 extern "C" {
 int debugStreamAsynDriver_createStreamThreads(void);
