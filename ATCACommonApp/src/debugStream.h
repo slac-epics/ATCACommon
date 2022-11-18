@@ -66,9 +66,12 @@ class DebugStreamAsynDriver: public asynPortDriver {
         void setScopeIndex(int);
         int  getScopeIndex(void);
         int  setChannelType(const char * type, int index);
+        void setAtcaCommonPortName(const char * port);
+        char * getAtcaCommonPortName();
     private:
         char *named_root;
         char *port;
+        char *atcaCommonPort;
         void parameterSetup(void);
         ELLLIST* callback_list;
         int8_t scopeIndex;

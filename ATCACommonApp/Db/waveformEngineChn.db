@@ -1,5 +1,78 @@
 # waveformEngineChn.db
 
+record(bo, "$(DEVICE):WFENG$(CNT)_ENABLE$(CHN)")
+{
+    field(DESC, "Enable Waveform Engine $(CNT) for Channel $(CHN)")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) wfBuffEnable_$(CNT)_$(CHN)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+    field(ZNAM, "Disable")
+    field(ONAM, "Enable")
+}
+
+record(bo, "$(DEVICE):WFENG$(CNT)_MODE$(CHN)")
+{
+    field(DESC, "Mode of Waveform Engine $(CNT) for Channel $(CHN)")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) wfBuffMode_$(CNT)_$(CHN)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+    field(ZNAM, "Wrap")
+    field(ONAM, "DoneWhenFull")
+}
+
+record(bo, "$(DEVICE):WFENG$(CNT)_MSGDEST$(CHN)")
+{
+    field(DESC, "MsgDest Waveform Engine $(CNT) for Channel $(CHN)")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) wfBuffMsgDest_$(CNT)_$(CHN)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+    field(ZNAM, "Software")
+    field(ONAM, "Auto-Readout")
+}
+
+record(longout, "$(DEVICE):WFENG$(CNT)_STARTADDR$(CHN)")
+{
+    field(DESC, "Start Addr/Waveform Engine $(CNT) $(CHN)")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) wfBuffStartAddr_$(CNT)_$(CHN)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+    field(VAL,  "$(START_ADDR)")
+}
+
+
+
+record(longout, "$(DEVICE):WFENG$(CNT)_ENDADDR$(CHN)")
+{
+    field(DESC, "End Addr/Waveform Engine $(CNT) $(CHN)")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) wfBuffEndAddr_$(CNT)_$(CHN)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+    field(VAL,  "$(END_ADDR)")
+}
+
+record(longout, "$(DEVICE):WFENG$(CNT)_FRAFTTRG$(CHN)")
+{
+    field(DESC, "Frame After Trigger/Waveform Engine $(CNT) $(CHN)")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) wfBuffFramesAfterTrigger_$(CNT)_$(CHN)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+}
+
+record(longin,  "$(DEVICE):WFENG$(CNT)_WRADDR$(CHN)")
+{
+    field(DESC, "Waveform Engine Write Pointer $(CNT) $(CHN)")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0) wfBuffWrAddr_$(CNT)_$(CHN)")
+    field(SCAN, "I/O Intr")
+}
+
+
 record(longin,  "$(DEVICE):WFENG$(CNT)_STATUS$(CHN)")
 {
     field(DESC, "Waveform Engine Status $(CNT) $(CHN)")

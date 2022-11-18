@@ -425,9 +425,9 @@ int DebugStreamAsynDriver::setChannelType(const char *type, int index)
         printf("Type %s for channel %d not recognized. Must be uint32, int32, uint16 or int16\n", type, index);
         return -1;
     }
-    if(0 != searchATCACommonDriver(port, &pCommonATCADrv))
+    if(0 != searchATCACommonDriver(atcaCommonPort, &pCommonATCADrv))
     {
-        printf("scopeAsynDriverConfigure could not locate ATCACommonDriver. Exiting.\n");
+        printf("setChannelType() could not locate ATCACommonDriver. Exiting.\n");
         return -1;
     }    
     switch(s_type[index])
@@ -460,6 +460,16 @@ int DebugStreamAsynDriver::getScopeIndex()
 {
     return scopeIndex;
 }
+
+
+void DebugStreamAsynDriver::setAtcaCommonPortName(const char * port){
+    this->atcaCommonPort       = epicsStrDup(port);
+}
+
+char * DebugStreamAsynDriver::getAtcaCommonPortName(){
+    return this->atcaCommonPort;
+}
+
 
 static int streamThread(void *u)
 {
@@ -514,14 +524,14 @@ int searchDebugStreamDriver(const char* streamPortName, DebugStreamAsynDriver** 
     return -1;
 }
 
-static int searchATCACommonDriver(const char* streamPortName, ATCACommonAsynDriver** pDrv)
+static int searchATCACommonDriver(const char* ATCACommonPortName, ATCACommonAsynDriver** pDrv)
 {
     // Prevents seg fault if the pointer to char is NULL
-    if (! streamPortName) return -1;
+    if (! ATCACommonPortName) return -1;
 
     drvNode_t *pList = last_drvList_ATCACommon();
     while(pList) {
-        if(!strcmp(pList->portName, streamPortName)) break;  // found matched port
+        if(!strcmp(pList->portName, ATCACommonPortName)) break;  // found matched port
         pList = (drvNode_t *) ellPrevious(&pList->node);
     }
 
@@ -636,7 +646,7 @@ int cpswDebugStreamAsynDriverConfigure(const char *portName, unsigned size, cons
     return 0;
 }
 
-int scopeAsynDriverConfigure(const char *portName, unsigned scopeIndex, const char *header, const char* channel0Type, const char* channel1Type, const char* channel2Type, const char* channel3Type)
+int scopeAsynDriverConfigure(const char *atcaCommonPortName, const char *scopePortName, unsigned scopeIndex, const char *header, const char* channel0Type, const char* channel1Type, const char* channel2Type, const char* channel3Type)
 {
     ATCACommonAsynDriver* pCommonATCADrv = NULL;
     DebugStreamAsynDriver* pDebugStreamDrv = NULL;
@@ -651,8 +661,8 @@ int scopeAsynDriverConfigure(const char *portName, unsigned scopeIndex, const ch
             printf("%s scopeIndex value not recognized. Must be 0 or 1.\n", __func__);
             return -1;
     }
-    if (0 != cpswDebugStreamAsynDriverConfigure(portName, 
-                                                DAQMUX_SAMPLES * sizeof(uint32_t),
+    if (0 != cpswDebugStreamAsynDriverConfigure(scopePortName, 
+                                                DAQMUX_SAMPLES * sizeof(uint16_t),
                                                 header, 
                                                 daqMuxChannelNames[0], 
                                                 daqMuxChannelNames[1], 
@@ -662,21 +672,25 @@ int scopeAsynDriverConfigure(const char *portName, unsigned scopeIndex, const ch
         printf("cpswDebugStreamAsynDriverConfigure failed. Exiting.\n");
         return -1;
     }
+
+    if (searchDebugStreamDriver(scopePortName, &pDebugStreamDrv)) {
+        printf("scopeAsynDriverConfigure could not locate DebugStreamDriver. Exiting.\n");
+        return -1;
+    } 
+
+    pDebugStreamDrv->setAtcaCommonPortName(atcaCommonPortName);
     /* Reset waveform engine to defaults */
-    if(0 != searchATCACommonDriver(portName, &pCommonATCADrv))
+    if(0 != searchATCACommonDriver(atcaCommonPortName, &pCommonATCADrv))
     {
         printf("scopeAsynDriverConfigure could not locate ATCACommonDriver. Exiting.\n");
         return -1;
     }
     /* Set defaults */
-    pCommonATCADrv->getAtcaCommonAPI()->dataBufferSize(DAQMUX_SAMPLES, scopeIndex);
+    pCommonATCADrv->getAtcaCommonAPI()->dataBufferSize((DAQMUX_SAMPLES * sizeof(uint16_t)) / sizeof(uint32_t), scopeIndex);
     pCommonATCADrv->getAtcaCommonAPI()->setupDaqMux(scopeIndex);
-    pCommonATCADrv->getAtcaCommonAPI()->setupWaveformEngine(scopeIndex);
+    pCommonATCADrv->getAtcaCommonAPI()->setupWaveformEngine(scopeIndex, DAQMUX_SAMPLES * sizeof(uint16_t) );
 
-    if (searchDebugStreamDriver(portName, &pDebugStreamDrv)) {
-        printf("scopeAsynDriverConfigure could not locate DebugStreamDriver. Exiting.\n");
-        return -1;
-    } 
+
 
     /* Override stored scope index value */
     pDebugStreamDrv->setScopeIndex(scopeIndex);
@@ -720,7 +734,6 @@ static const iocshArg   initArg3 = {"stream0",  iocshArgString};
 static const iocshArg   initArg4 = {"stream1",  iocshArgString};
 static const iocshArg   initArg5 = {"stream2",  iocshArgString};
 static const iocshArg   initArg6 = {"stream3",  iocshArgString};
-static const iocshArg   initArg7 = {"Stream datatype",  iocshArgString};
 static const iocshArg   *const initArgs[] = {&initArg0,
                                              &initArg1,
                                              &initArg2,
@@ -741,13 +754,14 @@ static void initCallFunc(const iocshArgBuf *args)
                                        args[6].sval );
 }
 
-static const iocshArg   daqMuxInitArg0 = {"portName", iocshArgString};
-static const iocshArg   daqMuxInitArg1 = {"Scope (DaqMux) number (1/2)",  iocshArgInt};
-static const iocshArg   daqMuxInitArg2 = {"header (header_enable/header_disable)", iocshArgString};
-static const iocshArg   daqMuxInitArg3 = {"Channel 0 type (uint32/int32/uint16/int16)", iocshArgString};
-static const iocshArg   daqMuxInitArg4 = {"Channel 1 type (uint32/int32/uint16/int16)", iocshArgString};
-static const iocshArg   daqMuxInitArg5 = {"Channel 2 type (uint32/int32/uint16/int16)", iocshArgString};
-static const iocshArg   daqMuxInitArg6 = {"Channel 3 type (uint32/int32/uint16/int16)", iocshArgString};
+static const iocshArg   daqMuxInitArg0 = {"atcaCommonPortName", iocshArgString};
+static const iocshArg   daqMuxInitArg1 = {"scopePortName", iocshArgString};
+static const iocshArg   daqMuxInitArg2 = {"Scope (DaqMux) number (1/2)",  iocshArgInt};
+static const iocshArg   daqMuxInitArg3 = {"header (header_enable/header_disable)", iocshArgString};
+static const iocshArg   daqMuxInitArg4 = {"Channel 0 type (uint32/int32/uint16/int16)", iocshArgString};
+static const iocshArg   daqMuxInitArg5 = {"Channel 1 type (uint32/int32/uint16/int16)", iocshArgString};
+static const iocshArg   daqMuxInitArg6 = {"Channel 2 type (uint32/int32/uint16/int16)", iocshArgString};
+static const iocshArg   daqMuxInitArg7 = {"Channel 3 type (uint32/int32/uint16/int16)", iocshArgString};
 
 static const iocshArg   *const daqMuxInitArg[] = {&daqMuxInitArg0,
                                                   &daqMuxInitArg1,
@@ -755,14 +769,15 @@ static const iocshArg   *const daqMuxInitArg[] = {&daqMuxInitArg0,
                                                   &daqMuxInitArg3,
                                                   &daqMuxInitArg4,
                                                   &daqMuxInitArg5,
-                                                  &daqMuxInitArg6 };
+                                                  &daqMuxInitArg6,
+                                                  &daqMuxInitArg7 };
                                              
-static const iocshFuncDef daqMuxInitFuncDef = {"scopeAsynDriverConfigure", 7, daqMuxInitArg};
+static const iocshFuncDef daqMuxInitFuncDef = {"scopeAsynDriverConfigure", 8, daqMuxInitArg};
 
 static void DaqMuxAsynDriverConfigureFunc(const iocshArgBuf *args)
 {
-    scopeAsynDriverConfigure(args[0].sval, args[1].ival, args[2].sval,
-                             args[3].sval, args[4].sval, args[5].sval, args[6].sval );
+    scopeAsynDriverConfigure(args[0].sval, args[1].sval, args[2].ival, args[3].sval,
+                             args[4].sval, args[5].sval, args[6].sval, args[7].sval );
 }
 
 static void DaqMuxAsynDriverRegister(void)

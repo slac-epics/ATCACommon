@@ -82,8 +82,6 @@ record(bo, "$(DEVICE):DAQMUX$(CNT)_DAQMODE")
     field(SCAN, "Passive")
     field(ZNAM, "Trigger")
     field(ONAM, "Continue")
-    field(PINI, "YES")
-    info(autosaveFields, "VAL")
 }
 
 
@@ -96,8 +94,6 @@ record(bo, "$(DEVICE):DAQMUX$(CNT)_PACKETHEADER")
     field(SCAN, "Passive")
     field(ZNAM, "Disable")
     field(ONAM, "Enable")
-    field(PINI, "YES")
-    info(autosaveFields, "VAL")
 }
 
 
@@ -110,8 +106,6 @@ record(bo, "$(DEVICE):DAQMUX$(CNT)_HWFRZ")
     field(SCAN, "Passive")
     field(ZNAM, "Disable")
     field(ONAM, "Enable")
-    field(PINI, "YES")
-    info(autosaveFields, "VAL")
 }
 
 
@@ -122,9 +116,19 @@ record(longout, "$(DEVICE):DAQMUX$(CNT)_DECRATEDIV")
     field(OUT,  "@asyn($(PORT),0) decimateRateDivisor_$(CNT)")
     field(OMSL, "supervisory")
     field(SCAN, "Passive")
-    field(PINI, "YES")
-    info(autosaveFields, "VAL")
 }
+
+
+record(longout, "$(DEVICE):DAQMUX$(CNT)_BUFFSIZE")
+{
+    field(DESC, "DaqMux Data Buffer Size ($(CNT))")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) dataBufferSize_$(CNT)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+}
+
+
 
 record(longin, "$(DEVICE):DAQMUX$(CNT)_TRGCNT")
 {
