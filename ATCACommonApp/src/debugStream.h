@@ -26,6 +26,9 @@
 
 #define DAQMUX_SAMPLES     4096UL
 #define DAQMUX_HEADER      14UL
+
+#define HEADER_EN_STRING   "header_enabled"
+
 #include "debugStreamInterface.h"
 
 typedef enum {
@@ -60,14 +63,15 @@ class DebugStreamAsynDriver: public asynPortDriver {
         bool isChannelValid(int ch);
         void dumpStreamContents(int ch, int wordQty, int packQty);
         bool hasHeader();
-        void setDaqMuxIndex(int);
-        int  getDaqMuxIndex(void);
+        void setScopeIndex(int);
+        int  getScopeIndex(void);
+        int  setChannelType(const char * type, int index);
     private:
         char *named_root;
         char *port;
         void parameterSetup(void);
         ELLLIST* callback_list;
-        int8_t daqMuxIndex;
+        int8_t scopeIndex;
 
     protected:
         unsigned rdLen[4];
