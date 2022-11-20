@@ -13,6 +13,7 @@ include $(TOP)/configure/CONFIG
 #
 # ATCACommon
 DB += ATCACommon.db
+DB += ATCACommonDeprecated.db
 DB += crossbarCtrl.db
 DB += StreamLong.db
 DB += StreamUlong.db

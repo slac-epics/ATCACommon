@@ -646,7 +646,7 @@ int cpswDebugStreamAsynDriverConfigure(const char *portName, unsigned size, cons
     return 0;
 }
 
-int scopeAsynDriverConfigure(const char *atcaCommonPortName, const char *scopePortName, unsigned scopeIndex, const char *header, const char* channel0Type, const char* channel1Type, const char* channel2Type, const char* channel3Type)
+int scopeAsynDriverConfigure(const char *atcaCommonPortName, const char *scopePortName, unsigned scopeIndex, const char* channel0Type, const char* channel1Type, const char* channel2Type, const char* channel3Type)
 {
     ATCACommonAsynDriver* pCommonATCADrv = NULL;
     DebugStreamAsynDriver* pDebugStreamDrv = NULL;
@@ -663,7 +663,7 @@ int scopeAsynDriverConfigure(const char *atcaCommonPortName, const char *scopePo
     }
     if (0 != cpswDebugStreamAsynDriverConfigure(scopePortName, 
                                                 DAQMUX_SAMPLES * sizeof(uint16_t),
-                                                header, 
+                                                "header_enabled", 
                                                 daqMuxChannelNames[0], 
                                                 daqMuxChannelNames[1], 
                                                 daqMuxChannelNames[2], 
@@ -757,11 +757,10 @@ static void initCallFunc(const iocshArgBuf *args)
 static const iocshArg   daqMuxInitArg0 = {"atcaCommonPortName", iocshArgString};
 static const iocshArg   daqMuxInitArg1 = {"scopePortName", iocshArgString};
 static const iocshArg   daqMuxInitArg2 = {"Scope (DaqMux) number (1/2)",  iocshArgInt};
-static const iocshArg   daqMuxInitArg3 = {"header (header_enable/header_disable)", iocshArgString};
-static const iocshArg   daqMuxInitArg4 = {"Channel 0 type (uint32/int32/uint16/int16)", iocshArgString};
-static const iocshArg   daqMuxInitArg5 = {"Channel 1 type (uint32/int32/uint16/int16)", iocshArgString};
-static const iocshArg   daqMuxInitArg6 = {"Channel 2 type (uint32/int32/uint16/int16)", iocshArgString};
-static const iocshArg   daqMuxInitArg7 = {"Channel 3 type (uint32/int32/uint16/int16)", iocshArgString};
+static const iocshArg   daqMuxInitArg3 = {"Channel 0 type (uint32/int32/uint16/int16)", iocshArgString};
+static const iocshArg   daqMuxInitArg4 = {"Channel 1 type (uint32/int32/uint16/int16)", iocshArgString};
+static const iocshArg   daqMuxInitArg5 = {"Channel 2 type (uint32/int32/uint16/int16)", iocshArgString};
+static const iocshArg   daqMuxInitArg6 = {"Channel 3 type (uint32/int32/uint16/int16)", iocshArgString};
 
 static const iocshArg   *const daqMuxInitArg[] = {&daqMuxInitArg0,
                                                   &daqMuxInitArg1,
@@ -769,23 +768,22 @@ static const iocshArg   *const daqMuxInitArg[] = {&daqMuxInitArg0,
                                                   &daqMuxInitArg3,
                                                   &daqMuxInitArg4,
                                                   &daqMuxInitArg5,
-                                                  &daqMuxInitArg6,
-                                                  &daqMuxInitArg7 };
+                                                  &daqMuxInitArg6 };
                                              
-static const iocshFuncDef daqMuxInitFuncDef = {"scopeAsynDriverConfigure", 8, daqMuxInitArg};
+static const iocshFuncDef daqMuxInitFuncDef = {"scopeAsynDriverConfigure", 7, daqMuxInitArg};
 
-static void DaqMuxAsynDriverConfigureFunc(const iocshArgBuf *args)
+static void scopeAsynDriverConfigureFunc(const iocshArgBuf *args)
 {
     scopeAsynDriverConfigure(args[0].sval, args[1].sval, args[2].ival, args[3].sval,
-                             args[4].sval, args[5].sval, args[6].sval, args[7].sval );
+                             args[4].sval, args[5].sval, args[6].sval );
 }
 
-static void DaqMuxAsynDriverRegister(void)
+static void scopeAsynDriverRegister(void)
 {
-    iocshRegister(&daqMuxInitFuncDef, DaqMuxAsynDriverConfigureFunc);
+    iocshRegister(&daqMuxInitFuncDef, scopeAsynDriverConfigureFunc);
 }
 
-epicsExportRegistrar(DaqMuxAsynDriverRegister);
+epicsExportRegistrar(scopeAsynDriverRegister);
 
 /* ioc shell command to dump stream contents on screen */
 
