@@ -78,6 +78,7 @@ class ATCACommonAsynDriver:asynPortDriver {
             int p_enableHardwareFreeze;
             int p_decimationRateDivisor;
             int p_samplingFrequency;
+            int p_adcClkFreq;
             int p_dataBufferSize;
             int p_timestamp_sec;
             int p_timestamp_nsec;
@@ -150,6 +151,7 @@ class ATCACommonAsynDriver:asynPortDriver {
 #define ENABLEPACKETHEADER_STR     "enablePacketHeader_%d"
 #define ENABLEHARDWAREFREEZE_STR   "enableHardwareFreeze_%d"
 #define DECIMATIONRATEDIVISOR_STR  "decimateRateDivisor_%d"
+#define ADCCLKFREQ_STR             "adcClkFreq_%d"
 #define DATABUFFERSIZE_STR         "dataBufferSize_%d"
 #define TIMESTAMP_SEC_STR          "timestamp_sec_%d"
 #define TIMESTAMP_NSEC_STR         "timestamp_nsec_%d"

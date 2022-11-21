@@ -83,3 +83,11 @@ record(ao, "$(DEVICE):DAQMUX$(CNT)_SMPLGFREQ")
     field(VAL,  "350000000")
     info(autosaveFields, "VAL")    
 }
+
+record(longin, "$(DEVICE):DAQMUX$(CNT)_ADCCLKFREQ")
+{
+    field(DESC, "AMC ($(CNT)) ADC Clock frequency")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0) adcClkFreq_$(CNT)")
+    field(SCAN, "I/O Intr")
+}
