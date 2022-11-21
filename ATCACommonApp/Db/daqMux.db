@@ -48,18 +48,6 @@ record(bo, "$(DEVICE):DAQMUX$(CNT)_AUTOREARM")
     info(autosaveFields, "VAL")
 }
 
-record(longout, "$(DEVICE):DAQMUX$(CNT)_DECRATEDIV")
-{
-    field(DESC, "DaqMux Decimate Rate Divisor ($(CNT))")
-    field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0) decimateRateDivisor_$(CNT)")
-    field(OMSL, "supervisory")
-    field(SCAN, "Passive")
-    field(PINI, "YES")
-    field(VAL,  "0")
-    info(autosaveFields, "VAL")    
-}
-
 record(longin, "$(DEVICE):DAQMUX$(CNT)_TRGCNT")
 {
     field(DESC, "DaqMux Trigger Count ($(CNT))")
@@ -84,3 +72,14 @@ record(longin, "$(DEVICE):DAQMUX$(CNT)_TS_NSEC")
     field(SCAN, "I/O Intr")
 }
 
+record(ao, "$(DEVICE):DAQMUX$(CNT)_SMPLGFREQ")
+{
+    field(DESC, "DaqMux sampling frequency in Hz ($(CNT))")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) samplingFreq_$(CNT)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+    field(PINI, "YES")
+    field(VAL,  "350000000")
+    info(autosaveFields, "VAL")    
+}

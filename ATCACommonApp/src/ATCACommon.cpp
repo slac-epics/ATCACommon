@@ -105,7 +105,7 @@ asynStatus ATCACommonAsynDriver::writeInt32(asynUser *pasynUser, epicsInt32 valu
     int function = pasynUser->reason;
     asynStatus status = asynSuccess;
     const char *functionName = "writeInt32";
-
+    uint32_t amcFreq, decimationRateDiv;
     status = (asynStatus) setIntegerParam(function, value);
 
     if(function == p_jesdCnt_reset) jesdCnt_reset  = 1;
@@ -120,7 +120,17 @@ asynStatus ATCACommonAsynDriver::writeInt32(asynUser *pasynUser, epicsInt32 valu
         else if(function == (p_daqMux+i)->p_daqMode)                     atcaCommon->daqMode(value?1:0, i);
         else if(function == (p_daqMux+i)->p_enablePacketHeader)          atcaCommon->enablePacketHeader(value?1:0, i);
         else if(function == (p_daqMux+i)->p_enableHardwareFreeze)        atcaCommon->enableHardwareFreeze(value?1:0, i);
-        else if(function == (p_daqMux+i)->p_decimationRateDivisor)       atcaCommon->decimationRateDivisor(value, i);
+        else if(function == (p_daqMux+i)->p_samplingFrequency)
+        {           
+            atcaCommon->getAmcClkFreq(&amcFreq, i);
+            if (value == 0)
+                decimationRateDiv = 0;
+            else
+                decimationRateDiv = amcFreq/value;
+            printf("amcFreq=%u, samplingFreq=%u, amcFreq/value=%u\n", amcFreq, value, decimationRateDiv);
+            atcaCommon->decimationRateDivisor(decimationRateDiv, i);
+        }
+        else if(function == (p_daqMux+i)->p_decimationRateDivisor)       atcaCommon->decimationRateDivisor(value, i); 
         else if(function == (p_daqMux+i)->p_dataBufferSize)              atcaCommon->dataBufferSize(value, i);
         else
         for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) {
@@ -181,6 +191,7 @@ void ATCACommonAsynDriver::ParameterSetup(void)
         sprintf(param_name, DAQMODE_STR,            i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_daqMode);
         sprintf(param_name, ENABLEPACKETHEADER_STR, i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_enablePacketHeader);
         sprintf(param_name, ENABLEHARDWAREFREEZE_STR, i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_enableHardwareFreeze);
+        sprintf(param_name, SAMPLINGFREQ_STR,       i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_samplingFrequency);
         sprintf(param_name, DECIMATIONRATEDIVISOR_STR, i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_decimationRateDivisor);
         sprintf(param_name, DATABUFFERSIZE_STR,        i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_dataBufferSize);
         sprintf(param_name, TIMESTAMP_SEC_STR,         i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_timestamp_sec);

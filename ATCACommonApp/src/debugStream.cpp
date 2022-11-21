@@ -683,10 +683,10 @@ int scopeAsynDriverConfigure(const char *scopePortName,
     pList->pDrv->getAtcaCommonAPI()->dataBufferSize(sizeInBytes / sizeof(uint32_t), scopeIndex);
     pList->pDrv->getAtcaCommonAPI()->setupDaqMux(scopeIndex);
 
-    if (sizeInBytes > 0x10000000 && sizeInBytes > 0x20000000 ) // Allocate 4GB
+    if (sizeInBytes > 0x10000000 && sizeInBytes < 0x20000000 ) // Allocate 4GB
      {
         printf("WARNING: Using upper 4GB of DRAM.\n");
-     } else  // Allocate 8GB
+     } else if (sizeInBytes > 0x20000000) // Allocate 8GB
      {
         printf("WARNING: Using all DRAM (8GB). If BSA is activated, this will generate conflict and anomalies. Reduce the number of samples.\n");
      }    
