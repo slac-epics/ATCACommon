@@ -48,8 +48,6 @@ static const char *stream_type_str[] = {"uint32 -ULONG",
                                         "float32-FLOAT",
                                         "float64-DOUBLE" };
 
-static int searchATCACommonDriver(const char* streamPortName, ATCACommonAsynDriver** pDrv);
-
 DebugStreamAsynDriver::DebugStreamAsynDriver(const char *portName, const char *named_root, 
                                              const unsigned size, const bool header, 
                                              const char *stream0, const char *stream1, 
@@ -415,7 +413,7 @@ void DebugStreamAsynDriver::setScopeIndex(int index)
 
 int DebugStreamAsynDriver::setChannelType(const char *type, int index)
 {
-    ATCACommonAsynDriver* pCommonATCADrv = NULL;
+    drvNode_t *pList;
     if (strcmp(type, "uint32") == 0)
         s_type[index] = uint32;
     else if (strcmp(type, "int32") == 0)
@@ -429,33 +427,36 @@ int DebugStreamAsynDriver::setChannelType(const char *type, int index)
         printf("Type %s for channel %d not recognized. Must be uint32, int32, uint16 or int16\n", type, index);
         return -1;
     }
-    if(0 != searchATCACommonDriver(atcaCommonPort, &pCommonATCADrv))
+
+    pList = last_drvList_ATCACommon();
+    if ( !(pList && pList->named_root) )
     {
         printf("setChannelType() could not locate ATCACommonDriver. Exiting.\n");
         return -1;
-    }    
+    }
+  
     switch(s_type[index])
     {
         case int32:
-            pCommonATCADrv->getAtcaCommonAPI()->enableFormatSign(1, scopeIndex, index);
-            pCommonATCADrv->getAtcaCommonAPI()->formatDataWidth(0, scopeIndex, index);
-            pCommonATCADrv->getAtcaCommonAPI()->formatSignWidth(31, scopeIndex, index);
+            pList->pDrv->getAtcaCommonAPI()->enableFormatSign(1, scopeIndex, index);
+            pList->pDrv->getAtcaCommonAPI()->formatDataWidth(0, scopeIndex, index);
+            pList->pDrv->getAtcaCommonAPI()->formatSignWidth(31, scopeIndex, index);
             break;                    
         case uint16:
-            pCommonATCADrv->getAtcaCommonAPI()->enableFormatSign(0, scopeIndex, index);
-            pCommonATCADrv->getAtcaCommonAPI()->formatDataWidth(1, scopeIndex, index);
-            pCommonATCADrv->getAtcaCommonAPI()->formatSignWidth(0, scopeIndex, index);
+            pList->pDrv->getAtcaCommonAPI()->enableFormatSign(0, scopeIndex, index);
+            pList->pDrv->getAtcaCommonAPI()->formatDataWidth(1, scopeIndex, index);
+            pList->pDrv->getAtcaCommonAPI()->formatSignWidth(0, scopeIndex, index);
             break;                    
         case int16:
-            pCommonATCADrv->getAtcaCommonAPI()->enableFormatSign(1, scopeIndex, index);
-            pCommonATCADrv->getAtcaCommonAPI()->formatDataWidth(1, scopeIndex, index);
-            pCommonATCADrv->getAtcaCommonAPI()->formatSignWidth(15, scopeIndex, index);
+            pList->pDrv->getAtcaCommonAPI()->enableFormatSign(1, scopeIndex, index);
+            pList->pDrv->getAtcaCommonAPI()->formatDataWidth(1, scopeIndex, index);
+            pList->pDrv->getAtcaCommonAPI()->formatSignWidth(15, scopeIndex, index);
             break;     
         case uint32:
         default:
-            pCommonATCADrv->getAtcaCommonAPI()->enableFormatSign(0, scopeIndex, index);
-            pCommonATCADrv->getAtcaCommonAPI()->formatDataWidth(0, scopeIndex, index);
-            pCommonATCADrv->getAtcaCommonAPI()->formatSignWidth(0, scopeIndex, index);  
+            pList->pDrv->getAtcaCommonAPI()->enableFormatSign(0, scopeIndex, index);
+            pList->pDrv->getAtcaCommonAPI()->formatDataWidth(0, scopeIndex, index);
+            pList->pDrv->getAtcaCommonAPI()->formatSignWidth(0, scopeIndex, index);  
     }      
     return 0;
 }
@@ -464,16 +465,6 @@ int DebugStreamAsynDriver::getScopeIndex()
 {
     return scopeIndex;
 }
-
-
-void DebugStreamAsynDriver::setAtcaCommonPortName(const char * port){
-    this->atcaCommonPort       = epicsStrDup(port);
-}
-
-char * DebugStreamAsynDriver::getAtcaCommonPortName(){
-    return this->atcaCommonPort;
-}
-
 
 static int streamThread(void *u)
 {
@@ -522,25 +513,6 @@ int searchDebugStreamDriver(const char* streamPortName, DebugStreamAsynDriver** 
 
     if(pList && pStream && pStream->pDrv) {
         *pDrv = pStream->pDrv;
-        return 0;
-    }
-
-    return -1;
-}
-
-static int searchATCACommonDriver(const char* ATCACommonPortName, ATCACommonAsynDriver** pDrv)
-{
-    // Prevents seg fault if the pointer to char is NULL
-    if (! ATCACommonPortName) return -1;
-
-    drvNode_t *pList = last_drvList_ATCACommon();
-    while(pList) {
-        if(!strcmp(pList->portName, ATCACommonPortName)) break;  // found matched port
-        pList = (drvNode_t *) ellPrevious(&pList->node);
-    }
-
-    if(pList && pList->pDrv) {
-        *pDrv = pList->pDrv;
         return 0;
     }
 
@@ -622,6 +594,11 @@ int registerStreamCallback(const char *portName, const int stream_channel, STREA
 int cpswDebugStreamAsynDriverConfigure(const char *portName, unsigned size, const char *header, const char *stream0, const char *stream1, const char *stream2, const char *stream3)
 {
     drvNode_t *pList = last_drvList_ATCACommon();
+    if ( !(pList && pList->named_root) )
+    {
+        printf("Could not find ATCACommonAsynDriver. Exiting.\n");
+        return -1;
+    }
     debugStreamNode_t *pStream = (debugStreamNode_t *) mallocMustSucceed(sizeof(debugStreamNode_t), "Debugstream Driver");
     pStream->portName =  epicsStrDup(portName);
     pStream->streamNames[0] = (stream0 && strlen(stream0))? epicsStrDup(stream0): epicsStrDup("");
@@ -629,7 +606,7 @@ int cpswDebugStreamAsynDriverConfigure(const char *portName, unsigned size, cons
     pStream->streamNames[2] = (stream2 && strlen(stream2))? epicsStrDup(stream2): epicsStrDup("");
     pStream->streamNames[3] = (stream3 && strlen(stream3))? epicsStrDup(stream3): epicsStrDup("");
     pStream->pDrv = new DebugStreamAsynDriver(pStream->portName,
-                                              (pList && pList->named_root)?pList->named_root: NULL,
+                                              pList->named_root,
                                               size,
                                               (!strcmp(header, HEADER_EN_STRING))?true:false,
                                               pStream->streamNames[0],
@@ -650,11 +627,18 @@ int cpswDebugStreamAsynDriverConfigure(const char *portName, unsigned size, cons
     return 0;
 }
 
-int scopeAsynDriverConfigure(const char *atcaCommonPortName, const char *scopePortName, 
+int scopeAsynDriverConfigure(const char *scopePortName, 
                              unsigned scopeIndex, const char* channel0Type, const char* channel1Type, 
                              const char* channel2Type, const char* channel3Type, const char * numSamplesOverride)
 {
-    ATCACommonAsynDriver* pCommonATCADrv = NULL;
+
+    drvNode_t *pList = last_drvList_ATCACommon();
+    if (!pList) 
+    {
+        printf("Could not find ATCACommonAsynDriver. Exiting.\n");
+        return -1;
+    }
+
     DebugStreamAsynDriver* pDebugStreamDrv = NULL;
     const char *daqMux0ChannelNames[4] = {"Stream0", "Stream1", "Stream2", "Stream3"};
     const char *daqMux1ChannelNames[4] = {"Stream4", "Stream5", "Stream6", "Stream7"};
@@ -695,16 +679,9 @@ int scopeAsynDriverConfigure(const char *atcaCommonPortName, const char *scopePo
         return -1;
     } 
 
-    pDebugStreamDrv->setAtcaCommonPortName(atcaCommonPortName);
     /* Reset waveform engine to defaults */
-    if(0 != searchATCACommonDriver(atcaCommonPortName, &pCommonATCADrv))
-    {
-        printf("scopeAsynDriverConfigure could not locate ATCACommonDriver. Exiting.\n");
-        return -1;
-    }
-    /* Set defaults */
-    pCommonATCADrv->getAtcaCommonAPI()->dataBufferSize(sizeInBytes / sizeof(uint32_t), scopeIndex);
-    pCommonATCADrv->getAtcaCommonAPI()->setupDaqMux(scopeIndex);
+    pList->pDrv->getAtcaCommonAPI()->dataBufferSize(sizeInBytes / sizeof(uint32_t), scopeIndex);
+    pList->pDrv->getAtcaCommonAPI()->setupDaqMux(scopeIndex);
 
     if (sizeInBytes > 0x10000000 && sizeInBytes > 0x20000000 ) // Allocate 4GB
      {
@@ -713,7 +690,7 @@ int scopeAsynDriverConfigure(const char *atcaCommonPortName, const char *scopePo
      {
         printf("WARNING: Using all DRAM (8GB). If BSA is activated, this will generate conflict and anomalies. Reduce the number of samples.\n");
      }    
-    pCommonATCADrv->getAtcaCommonAPI()->setupWaveformEngine(scopeIndex, sizeInBytes );
+    pList->pDrv->getAtcaCommonAPI()->setupWaveformEngine(scopeIndex, sizeInBytes );
 
 
 
@@ -779,14 +756,13 @@ static void initCallFunc(const iocshArgBuf *args)
                                        args[6].sval );
 }
 
-static const iocshArg   scopeInitArg0 = {"atcaCommonPortName", iocshArgString};
-static const iocshArg   scopeInitArg1 = {"scopePortName", iocshArgString};
-static const iocshArg   scopeInitArg2 = {"Scope (DaqMux) number (1/2)",  iocshArgInt};
-static const iocshArg   scopeInitArg3 = {"Channel 0 type (uint32/int32/uint16/int16)", iocshArgString};
-static const iocshArg   scopeInitArg4 = {"Channel 1 type (uint32/int32/uint16/int16)", iocshArgString};
-static const iocshArg   scopeInitArg5 = {"Channel 2 type (uint32/int32/uint16/int16)", iocshArgString};
-static const iocshArg   scopeInitArg6 = {"Channel 3 type (uint32/int32/uint16/int16)", iocshArgString};
-static const iocshArg   scopeInitArg7 = {"Override default number of samples @16-bits (4096) (optional)", iocshArgString};
+static const iocshArg   scopeInitArg0 = {"scopePortName", iocshArgString};
+static const iocshArg   scopeInitArg1 = {"Scope (DaqMux) number (1/2)",  iocshArgInt};
+static const iocshArg   scopeInitArg2 = {"Channel 0 type (uint32/int32/uint16/int16)", iocshArgString};
+static const iocshArg   scopeInitArg3 = {"Channel 1 type (uint32/int32/uint16/int16)", iocshArgString};
+static const iocshArg   scopeInitArg4 = {"Channel 2 type (uint32/int32/uint16/int16)", iocshArgString};
+static const iocshArg   scopeInitArg5 = {"Channel 3 type (uint32/int32/uint16/int16)", iocshArgString};
+static const iocshArg   scopeInitArg6 = {"Override default number of samples @16-bits (4096) (optional)", iocshArgString};
 
 
 static const iocshArg   *const scopeInitArg[] = {&scopeInitArg0,
@@ -795,20 +771,19 @@ static const iocshArg   *const scopeInitArg[] = {&scopeInitArg0,
                                                   &scopeInitArg3,
                                                   &scopeInitArg4,
                                                   &scopeInitArg5,
-                                                  &scopeInitArg6,
-                                                  &scopeInitArg7 };
+                                                  &scopeInitArg6 };
                                              
-static const iocshFuncDef daqMuxInitFuncDef = {"scopeAsynDriverConfigure", 8, scopeInitArg};
+static const iocshFuncDef scopeInitFuncDef = {"scopeAsynDriverConfigure", 7, scopeInitArg};
 
 static void scopeAsynDriverConfigureFunc(const iocshArgBuf *args)
 {
-    scopeAsynDriverConfigure(args[0].sval, args[1].sval, args[2].ival, args[3].sval,
-                             args[4].sval, args[5].sval, args[6].sval, args[7].sval );
+    scopeAsynDriverConfigure(args[0].sval, args[1].ival, args[2].sval, args[3].sval,
+                             args[4].sval, args[5].sval, args[6].sval );
 }
 
 static void scopeAsynDriverRegister(void)
 {
-    iocshRegister(&daqMuxInitFuncDef, scopeAsynDriverConfigureFunc);
+    iocshRegister(&scopeInitFuncDef, scopeAsynDriverConfigureFunc);
 }
 
 epicsExportRegistrar(scopeAsynDriverRegister);
