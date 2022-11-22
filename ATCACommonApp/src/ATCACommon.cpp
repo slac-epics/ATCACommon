@@ -127,7 +127,6 @@ asynStatus ATCACommonAsynDriver::writeInt32(asynUser *pasynUser, epicsInt32 valu
                 decimationRateDiv = 0;
             else
                 decimationRateDiv = amcFreq/value;
-            printf("decimationRateDiv=%d\n", decimationRateDiv);
             atcaCommon->decimationRateDivisor(decimationRateDiv, i);
 
         }
