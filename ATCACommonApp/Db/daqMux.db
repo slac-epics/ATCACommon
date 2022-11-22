@@ -34,6 +34,15 @@ record(bo, "$(DEVICE):DAQMUX$(CNT)_CSCDTRG")
     info(autosaveFields, "VAL")
 }
 
+record(bo, "$(DEVICE):DAQMUX$(CNT)_CLRTRGST")
+{
+    field(DESC, "DaqMux clear trigger status ($(CNT))")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) clearTriggerStatus_$(CNT)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+}
+
 record(bo, "$(DEVICE):DAQMUX$(CNT)_AUTOREARM")
 {
     field(DESC, "DaqMux auto re-arm ($(CNT))")
@@ -80,7 +89,7 @@ record(longin, "$(DEVICE):DAQMUX$(CNT)_APPSMPLGFREQ")
     field(SCAN, "I/O Intr")
 }
 
-record(ao, "$(DEVICE):DAQMUX$(CNT)_RQSMPLGFREQ")
+record(longout, "$(DEVICE):DAQMUX$(CNT)_RQSMPLGFREQ")
 {
     field(DESC, "DaqMux req. sampling freq Hz ($(CNT))")
     field(DTYP, "asynInt32")

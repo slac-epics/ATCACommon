@@ -653,7 +653,7 @@ int scopeAsynDriverConfigure(const char *scopePortName,
             return -1;
     }
     if (numSamplesOverride != NULL)
-        sizeInBytes = strtoull(numSamplesOverride, NULL, 10);
+        sizeInBytes = strtoull(numSamplesOverride, NULL, 10) * sizeof(uint16_t);
     else
         sizeInBytes = DAQMUX_SAMPLES * sizeof(uint16_t);
         if (0 == sizeInBytes)
