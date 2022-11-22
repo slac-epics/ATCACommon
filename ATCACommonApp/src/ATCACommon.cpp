@@ -105,7 +105,6 @@ asynStatus ATCACommonAsynDriver::writeInt32(asynUser *pasynUser, epicsInt32 valu
     int function = pasynUser->reason;
     asynStatus status = asynSuccess;
     const char *functionName = "writeInt32";
-    uint32_t decimationRateDiv;
     epicsInt32 amcFreq;
     status = (asynStatus) setIntegerParam(function, value);
 
@@ -121,14 +120,16 @@ asynStatus ATCACommonAsynDriver::writeInt32(asynUser *pasynUser, epicsInt32 valu
         else if(function == (p_daqMux+i)->p_daqMode)                     atcaCommon->daqMode(value?1:0, i);
         else if(function == (p_daqMux+i)->p_enablePacketHeader)          atcaCommon->enablePacketHeader(value?1:0, i);
         else if(function == (p_daqMux+i)->p_enableHardwareFreeze)        atcaCommon->enableHardwareFreeze(value?1:0, i);
-        else if(function == (p_daqMux+i)->p_samplingFrequency)
+        else if(function == (p_daqMux+i)->p_rqSamplingFrequency)
         {           
             getIntegerParam((p_daqMux+i)->p_adcClkFreq, &amcFreq);
             if (value == 0)
                 decimationRateDiv = 0;
             else
                 decimationRateDiv = amcFreq/value;
+            printf("decimationRateDiv=%d\n", decimationRateDiv);
             atcaCommon->decimationRateDivisor(decimationRateDiv, i);
+
         }
         else if(function == (p_daqMux+i)->p_decimationRateDivisor)       atcaCommon->decimationRateDivisor(value, i); 
         else if(function == (p_daqMux+i)->p_dataBufferSize)              atcaCommon->dataBufferSize(value, i);
@@ -191,7 +192,8 @@ void ATCACommonAsynDriver::ParameterSetup(void)
         sprintf(param_name, DAQMODE_STR,            i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_daqMode);
         sprintf(param_name, ENABLEPACKETHEADER_STR, i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_enablePacketHeader);
         sprintf(param_name, ENABLEHARDWAREFREEZE_STR, i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_enableHardwareFreeze);
-        sprintf(param_name, SAMPLINGFREQ_STR,       i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_samplingFrequency);
+        sprintf(param_name, RQSAMPLINGFREQ_STR,     i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_rqSamplingFrequency);
+        sprintf(param_name, APPLIEDSAMPLINGFREQ_STR, i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_appliedSamplingFrequency);
         sprintf(param_name, ADCCLKFREQ_STR,         i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_adcClkFreq);
         
         sprintf(param_name, DECIMATIONRATEDIVISOR_STR, i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_decimationRateDivisor);
@@ -301,39 +303,44 @@ void ATCACommonAsynDriver::getWaveformEngineStatus(void)
 void ATCACommonAsynDriver::getDaqMuxStatus(void)
 {
     for(int i = 0; i < MAX_DAQMUX_CNT; i++) {
-      uint32_t val[MAX_DAQMUX_CHN_CNT];
-      uint32_t v;
+        uint32_t val[MAX_DAQMUX_CHN_CNT];
+        uint32_t v, adcClkFreq, appSamplingFreq;
+        atcaCommon->getFrameCount(val, i); 
+        for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_frameCount[j], val[j]);
 
-      atcaCommon->getFrameCount(val, i); 
-      for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_frameCount[j], val[j]);
+        atcaCommon->getStreamEnabled(val, i);
+        for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_streamEnabled[j], val[j]?1:0);
 
-      atcaCommon->getStreamEnabled(val, i);
-      for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_streamEnabled[j], val[j]?1:0);
+        atcaCommon->getInputDataValid(val, i);
+        for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_inputDataValid[j], val[j]?1:0);
 
-      atcaCommon->getInputDataValid(val, i);
-      for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_inputDataValid[j], val[j]?1:0);
+        atcaCommon->getStreamError(val, i);
+        for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_streamError[j], val[j]?1:0);
 
-      atcaCommon->getStreamError(val, i);
-      for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_streamError[j], val[j]?1:0);
+        atcaCommon->getStreamOverflow(val, i);
+        for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_streamOverflow[j], val[j]?1:0);
 
-      atcaCommon->getStreamOverflow(val, i);
-      for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_streamOverflow[j], val[j]?1:0);
+        atcaCommon->getStreamReady(val, i);
+        for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_streamReady[j], val[j]?1:0);
 
-      atcaCommon->getStreamReady(val, i);
-      for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_streamReady[j], val[j]?1:0);
+        atcaCommon->getStreamPause(val, i);
+        for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_streamPause[j], val[j]?1:0);
 
-      atcaCommon->getStreamPause(val, i);
-      for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_streamPause[j], val[j]?1:0);
+        atcaCommon->dbgLinkReady(&v, i);  setIntegerParam((p_daqMux+i)->p_dbgLinkReady, v);
+        atcaCommon->dbgInputValid(&v, i); setIntegerParam((p_daqMux+i)->p_dbgInputValid, v);
+        atcaCommon->getTriggerCount(&v, i); setIntegerParam((p_daqMux+i)->p_triggerCount, v);
 
-      atcaCommon->dbgLinkReady(&v, i);  setIntegerParam((p_daqMux+i)->p_dbgLinkReady, v);
-      atcaCommon->dbgInputValid(&v, i); setIntegerParam((p_daqMux+i)->p_dbgInputValid, v);
-      atcaCommon->getTriggerCount(&v, i); setIntegerParam((p_daqMux+i)->p_triggerCount, v);
+        atcaCommon->getTimestamp(val+0, val+1, i); setIntegerParam((p_daqMux+i)->p_timestamp_sec, val[0]);
+                                                    setIntegerParam((p_daqMux+i)->p_timestamp_nsec, val[1]);
 
-      atcaCommon->getTimestamp(val+0, val+1, i); setIntegerParam((p_daqMux+i)->p_timestamp_sec, val[0]);
-                                                 setIntegerParam((p_daqMux+i)->p_timestamp_nsec, val[1]);
+        atcaCommon->getAmcClkFreq(&adcClkFreq, i);   setIntegerParam((p_daqMux+i)->p_adcClkFreq, adcClkFreq);
 
-      atcaCommon->getAmcClkFreq(&v, i);   setIntegerParam((p_daqMux+i)->p_adcClkFreq, v);
-
+        if(decimationRateDiv != 0)
+            appSamplingFreq  = adcClkFreq / decimationRateDiv;
+        else
+            appSamplingFreq  = adcClkFreq;
+        setIntegerParam((p_daqMux+i)->p_appliedSamplingFrequency, appSamplingFreq);
+     
     }
 }
 

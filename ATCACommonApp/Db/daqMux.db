@@ -72,11 +72,19 @@ record(longin, "$(DEVICE):DAQMUX$(CNT)_TS_NSEC")
     field(SCAN, "I/O Intr")
 }
 
-record(ao, "$(DEVICE):DAQMUX$(CNT)_SMPLGFREQ")
+record(longin, "$(DEVICE):DAQMUX$(CNT)_APPSMPLGFREQ")
 {
-    field(DESC, "DaqMux sampling frequency in Hz ($(CNT))")
+    field(DESC, "DaqMux ($(CNT)) applied sampling freq (Hz) ")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0) samplingFreq_$(CNT)")
+    field(INP,  "@asyn($(PORT),0) appliedSamplingFreq_$(CNT)")
+    field(SCAN, "I/O Intr")
+}
+
+record(ao, "$(DEVICE):DAQMUX$(CNT)_RQSMPLGFREQ")
+{
+    field(DESC, "DaqMux req. sampling freq Hz ($(CNT))")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) requestedSamplingFreq_$(CNT)")
     field(OMSL, "supervisory")
     field(SCAN, "Passive")
     field(PINI, "YES")

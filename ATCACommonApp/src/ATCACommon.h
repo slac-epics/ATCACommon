@@ -34,6 +34,7 @@ class ATCACommonAsynDriver:asynPortDriver {
         void report(int level);
         void poll(void);
         ATCACommonFw getAtcaCommonAPI();
+        uint32_t decimationRateDiv;
 
     private:
         char *port;
@@ -77,7 +78,8 @@ class ATCACommonAsynDriver:asynPortDriver {
             int p_enablePacketHeader;
             int p_enableHardwareFreeze;
             int p_decimationRateDivisor;
-            int p_samplingFrequency;
+            int p_rqSamplingFrequency;
+            int p_appliedSamplingFrequency;
             int p_adcClkFreq;
             int p_dataBufferSize;
             int p_timestamp_sec;
@@ -147,7 +149,8 @@ class ATCACommonAsynDriver:asynPortDriver {
 #define CASCADEDTRIGGER_STR        "cascadedTrigger_%d"
 #define HARDWAREAUTOREARM_STR      "hardwareAutoRearm_%d"
 #define DAQMODE_STR                "daqMode_%d"
-#define SAMPLINGFREQ_STR           "samplingFreq_%d"
+#define RQSAMPLINGFREQ_STR         "requestedSamplingFreq_%d"
+#define APPLIEDSAMPLINGFREQ_STR    "appliedSamplingFreq_%d"
 #define ENABLEPACKETHEADER_STR     "enablePacketHeader_%d"
 #define ENABLEHARDWAREFREEZE_STR   "enableHardwareFreeze_%d"
 #define DECIMATIONRATEDIVISOR_STR  "decimateRateDivisor_%d"
