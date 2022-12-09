@@ -119,6 +119,8 @@ typedef struct {
     char *portName;
     char *streamNames[4];
     DebugStreamAsynDriver *pDrv;
+    unsigned sizeInBytes;
+    unsigned scopeIndex;
 } debugStreamNode_t;
 
 typedef struct {
