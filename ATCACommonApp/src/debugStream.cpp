@@ -666,7 +666,9 @@ int scopeAsynDriverConfigure(const char *scopePortName,
         return -1;
     }
     /* Handle anomaly if same scope index is passed twice */
-    if ((!pList->pdbStream0 && pList->pdbStream0->scopeIndex == scopeIndex) || (!pList->pdbStream1 && pList->pdbStream1->scopeIndex == scopeIndex))
+    if ( ( (pList->pdbStream0 != NULL) && (pList->pdbStream0->scopeIndex == scopeIndex) ) || 
+       ( (pList->pdbStream1 != NULL) && (pList->pdbStream1->scopeIndex == scopeIndex) )
+       )
     {
         printf("Error: Scope of provided scope index (%u) was already initialized. Exiting.\n", scopeIndex);
         return -1;
@@ -680,7 +682,7 @@ int scopeAsynDriverConfigure(const char *scopePortName,
     /* Both scopes must have the same allocated region size. 
      * DRAM mapping already was decided based on first scope. 
      * Second scope needs to play along. */
-    if(!pList->pdbStream0) // 
+    if(pList->pdbStream0 != NULL) // 
     {
         dram_region_size_t scope0AllocableRegionSize = pList->pDrv->getAtcaCommonAPI()->getAllocableSize(pList->pdbStream0->sizeInBytes);
         dram_region_size_t scope1AllocableRegionSize = pList->pDrv->getAtcaCommonAPI()->getAllocableSize(sizeInBytes);
