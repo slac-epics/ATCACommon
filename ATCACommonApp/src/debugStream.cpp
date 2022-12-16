@@ -422,6 +422,10 @@ int DebugStreamAsynDriver::setChannelType(const char *type, int index)
         s_type[index] = uint16;
     else if (strcmp(type, "int16") == 0)
         s_type[index] = int16; 
+    else if (strcmp(type, "float32") == 0)
+        s_type[index] = float32;    
+    else if (strcmp(type, "float64") == 0)
+        s_type[index] = float64;               
     else 
     {
         printf("Type %s for channel %d not recognized. Must be uint32, int32, uint16 or int16\n", type, index);
