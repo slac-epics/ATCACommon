@@ -1,3 +1,7 @@
+R2.0.0:        12-18-2022 Dawood Alnajjar
+               - Added a new scope function that automatically
+                 configures the DaQMux and the waveform engine
+
 R2.0.0-beta:   07-19-2022 Dawood Alnajjar
                - Removed exposure of several firmware specific PVs
                  - DaqMux buffer size
