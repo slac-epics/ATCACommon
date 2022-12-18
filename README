@@ -31,12 +31,13 @@ USR_LIBS_Linux += commonATCA
 <app>_DBD += crossbarControl.dbd
 <app>_LIBS += ATCACommon
  
-1.4) Db/Makefile
+1.4.a) Db/Makefile (To be deprecated)
 You need to verify what type of data is being sent through the DaqMux waveforms. Pick up the right database file for your case:
 
 # ATCA common
 DB_INSTALLS += $(ATCACOMMON)/db/crossbarCtrl.db
 DB_INSTALLS += $(ATCACOMMON)/db/ATCACommon.db
+DB_INSTALLS += $(ATCACOMMON)/db/ATCACommonDeprecated.db
 DB_INSTALLS += $(ATCACOMMON)/db/StreamType.db
 # Uncomment for 16-bits unsigned integer in waveform
 #DB_INSTALLS += $(ATCACOMMON)/db/StreamUshort.db
@@ -50,8 +51,28 @@ DB_INSTALLS += $(ATCACOMMON)/db/StreamType.db
 #DB_INSTALLS += $(ATCACOMMON)/db/StreamFloat.db
 # Uncomment for double precision float waveform
 #DB_INSTALLS += $(ATCACOMMON)/db/StreamDouble.db
- 
-1.5) st.cmd
+
+1.4.b) Db/Makefile
+The DaqMux/waveform engine was simplified and only the following set of files will be needed.
+
+# ATCA common
+DB_INSTALLS += $(ATCACOMMON)/db/crossbarCtrl.db
+DB_INSTALLS += $(ATCACOMMON)/db/ATCACommon.db
+# Uncomment for 16-bits unsigned integer in waveform
+#DB_INSTALLS += $(ATCACOMMON)/db/StreamUshort.db
+# Uncomment for 16-bits signed integer in waveform
+#DB_INSTALLS += $(ATCACOMMON)/db/StreamShort.db
+# Uncomment for 32-bits unsigned integer in waveform
+#DB_INSTALLS += $(ATCACOMMON)/db/StreamUlong.db
+# Uncomment for 32-bits signed integer in waveform
+#DB_INSTALLS += $(ATCACOMMON)/db/StreamLong.db
+# Uncomment for single precision float waveform
+#DB_INSTALLS += $(ATCACOMMON)/db/StreamFloat.db
+# Uncomment for double precision float waveform
+#DB_INSTALLS += $(ATCACOMMON)/db/StreamDouble.db
+
+
+1.5.a) st.cmd (To be deprecated)
 # Don't use this before cpswLoadYamlFile()
 # crossbarControlAsynDriverConfigure(Asyn port name, yaml path)
 crossbarControlAsynDriverConfigure("crossbar", "mmio/AmcCarrierCore/AxiSy56040")
@@ -60,7 +81,7 @@ crossbarControlAsynDriverConfigure("crossbar", "mmio/AmcCarrierCore/AxiSy56040")
 cpswATCACommonAsynDriverConfigure("atca", "mmio", "")
  
 # Command to access common platform ATCA DAqMux waveforms. Use the command once per AMC card.
-# cpswDebugStreamAsynDriverConfigure (Asyn port name (must be different from previous one), buffer size (samples), header_enable/header_disable, name of each of the 4 streams as defined on the yaml file)
+# cpswDebugStreamAsynDriverConfigure (Asyn port name (must be different from previous one), buffer size (bytes), header_enable/header_disable, name of each of the 4 streams as defined on the yaml file)
 cpswDebugStreamAsynDriverConfigure("atca_str0", 0x4000, "header_enabled", "Stream0", "Stream1", "Stream2", "Stream3")
 cpswDebugStreamAsynDriverConfigure("atca_str1", 0x4000, "header_enabled", "Stream4", "Stream5", "Stream6", "Stream7")
  
@@ -88,7 +109,73 @@ dbLoadRecords("db/StreamType.db", "DEV=${P}:STR1, PORT=atca_str1")
 # Uncomment for double precision float waveform
 #dbLoadRecords("db/StreamDouble.db", "DEV=${P}:STR0, PORT=atca_str0, NELM=4096, TSE=-2")
 #dbLoadRecords("db/StreamDouble.db", "DEV=${P}:STR1, PORT=atca_str1, NELM=4096, TSE=-2")
+
+1.5.b) st.cmd
+# Don't use this before cpswLoadYamlFile()
+# crossbarControlAsynDriverConfigure(Asyn port name, yaml path)
+crossbarControlAsynDriverConfigure("crossbar", "mmio/AmcCarrierCore/AxiSy56040")
+# Command to access common platform FPGA registers
+# cpswATCACommonAsynDriverConfigure(Asyn port name, yaml path, named root (optional))
+cpswATCACommonAsynDriverConfigure("atca", "mmio", "")
  
+# Command to access common platform ATCA DAqMux waveforms. Use the command once per AMC card.
+# scopeAsynDriverConfigure (Asyn port name (must be different from previous one), scope index, channel types, and an optional STRING number of samples. If not passed the default is used = 4096 @ 16-bit, 2048 @ 32-bit , 1024 @ 64-bit )
+scopeAsynDriverConfigure("atca_str0", 0, "int16", "int32", "int16", "float64")
+scopeAsynDriverConfigure("atca_str0", 1, "int16", "int16", "uint16", "float32")
+
+OR (not default number of samples used)
+
+scopeAsynDriverConfigure("atca_str0", 0, "int16", "int32", "int16", "float64", "8192")
+scopeAsynDriverConfigure("atca_str0", 1, "int16", "int16", "uint16", "float32", "8192")
+
+# ATCA common features
+
+dbLoadRecords("db/ATCACommon.db", "DEV=${P},PORT=atca")
+dbLoadRecords("db/crossbarCtrl.db", "DEV=$(P), PORT=crossbar")
+
+Default numbre of elements is 4096 samples.
+
+# Uncomment for 16-bits unsigned integer in waveform
+#dbLoadRecords("db/StreamUshort.db", "DEV=${P}:STR0, PORT=atca_str0, TSE=-2")
+#dbLoadRecords("db/StreamUshort.db", "DEV=${P}:STR1, PORT=atca_str1,  TSE=-2")
+# Uncomment for 16-bits signed integer in waveform
+#dbLoadRecords("db/StreamShort.db", "DEV=${P}:STR0, PORT=atca_str0,  TSE=-2")
+#dbLoadRecords("db/StreamShort.db", "DEV=${P}:STR1, PORT=atca_str1,  TSE=-2")
+# Uncomment for 32-bits unsigned integer in waveform
+#dbLoadRecords("db/StreamUlong.db", "DEV=${P}:STR0, PORT=atca_str0,  TSE=-2")
+#dbLoadRecords("db/StreamUlong.db", "DEV=${P}:STR1, PORT=atca_str1,  TSE=-2")
+# Uncomment for 32-bits signed integer in waveform
+#dbLoadRecords("db/StreamLong.db", "DEV=${P}:STR0, PORT=atca_str0,  TSE=-2")
+#dbLoadRecords("db/StreamLong.db", "DEV=${P}:STR1, PORT=atca_str1,  TSE=-2")
+# Uncomment for single precision float waveform
+#dbLoadRecords("db/StreamFloat.db", "DEV=${P}:STR0, PORT=atca_str0,  TSE=-2")
+#dbLoadRecords("db/StreamFloat.db", "DEV=${P}:STR1, PORT=atca_str1,  TSE=-2")
+# Uncomment for double precision float waveform
+#dbLoadRecords("db/StreamDouble.db", "DEV=${P}:STR0, PORT=atca_str0,  TSE=-2")
+#dbLoadRecords("db/StreamDouble.db", "DEV=${P}:STR1, PORT=atca_str1,  TSE=-2")
+
+OR (not default number of samples used)
+
+# Uncomment for 16-bits unsigned integer in waveform
+#dbLoadRecords("db/StreamUshort.db", "DEV=${P}:STR0, PORT=atca_str0, NELM=8192, TSE=-2")
+#dbLoadRecords("db/StreamUshort.db", "DEV=${P}:STR1, PORT=atca_str1, NELM=8192, TSE=-2")
+# Uncomment for 16-bits signed integer in waveform
+#dbLoadRecords("db/StreamShort.db", "DEV=${P}:STR0, PORT=atca_str0, NELM=8192, TSE=-2")
+#dbLoadRecords("db/StreamShort.db", "DEV=${P}:STR1, PORT=atca_str1, NELM=8192, TSE=-2")
+# Uncomment for 32-bits unsigned integer in waveform
+#dbLoadRecords("db/StreamUlong.db", "DEV=${P}:STR0, PORT=atca_str0, NELM=4096, TSE=-2")
+#dbLoadRecords("db/StreamUlong.db", "DEV=${P}:STR1, PORT=atca_str1, NELM=4096, TSE=-2")
+# Uncomment for 32-bits signed integer in waveform
+#dbLoadRecords("db/StreamLong.db", "DEV=${P}:STR0, PORT=atca_str0, NELM=4096, TSE=-2")
+#dbLoadRecords("db/StreamLong.db", "DEV=${P}:STR1, PORT=atca_str1, NELM=4096, TSE=-2")
+# Uncomment for single precision float waveform
+#dbLoadRecords("db/StreamFloat.db", "DEV=${P}:STR0, PORT=atca_str0, NELM=4096, TSE=-2")
+#dbLoadRecords("db/StreamFloat.db", "DEV=${P}:STR1, PORT=atca_str1, NELM=4096, TSE=-2")
+# Uncomment for double precision float waveform
+#dbLoadRecords("db/StreamDouble.db", "DEV=${P}:STR0, PORT=atca_str0, NELM=2048, TSE=-2")
+#dbLoadRecords("db/StreamDouble.db", "DEV=${P}:STR1, PORT=atca_str1, NELM=2048, TSE=-2")
+
+
 **************
 * 2) Screens *
 **************
@@ -116,9 +203,9 @@ Press the "JESD Diagnostics" button. Take a look if all fields are connected. Yo
 1.2) Timing:
 The "Timing" button lets you to configure the crossbar and check if the timing is arriving to the FPGA. From this screen you should also be allowed to configure the triggers (the trigger PVs are not part of the ATCACommon module, though).
 
-********************************
-* 3) Configuring the waveforms *
-********************************
+**************************************************
+* 3) Configuring the waveforms (To be deprecated)*
+**************************************************
 
 First thing, you have to tell the ATCACommon module what is the type of data arriving at the waveform. You do this with "caput <record base name>:<STR0 or STR1>:STREAM_TYPE<Chanel number> <type>. Change <record base name> according to your IOC application, use STR0 for AMC0 and STR1 for AMC1. <Chanel number> goes from 0 to 4 and <type> can be any of these strings:
 unit32 -ULONG
@@ -220,7 +307,7 @@ Now back to the user interface, click on the "Initialize" button for the wavefor
 dbpf $(DEV):WFENG0_INIT 1
 dbpf $(DEV):WFENG1_INIT 1
 
-3.2) DaqMux Settings:
+3.2) DaqMux Settings: (To be deprecated)
 
 The same as with the Waveform Engine configuration, the firmware engineer should have provided in the YAML configuration default file, a definition of the buffer size of the DaqMux following the rules described before.
 
