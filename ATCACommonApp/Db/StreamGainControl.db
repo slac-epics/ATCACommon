@@ -38,8 +38,8 @@ record(ao, "$(DEVICE):$(ATTR)_AMP_V") {
   field(DESC, "Amplifier Voltage")
   field(PINI, "NO")
   field(EGU, "V")
-  field(DRVH, "1.655")
-  field(DRVL,"-1.672")
+  field(DRVH, "1.59")
+  field(DRVL,"-1.66")
   field(PREC, "2")
   field(FLNK, "$(DEVICE):$(ATTR)_AMP_V2R_SUB")
 }
@@ -65,8 +65,8 @@ record(longin, "$(DEVICE):$(ATTR)_AMP_RAW_RBV"){
 record(ai, "$(DEVICE):$(ATTR)_AMP_V_RBV"){
   field(DESC, "Amplifier Voltage RBV")
   field(EGU, "V")
-  field(HOPR, "1.655")
-  field(LOPR,"-1.672")
+  field(HOPR, "1.59")
+  field(LOPR,"-1.66")
   field(PREC, "2")
 }
 
@@ -76,9 +76,9 @@ record(ao, "$(DEVICE):$(ATTR)_AMP_GAIN") {
   field(DESC, "Amplifier Gain Requested")
   field(PINI, "NO")
   field(EGU, "dB")
-  field(HOPR, "57.01")
+  field(HOPR, "56.70")
   field(LOPR,"-27.05")
-  field(DRVH, "57.01")
+  field(DRVH, "56.70")
   field(DRVL,"-27.05")
   field(SCAN, "Passive")
   field(PREC, "2")
