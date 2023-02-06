@@ -33,7 +33,6 @@ calcPolynomial( subRecord *psub)
         {
         double result;
         double x;
-        double debug;
  
  
         if( psub == NULL)
