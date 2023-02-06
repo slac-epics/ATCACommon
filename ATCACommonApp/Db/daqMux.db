@@ -126,20 +126,6 @@ record(longout, "$(DEVICE):DAQMUX$(CNT)_DECRATEDIV")
     info(autosaveFields, "VAL")
 }
 
-
-record(longout, "$(DEVICE):DAQMUX$(CNT)_BUFFSIZE")
-{
-    field(DESC, "DaqMux Data Buffer Size ($(CNT))")
-    field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0) dataBufferSize_$(CNT)")
-    field(OMSL, "supervisory")
-    field(SCAN, "Passive")
-    field(PINI, "YES")
-    info(autosaveFields, "VAL")
-}
-
-
-
 record(longin, "$(DEVICE):DAQMUX$(CNT)_TRGCNT")
 {
     field(DESC, "DaqMux Trigger Count ($(CNT))")
