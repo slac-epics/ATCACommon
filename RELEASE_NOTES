@@ -1,3 +1,8 @@
+R1.7.0-1.0.0:  02-07-2022 Namrata Balakrishnan
+               - Added support for CATER 158736
+               - Added PVs to use Analog Output on AMC DAQ channels to control Gain for LBLM chassis
+               - Added database to adjust stream size and use User units for stream waveforms.
+
 R2.0.0-beta:   07-19-2022 Dawood Alnajjar
                - Removed exposure of several firmware specific PVs
                  - DaqMux buffer size
