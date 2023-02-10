@@ -17,3 +17,19 @@ record(mbbo, "$(DEVICE):TCRB$(N):OUTPUTCONFIG")
     info(autosaveFields, "VAL ZRSV ONSV TWSV THSV")
 }
 
+record(mbbi, "$(DEVICE):TCRB$(N):OUTPUTCONFIG_RBV")
+{
+    field(SCAN, "1 second")
+    field(DESC, "$(DESC)")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0) output$(N)")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(ZRST, "RTM_IN0 (LCLS1)")
+    field(ONST, "FPGA")
+    field(TWST, "BP")
+    field(THST, "RTM_IN1 (LCLS2)")
+}
+
