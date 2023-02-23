@@ -1,3 +1,10 @@
+R1.6.7:        2023-02-22 Bruce Hill
+               Update to yamlLoader/R2.3.4 and asyn/R4.39-1.0.1
+               Does not include Thorlabs-WFS branch commits.
+
+R1.6.6:        2023-02-07 Michael Browne
+               Add Thorlabs-WFS nonsense in Thorlabs-WFS branch.
+
 R1.6.5:        2023-01-30 Bruce Hill
                Build a release for asyn/R4.32-1.0.0
 
