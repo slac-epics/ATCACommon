@@ -51,7 +51,11 @@ SHARED_LIBRARIES=NO
 STATIC_BUILD=YES
 
 # Note using PACKAGE_SITE_TOP from LCLS for PCDS as well
+ifeq ($(T_A),rhel7-gcc494-x86_64)
+PACKAGE_SITE_TOP=/reg/g/pcds/package/WFSlibs
+else
 PACKAGE_SITE_TOP=/afs/slac/g/lcls/package
+endif
 
 # Location of Linux Kernel Modules:
 LINUX_KERNEL_MODULES=$(PACKAGE_SITE_TOP)/linuxKernel_Modules
