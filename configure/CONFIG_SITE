@@ -56,9 +56,10 @@ PACKAGE_SITE_TOP=/reg/g/pcds/package/WFSlibs
 else
 PACKAGE_SITE_TOP=/afs/slac/g/lcls/package
 endif
+KM_PACKAGE_SITE_TOP=/afs/slac/g/lcls/package
 
 # Location of Linux Kernel Modules:
-LINUX_KERNEL_MODULES=$(PACKAGE_SITE_TOP)/linuxKernel_Modules
+LINUX_KERNEL_MODULES=$(KM_PACKAGE_SITE_TOP)/linuxKernel_Modules
 ifeq ($(wildcard $(LINUX_KERNEL_MODULES)/*),)
 $(error LINUX_KERNEL_MODULES Not found: $(LINUX_KERNEL_MODULES))
 endif
