@@ -40,6 +40,11 @@ typedef enum {
    float64
 } stream_type_t;
 
+typedef enum {
+   cfg_default = 0,
+   cfg_advanced
+} scope_cfg_type_t;
+
 struct dumpStreamInfo_t {
     int remainingPackets;
     int wordQty;

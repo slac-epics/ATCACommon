@@ -634,7 +634,8 @@ int cpswDebugStreamAsynDriverConfigure(const char *portName, unsigned size, cons
 
 int scopeAsynDriverConfigure(const char *scopePortName, 
                              unsigned scopeIndex, const char* channel0Type, const char* channel1Type, 
-                             const char* channel2Type, const char* channel3Type, const char * numSamplesOverride)
+                             const char* channel2Type, const char* channel3Type, const char * numSamplesOverride,
+                             scope_cfg_type_t scope_cfg_type)
 {
 
     dram_region_size_t allocableRegionSize = autogb;
@@ -659,9 +660,20 @@ int scopeAsynDriverConfigure(const char *scopePortName,
             return -1;
     }
 
-    /* Get number of samples at 16-bits */
+    /* Get number of samples */
     if (numSamplesOverride != NULL)
-        sizeInBytes = strtoull(numSamplesOverride, NULL, 10) * sizeof(uint16_t);
+    {
+        if (scope_cfg_type == cfg_default)
+            sizeInBytes = strtoull(numSamplesOverride, NULL, 10) * sizeof(uint16_t);
+        else {
+            uint32_t sampleSize = 0;
+            if ( (strcmp(channel0Type, "uint32") == 0) || (strcmp(channel0Type, "int32") == 0) )
+                sampleSize = sizeof(uint32_t);
+            else 
+                sampleSize = sizeof(uint16_t);
+            sizeInBytes = strtoull(numSamplesOverride, NULL, 10) * sampleSize;
+        }
+    }
     else
         sizeInBytes = DAQMUX_SAMPLES * sizeof(uint16_t);
     if (0 == sizeInBytes)
@@ -813,34 +825,61 @@ static void initCallFunc(const iocshArgBuf *args)
                                        args[6].sval );
 }
 
-static const iocshArg   scopeInitArg0 = {"scopePortName", iocshArgString};
-static const iocshArg   scopeInitArg1 = {"Scope (DaqMux) number (1/2)",  iocshArgInt};
-static const iocshArg   scopeInitArg2 = {"Channel 0 type (uint32/int32/uint16/int16)", iocshArgString};
-static const iocshArg   scopeInitArg3 = {"Channel 1 type (uint32/int32/uint16/int16)", iocshArgString};
-static const iocshArg   scopeInitArg4 = {"Channel 2 type (uint32/int32/uint16/int16)", iocshArgString};
-static const iocshArg   scopeInitArg5 = {"Channel 3 type (uint32/int32/uint16/int16)", iocshArgString};
-static const iocshArg   scopeInitArg6 = {"Override default number of samples @16-bits (4096) (optional)", iocshArgString};
+static const iocshArg   scopeAdvancedInitArg0 = {"scopePortName", iocshArgString};
+static const iocshArg   scopeAdvancedInitArg1 = {"Scope (DaqMux) number (1/2)",  iocshArgInt};
+static const iocshArg   scopeAdvancedInitArg2 = {"Channel 0 type (uint32/int32/uint16/int16)", iocshArgString};
+static const iocshArg   scopeAdvancedInitArg3 = {"Channel 1 type (uint32/int32/uint16/int16)", iocshArgString};
+static const iocshArg   scopeAdvancedInitArg4 = {"Channel 2 type (uint32/int32/uint16/int16)", iocshArgString};
+static const iocshArg   scopeAdvancedInitArg5 = {"Channel 3 type (uint32/int32/uint16/int16)", iocshArgString};
+static const iocshArg   scopeAdvancedInitArg6 = {"Override default number of samples @16-bits (4096) (optional)", iocshArgString};
 
 
-static const iocshArg   *const scopeInitArg[] = {&scopeInitArg0,
-                                                  &scopeInitArg1,
-                                                  &scopeInitArg2,
-                                                  &scopeInitArg3,
-                                                  &scopeInitArg4,
-                                                  &scopeInitArg5,
-                                                  &scopeInitArg6 };
+static const iocshArg   *const scopeAdvancedInitArg[] = { &scopeAdvancedInitArg0,
+                                                          &scopeAdvancedInitArg1,
+                                                          &scopeAdvancedInitArg2,
+                                                          &scopeAdvancedInitArg3,
+                                                          &scopeAdvancedInitArg4,
+                                                          &scopeAdvancedInitArg5,
+                                                          &scopeAdvancedInitArg6 };
                                              
-static const iocshFuncDef scopeInitFuncDef = {"scopeAsynDriverConfigure", 7, scopeInitArg};
+static const iocshFuncDef scopeAdvancedInitFuncDef = {"scopeAdvancedAsynDriverConfigure", 7, scopeAdvancedInitArg};
 
-static void scopeAsynDriverConfigureFunc(const iocshArgBuf *args)
+static void scopeAdvancedAsynDriverConfigureFunc(const iocshArgBuf *args)
 {
     scopeAsynDriverConfigure(args[0].sval, args[1].ival, args[2].sval, args[3].sval,
-                             args[4].sval, args[5].sval, args[6].sval );
+                             args[4].sval, args[5].sval, args[6].sval , cfg_advanced);
 }
+
+static const iocshArg   scopeDefaultInitArg0 = {"scopePortName", iocshArgString};
+static const iocshArg   scopeDefaultInitArg1 = {"Scope (DaqMux) number (1/2)",  iocshArgInt};
+static const iocshArg   scopeDefaultInitArg2 = {"Channels type (uint32/int32/uint16/int16)", iocshArgString};
+static const iocshArg   scopeDefaultInitArg3 = {"Override default number of samples (4096) (optional)", iocshArgString};
+
+
+static const iocshArg   *const scopeDefaultInitArg[] = {&scopeDefaultInitArg0,
+                                                        &scopeDefaultInitArg1,
+                                                        &scopeDefaultInitArg2,
+                                                        &scopeDefaultInitArg3 };
+                                             
+static const iocshFuncDef scopeDefaultInitFuncDef = {"scopeAsynDriverConfigure", 4, scopeDefaultInitArg};
+
+static void scopeDefaultAsynDriverConfigureFunc(const iocshArgBuf *args)
+{
+    scopeAsynDriverConfigure(          args[0].sval,
+                                       args[1].ival,
+                                       args[2].sval,
+                                       args[2].sval,
+                                       args[2].sval,
+                                       args[2].sval,
+                                       args[3].sval,
+                                       cfg_default );
+}
+
 
 static void scopeAsynDriverRegister(void)
 {
-    iocshRegister(&scopeInitFuncDef, scopeAsynDriverConfigureFunc);
+    iocshRegister(&scopeAdvancedInitFuncDef, scopeAdvancedAsynDriverConfigureFunc);
+    iocshRegister(&scopeDefaultInitFuncDef, scopeDefaultAsynDriverConfigureFunc);
 }
 
 epicsExportRegistrar(scopeAsynDriverRegister);
