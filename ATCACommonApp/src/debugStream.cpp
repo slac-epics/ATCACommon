@@ -661,21 +661,22 @@ int scopeAsynDriverConfigure(const char *scopePortName,
     }
 
     /* Get number of samples */
+    uint32_t sampleSize = 0;
+    if ( (strcmp(channel0Type, "uint32") == 0) || (strcmp(channel0Type, "int32") == 0) )
+        sampleSize = sizeof(uint32_t);
+    else 
+        sampleSize = sizeof(uint16_t);    
+
     if (numSamplesOverride != NULL)
     {
-        if (scope_cfg_type == cfg_default)
+        if (scope_cfg_type == cfg_advanced)
             sizeInBytes = strtoull(numSamplesOverride, NULL, 10) * sizeof(uint16_t);
         else {
-            uint32_t sampleSize = 0;
-            if ( (strcmp(channel0Type, "uint32") == 0) || (strcmp(channel0Type, "int32") == 0) )
-                sampleSize = sizeof(uint32_t);
-            else 
-                sampleSize = sizeof(uint16_t);
             sizeInBytes = strtoull(numSamplesOverride, NULL, 10) * sampleSize;
         }
     }
     else
-        sizeInBytes = DAQMUX_SAMPLES * sizeof(uint16_t);
+        sizeInBytes = DAQMUX_SAMPLES * sampleSize;
     if (0 == sizeInBytes)
     {
         printf("Error: Incorrect number of samples provided. Must be a base decimal 32-bit number. Exiting.\n");

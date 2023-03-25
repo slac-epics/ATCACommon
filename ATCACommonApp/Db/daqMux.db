@@ -97,7 +97,7 @@ record(longout, "$(DEVICE):DAQMUX$(CNT)_RQSMPLGFREQ")
     field(OMSL, "supervisory")
     field(SCAN, "Passive")
     field(PINI, "YES")
-    field(VAL,  "350000000")
+    field(VAL,  "400000000")
     info(autosaveFields, "VAL")    
 }
 
