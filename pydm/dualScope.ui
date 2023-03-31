@@ -1,0 +1,1404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1200</width>
+    <height>850</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>4-channel Dual Scope - ${DEVICE}</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>2</number>
+   </property>
+   <property name="topMargin">
+    <number>2</number>
+   </property>
+   <property name="rightMargin">
+    <number>2</number>
+   </property>
+   <property name="bottomMargin">
+    <number>2</number>
+   </property>
+   <item>
+    <widget class="QScrollArea" name="scrollArea_5">
+     <property name="sizeAdjustPolicy">
+      <enum>QAbstractScrollArea::AdjustToContents</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents_5">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>1194</width>
+        <height>844</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1">
+       <property name="leftMargin">
+        <number>2</number>
+       </property>
+       <property name="topMargin">
+        <number>2</number>
+       </property>
+       <property name="rightMargin">
+        <number>2</number>
+       </property>
+       <property name="bottomMargin">
+        <number>2</number>
+       </property>
+       <item>
+        <widget class="QFrame" name="frame_3">
+         <property name="frameShape">
+          <enum>QFrame::WinPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="lineWidth">
+          <number>9</number>
+         </property>
+         <layout class="QGridLayout" name="gridLayout" columnstretch="0,0">
+          <property name="leftMargin">
+           <number>2</number>
+          </property>
+          <property name="topMargin">
+           <number>2</number>
+          </property>
+          <property name="rightMargin">
+           <number>2</number>
+          </property>
+          <property name="bottomMargin">
+           <number>2</number>
+          </property>
+          <item row="0" column="0" colspan="2">
+           <widget class="PyDMLabel" name="PyDMLabel">
+            <property name="font">
+             <font>
+              <italic>true</italic>
+             </font>
+            </property>
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
+            </property>
+            <property name="channel" stdset="0">
+             <string>ca://${DEVICE}:AMC_BUILDSTAMP</string>
+            </property>
+            <property name="displayFormat" stdset="0">
+             <enum>PyDMLabel::String</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="2">
+           <widget class="PyDMEmbeddedDisplay" name="PyDMEmbeddedDisplay">
+            <property name="toolTip">
+             <string/>
+            </property>
+            <property name="filename" stdset="0">
+             <string>firmware_version.ui</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="frame_4">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QFrame" name="frame">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>1</horstretch>
+              <verstretch>1</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::WinPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="lineWidth">
+             <number>9</number>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_7" stretch="0,1">
+             <property name="leftMargin">
+              <number>2</number>
+             </property>
+             <property name="topMargin">
+              <number>2</number>
+             </property>
+             <property name="rightMargin">
+              <number>2</number>
+             </property>
+             <property name="bottomMargin">
+              <number>2</number>
+             </property>
+             <item>
+              <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0" columnstretch="1,0">
+               <item row="1" column="0" colspan="2">
+                <layout class="QHBoxLayout" name="horizontalLayout_2">
+                 <item>
+                  <widget class="QLabel" name="label_3">
+                   <property name="text">
+                    <string>Trigger scope:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="PyDMPushButton" name="PyDMPushButton">
+                   <property name="minimumSize">
+                    <size>
+                     <width>55</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string/>
+                   </property>
+                   <property name="text">
+                    <string>Trigger </string>
+                   </property>
+                   <property name="channel" stdset="0">
+                    <string>ca://${DEVICE}:DAQMUX0_TRGDAQ </string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item row="0" column="0" colspan="2">
+                <widget class="QLabel" name="label">
+                 <property name="font">
+                  <font>
+                   <pointsize>12</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Scope 0</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_6">
+                 <property name="font">
+                  <font>
+                   <weight>50</weight>
+                   <bold>false</bold>
+                  </font>
+                 </property>
+                 <property name="toolTip">
+                  <string/>
+                 </property>
+                 <property name="text">
+                  <string>Decimation Settings</string>
+                 </property>
+                 <property name="filenames" stdset="0">
+                  <stringlist>
+                   <string>decimationSettings.ui</string>
+                  </stringlist>
+                 </property>
+                 <property name="macros" stdset="0">
+                  <stringlist>
+                   <string>{&quot;MUX&quot;:&quot;0&quot;, &quot;ENG&quot;:&quot;0&quot;}</string>
+                  </stringlist>
+                 </property>
+                 <property name="openInNewWindow" stdset="0">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0" colspan="2">
+                <widget class="PyDMEmbeddedDisplay" name="PyDMEmbeddedDisplay_4">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>1</horstretch>
+                   <verstretch>1</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>280</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string/>
+                 </property>
+                 <property name="macros" stdset="0">
+                  <string>{&quot;MUX&quot;:&quot;0&quot;}</string>
+                 </property>
+                 <property name="filename" stdset="0">
+                  <string>streams_info.ui</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_3">
+                 <property name="font">
+                  <font>
+                   <weight>50</weight>
+                   <bold>false</bold>
+                  </font>
+                 </property>
+                 <property name="toolTip">
+                  <string/>
+                 </property>
+                 <property name="text">
+                  <string>Trigger Settings</string>
+                 </property>
+                 <property name="filenames" stdset="0">
+                  <stringlist>
+                   <string>triggerSettings.ui</string>
+                  </stringlist>
+                 </property>
+                 <property name="macros" stdset="0">
+                  <stringlist>
+                   <string>{&quot;MUX&quot;:&quot;0&quot;, &quot;ENG&quot;:&quot;0&quot;}</string>
+                  </stringlist>
+                 </property>
+                 <property name="openInNewWindow" stdset="0">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QFrame" name="frame_5">
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_3">
+                <property name="leftMargin">
+                 <number>2</number>
+                </property>
+                <property name="topMargin">
+                 <number>2</number>
+                </property>
+                <property name="rightMargin">
+                 <number>2</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>2</number>
+                </property>
+                <item>
+                 <widget class="QTabWidget" name="tabWidget">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>344</height>
+                   </size>
+                  </property>
+                  <property name="currentIndex">
+                   <number>1</number>
+                  </property>
+                  <widget class="QWidget" name="tab">
+                   <attribute name="title">
+                    <string>Single Window</string>
+                   </attribute>
+                   <layout class="QVBoxLayout" name="verticalLayout_5" stretch="1,0">
+                    <property name="leftMargin">
+                     <number>2</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>2</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>2</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>2</number>
+                    </property>
+                    <item>
+                     <widget class="PyDMWaveformPlot" name="waveformPlotBay0">
+                      <property name="toolTip">
+                       <string/>
+                      </property>
+                      <property name="showXGrid">
+                       <bool>true</bool>
+                      </property>
+                      <property name="showYGrid">
+                       <bool>true</bool>
+                      </property>
+                      <property name="axisColor">
+                       <color>
+                        <red>206</red>
+                        <green>206</green>
+                        <blue>206</blue>
+                       </color>
+                      </property>
+                      <property name="showRightAxis">
+                       <bool>true</bool>
+                      </property>
+                      <property name="title" stdset="0">
+                       <string/>
+                      </property>
+                      <property name="curves">
+                       <stringlist>
+                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR${MUX}:STREAM_SLOWSHORT${CH}&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;cyan&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 2, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
+                       </stringlist>
+                      </property>
+                      <property name="autoRangeY">
+                       <bool>false</bool>
+                      </property>
+                      <property name="minYRange">
+                       <double>-32768.000000000000000</double>
+                      </property>
+                      <property name="maxYRange">
+                       <double>32767.000000000000000</double>
+                      </property>
+                      <property name="yLabels" stdset="0">
+                       <stringlist/>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <layout class="QGridLayout" name="gridLayout_6">
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <item row="0" column="1">
+                       <widget class="QPushButton" name="b0_channel0_pb">
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {
+  background-color: rgb(85,225,255);
+  border-color: rgb(209,247,255) rgb(0,140,168) rgb(0,140,168) rgb(209,247,255);
+  color:black;
+}
+QPushButton:checked{
+  background-color: #55ffff;
+  border-color:  rgb(0,140,168) rgb(209,247,255) rgb(209,247,255)  rgb(0,140,168);
+  font: bold;
+  border-style: inset;
+}
+QPushButton:hover{
+  border-style: outset;
+  background-color: rgb(65,205,235)
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>Stream 0</string>
+                        </property>
+                        <property name="checkable">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="2">
+                       <widget class="QPushButton" name="b0_channel3_pb">
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {
+  background-color: rgb(255,170,127);
+  border-color: rgb(255,227,213) rgb(196,65,0) rgb(196,65,0) rgb(255,227,213);
+  color:black;
+}
+QPushButton:checked{
+  background-color: rgb(255,170,127);
+  border-color:  rgb(196,65,0) rgb(255,227,213) rgb(255,227,213)  rgb(0196,65,0);
+  font: bold;
+  border-style: inset;
+}
+QPushButton:hover{
+  border-style: outset;
+  background-color: rgb(235,150,107)
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>Stream 3</string>
+                        </property>
+                        <property name="checkable">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="2">
+                       <widget class="QPushButton" name="b0_channel1_pb">
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {
+  background-color: rgb(85,255,127);
+  border-color: rgb(201,255,214) rgb(0,154,37) rgb(0,154,37) rgb(201,255,214);
+  color:black;
+}
+QPushButton:checked{
+  background-color: rgb(85,255,127);
+  border-color:  rgb(0,154,37) rgb(201,255,214) rgb(201,255,214)  rgb(0,154,37);
+  font: bold;
+  border-style: inset;
+}
+QPushButton:hover{
+  border-style: outset;
+  background-color: rgb(65,235,107)
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>Stream 1</string>
+                        </property>
+                        <property name="checkable">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="1">
+                       <widget class="QPushButton" name="b0_channel2_pb">
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {
+  background-color: rgb(255,255,127);
+  border-color: rgb(255,255,205) rgb(215,210,0) rgb(215,210,0) rgb(255,255,205);
+  color:black;
+}
+QPushButton:checked{
+  background-color: rgb(255,255,127);
+  border-color:  rgb(215,210,0) rgb(255,255,205) rgb(255,255,205)  rgb(215,210,0);
+  font: bold;
+  border-style: inset;
+}
+QPushButton:hover{
+  border-style: outset;
+  background-color: rgb(235,235,107)
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>Stream 2</string>
+                        </property>
+                        <property name="checkable">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="0">
+                       <widget class="QRadioButton" name="bay0Mode0_rb">
+                        <property name="text">
+                         <string>Dotted Curves</string>
+                        </property>
+                        <property name="checked">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="0">
+                       <widget class="QRadioButton" name="bay0Mode1_rb">
+                        <property name="text">
+                         <string>Line Curves</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                   </layout>
+                  </widget>
+                  <widget class="QWidget" name="tab_2">
+                   <attribute name="title">
+                    <string>Multiple Windows</string>
+                   </attribute>
+                   <layout class="QGridLayout" name="gridLayout_4">
+                    <item row="0" column="1">
+                     <widget class="PyDMWaveformPlot" name="waveform0Ch1">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                        <horstretch>1</horstretch>
+                        <verstretch>1</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="toolTip">
+                       <string/>
+                      </property>
+                      <property name="showXGrid">
+                       <bool>true</bool>
+                      </property>
+                      <property name="showYGrid">
+                       <bool>true</bool>
+                      </property>
+                      <property name="axisColor">
+                       <color>
+                        <red>227</red>
+                        <green>227</green>
+                        <blue>227</blue>
+                       </color>
+                      </property>
+                      <property name="showRightAxis">
+                       <bool>true</bool>
+                      </property>
+                      <property name="title" stdset="0">
+                       <string>CH 1</string>
+                      </property>
+                      <property name="curves">
+                       <stringlist>
+                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR0:STREAM_SLOWSHORT1&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#55ff7f&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
+                       </stringlist>
+                      </property>
+                      <property name="autoRangeY">
+                       <bool>false</bool>
+                      </property>
+                      <property name="minYRange">
+                       <double>-32768.000000000000000</double>
+                      </property>
+                      <property name="maxYRange">
+                       <double>32767.000000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="1">
+                     <widget class="PyDMWaveformPlot" name="waveform0Ch3">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                        <horstretch>1</horstretch>
+                        <verstretch>1</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="toolTip">
+                       <string/>
+                      </property>
+                      <property name="showXGrid">
+                       <bool>true</bool>
+                      </property>
+                      <property name="showYGrid">
+                       <bool>true</bool>
+                      </property>
+                      <property name="axisColor">
+                       <color>
+                        <red>215</red>
+                        <green>215</green>
+                        <blue>215</blue>
+                       </color>
+                      </property>
+                      <property name="showRightAxis">
+                       <bool>true</bool>
+                      </property>
+                      <property name="title" stdset="0">
+                       <string>CH 3</string>
+                      </property>
+                      <property name="curves">
+                       <stringlist>
+                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR0:STREAM_SLOWSHORT3&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#ffaa7f&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
+                       </stringlist>
+                      </property>
+                      <property name="autoRangeY">
+                       <bool>false</bool>
+                      </property>
+                      <property name="minYRange">
+                       <double>-32768.000000000000000</double>
+                      </property>
+                      <property name="maxYRange">
+                       <double>32767.000000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="0">
+                     <widget class="PyDMWaveformPlot" name="waveform0Ch2">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                        <horstretch>1</horstretch>
+                        <verstretch>1</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="toolTip">
+                       <string/>
+                      </property>
+                      <property name="showXGrid">
+                       <bool>true</bool>
+                      </property>
+                      <property name="showYGrid">
+                       <bool>true</bool>
+                      </property>
+                      <property name="axisColor">
+                       <color>
+                        <red>214</red>
+                        <green>214</green>
+                        <blue>214</blue>
+                       </color>
+                      </property>
+                      <property name="showRightAxis">
+                       <bool>true</bool>
+                      </property>
+                      <property name="title" stdset="0">
+                       <string>CH 2</string>
+                      </property>
+                      <property name="curves">
+                       <stringlist>
+                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR0:STREAM_SLOWSHORT2&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#ffff7f&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
+                       </stringlist>
+                      </property>
+                      <property name="autoRangeY">
+                       <bool>false</bool>
+                      </property>
+                      <property name="minYRange">
+                       <double>-32768.000000000000000</double>
+                      </property>
+                      <property name="maxYRange">
+                       <double>32767.000000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="0">
+                     <widget class="PyDMWaveformPlot" name="waveform0Ch0">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                        <horstretch>1</horstretch>
+                        <verstretch>1</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="toolTip">
+                       <string/>
+                      </property>
+                      <property name="showXGrid">
+                       <bool>true</bool>
+                      </property>
+                      <property name="showYGrid">
+                       <bool>true</bool>
+                      </property>
+                      <property name="axisColor">
+                       <color>
+                        <red>224</red>
+                        <green>224</green>
+                        <blue>224</blue>
+                       </color>
+                      </property>
+                      <property name="showRightAxis">
+                       <bool>true</bool>
+                      </property>
+                      <property name="title" stdset="0">
+                       <string>CH 0</string>
+                      </property>
+                      <property name="showLegend">
+                       <bool>false</bool>
+                      </property>
+                      <property name="curves">
+                       <stringlist>
+                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR0:STREAM_SLOWSHORT0&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#55ffff&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
+                       </stringlist>
+                      </property>
+                      <property name="autoRangeY">
+                       <bool>false</bool>
+                      </property>
+                      <property name="minYRange">
+                       <double>-32768.000000000000000</double>
+                      </property>
+                      <property name="maxYRange">
+                       <double>32767.000000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="frame_2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>1</horstretch>
+              <verstretch>1</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::WinPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="lineWidth">
+             <number>9</number>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_8" stretch="0,1">
+             <property name="leftMargin">
+              <number>2</number>
+             </property>
+             <property name="topMargin">
+              <number>2</number>
+             </property>
+             <property name="rightMargin">
+              <number>2</number>
+             </property>
+             <property name="bottomMargin">
+              <number>2</number>
+             </property>
+             <item>
+              <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,0,0,0">
+               <item row="3" column="0" colspan="2">
+                <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_4">
+                 <property name="font">
+                  <font>
+                   <weight>50</weight>
+                   <bold>false</bold>
+                  </font>
+                 </property>
+                 <property name="toolTip">
+                  <string/>
+                 </property>
+                 <property name="text">
+                  <string>Trigger settings</string>
+                 </property>
+                 <property name="filenames" stdset="0">
+                  <stringlist>
+                   <string>triggerSettings.ui</string>
+                  </stringlist>
+                 </property>
+                 <property name="macros" stdset="0">
+                  <stringlist>
+                   <string>{&quot;MUX&quot;:&quot;1&quot;, &quot;ENG&quot;:&quot;1&quot;}</string>
+                  </stringlist>
+                 </property>
+                 <property name="openInNewWindow" stdset="0">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0" colspan="4">
+                <widget class="PyDMEmbeddedDisplay" name="PyDMEmbeddedDisplay_6">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>1</horstretch>
+                   <verstretch>1</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>280</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string/>
+                 </property>
+                 <property name="macros" stdset="0">
+                  <string>{&quot;MUX&quot;:&quot;1&quot;}</string>
+                 </property>
+                 <property name="filename" stdset="0">
+                  <string>streams_info_upconverter.ui</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0" colspan="4">
+                <widget class="QLabel" name="label_2">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <pointsize>12</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Scope 1</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0" colspan="4">
+                <layout class="QHBoxLayout" name="horizontalLayout_3">
+                 <item>
+                  <widget class="QLabel" name="label_4">
+                   <property name="text">
+                    <string>Trigger scope: </string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="PyDMPushButton" name="PyDMPushButton_2">
+                   <property name="minimumSize">
+                    <size>
+                     <width>55</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string/>
+                   </property>
+                   <property name="text">
+                    <string>Trigger </string>
+                   </property>
+                   <property name="channel" stdset="0">
+                    <string>ca://${DEVICE}:DAQMUX1_TRGDAQ </string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item row="3" column="2" colspan="2">
+                <widget class="PyDMRelatedDisplayButton" name="PyDMRelatedDisplayButton_5">
+                 <property name="font">
+                  <font>
+                   <weight>50</weight>
+                   <bold>false</bold>
+                  </font>
+                 </property>
+                 <property name="toolTip">
+                  <string/>
+                 </property>
+                 <property name="text">
+                  <string>Decimation Settings</string>
+                 </property>
+                 <property name="filenames" stdset="0">
+                  <stringlist>
+                   <string>decimationSettings.ui</string>
+                  </stringlist>
+                 </property>
+                 <property name="macros" stdset="0">
+                  <stringlist>
+                   <string>{&quot;MUX&quot;:&quot;1&quot;, &quot;ENG&quot;:&quot;1&quot;}</string>
+                  </stringlist>
+                 </property>
+                 <property name="openInNewWindow" stdset="0">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QFrame" name="frame_6">
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_4">
+                <property name="leftMargin">
+                 <number>2</number>
+                </property>
+                <property name="topMargin">
+                 <number>2</number>
+                </property>
+                <property name="rightMargin">
+                 <number>2</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>2</number>
+                </property>
+                <item>
+                 <widget class="QTabWidget" name="tabWidget_2">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>344</height>
+                   </size>
+                  </property>
+                  <property name="currentIndex">
+                   <number>1</number>
+                  </property>
+                  <widget class="QWidget" name="tab_3">
+                   <attribute name="title">
+                    <string>Single Window</string>
+                   </attribute>
+                   <layout class="QVBoxLayout" name="verticalLayout_6" stretch="1,0">
+                    <property name="leftMargin">
+                     <number>2</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>2</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>2</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>2</number>
+                    </property>
+                    <item>
+                     <widget class="PyDMWaveformPlot" name="waveformPlotBay1">
+                      <property name="toolTip">
+                       <string/>
+                      </property>
+                      <property name="showXGrid">
+                       <bool>true</bool>
+                      </property>
+                      <property name="showYGrid">
+                       <bool>true</bool>
+                      </property>
+                      <property name="axisColor">
+                       <color>
+                        <red>206</red>
+                        <green>206</green>
+                        <blue>206</blue>
+                       </color>
+                      </property>
+                      <property name="showRightAxis">
+                       <bool>true</bool>
+                      </property>
+                      <property name="title" stdset="0">
+                       <string/>
+                      </property>
+                      <property name="curves">
+                       <stringlist>
+                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR${MUX}:STREAM_SLOWSHORT${CH}&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;cyan&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 2, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
+                       </stringlist>
+                      </property>
+                      <property name="autoRangeY">
+                       <bool>false</bool>
+                      </property>
+                      <property name="minYRange">
+                       <double>-32768.000000000000000</double>
+                      </property>
+                      <property name="maxYRange">
+                       <double>32767.000000000000000</double>
+                      </property>
+                      <property name="yLabels" stdset="0">
+                       <stringlist/>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <layout class="QGridLayout" name="gridLayout_7">
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <item row="0" column="1">
+                       <widget class="QPushButton" name="b1_channel0_pb">
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {
+  background-color: rgb(85,225,255);
+  border-color: rgb(209,247,255) rgb(0,140,168) rgb(0,140,168) rgb(209,247,255);
+  color:black;
+}
+QPushButton:checked{
+  background-color: #55ffff;
+  border-color:  rgb(0,140,168) rgb(209,247,255) rgb(209,247,255)  rgb(0,140,168);
+  font: bold;
+  border-style: inset;
+}
+QPushButton:hover{
+  border-style: outset;
+  background-color: rgb(65,205,235)
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>Stream 0 </string>
+                        </property>
+                        <property name="checkable">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="2">
+                       <widget class="QPushButton" name="b1_channel1_pb">
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {
+  background-color: rgb(85,255,127);
+  border-color: rgb(201,255,214) rgb(0,154,37) rgb(0,154,37) rgb(201,255,214);
+  color:black;
+}
+QPushButton:checked{
+  background-color: rgb(85,255,127);
+  border-color:  rgb(0,154,37) rgb(201,255,214) rgb(201,255,214)  rgb(0,154,37);
+  font: bold;
+  border-style: inset;
+}
+QPushButton:hover{
+  border-style: outset;
+  background-color: rgb(65,235,107)
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>Stream 1</string>
+                        </property>
+                        <property name="checkable">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="2">
+                       <widget class="QPushButton" name="b1_channel3_pb">
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {
+  background-color: rgb(255,170,127);
+  border-color: rgb(255,227,213) rgb(196,65,0) rgb(196,65,0) rgb(255,227,213);
+  color:black;
+}
+QPushButton:checked{
+  background-color: rgb(255,170,127);
+  border-color:  rgb(196,65,0) rgb(255,227,213) rgb(255,227,213)  rgb(0196,65,0);
+  font: bold;
+  border-style: inset;
+}
+QPushButton:hover{
+  border-style: outset;
+  background-color: rgb(235,150,107)
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>Stream 3</string>
+                        </property>
+                        <property name="checkable">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="1">
+                       <widget class="QPushButton" name="b1_channel2_pb">
+                        <property name="styleSheet">
+                         <string notr="true">QPushButton {
+  background-color: rgb(255,255,127);
+  border-color: rgb(255,255,205) rgb(215,210,0) rgb(215,210,0) rgb(255,255,205);
+  color:black;
+}
+QPushButton:checked{
+  background-color: rgb(255,255,127);
+  border-color:  rgb(215,210,0) rgb(255,255,205) rgb(255,255,205)  rgb(215,210,0);
+  font: bold;
+  border-style: inset;
+}
+QPushButton:hover{
+  border-style: outset;
+  background-color: rgb(235,235,107)
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>Stream 2</string>
+                        </property>
+                        <property name="checkable">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="0">
+                       <widget class="QRadioButton" name="bay1Mode0_rb">
+                        <property name="text">
+                         <string>Dotted Curves</string>
+                        </property>
+                        <property name="checked">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="0">
+                       <widget class="QRadioButton" name="bay1Mode1_rb">
+                        <property name="text">
+                         <string>Line Curves</string>
+                        </property>
+                        <property name="checked">
+                         <bool>false</bool>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                   </layout>
+                  </widget>
+                  <widget class="QWidget" name="tab_4">
+                   <attribute name="title">
+                    <string>Multiple Windows</string>
+                   </attribute>
+                   <layout class="QGridLayout" name="gridLayout_5">
+                    <property name="leftMargin">
+                     <number>2</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>2</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>2</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>2</number>
+                    </property>
+                    <item row="0" column="0">
+                     <widget class="PyDMWaveformPlot" name="waveform1Ch0">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                        <horstretch>1</horstretch>
+                        <verstretch>1</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="toolTip">
+                       <string/>
+                      </property>
+                      <property name="showXGrid">
+                       <bool>true</bool>
+                      </property>
+                      <property name="showYGrid">
+                       <bool>true</bool>
+                      </property>
+                      <property name="axisColor">
+                       <color>
+                        <red>224</red>
+                        <green>224</green>
+                        <blue>224</blue>
+                       </color>
+                      </property>
+                      <property name="showRightAxis">
+                       <bool>true</bool>
+                      </property>
+                      <property name="title" stdset="0">
+                       <string>CH 0</string>
+                      </property>
+                      <property name="showLegend">
+                       <bool>false</bool>
+                      </property>
+                      <property name="curves">
+                       <stringlist>
+                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR1:STREAM_SLOWSHORT0&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#55ffff&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
+                       </stringlist>
+                      </property>
+                      <property name="autoRangeY">
+                       <bool>false</bool>
+                      </property>
+                      <property name="minYRange">
+                       <double>-32768.000000000000000</double>
+                      </property>
+                      <property name="maxYRange">
+                       <double>32767.000000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="PyDMWaveformPlot" name="waveform1Ch1">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                        <horstretch>1</horstretch>
+                        <verstretch>1</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="toolTip">
+                       <string/>
+                      </property>
+                      <property name="showXGrid">
+                       <bool>true</bool>
+                      </property>
+                      <property name="showYGrid">
+                       <bool>true</bool>
+                      </property>
+                      <property name="axisColor">
+                       <color>
+                        <red>227</red>
+                        <green>227</green>
+                        <blue>227</blue>
+                       </color>
+                      </property>
+                      <property name="showRightAxis">
+                       <bool>true</bool>
+                      </property>
+                      <property name="title" stdset="0">
+                       <string>CH 1</string>
+                      </property>
+                      <property name="curves">
+                       <stringlist>
+                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR1:STREAM_SLOWSHORT1&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#55ff7f&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
+                       </stringlist>
+                      </property>
+                      <property name="autoRangeY">
+                       <bool>false</bool>
+                      </property>
+                      <property name="minYRange">
+                       <double>-32768.000000000000000</double>
+                      </property>
+                      <property name="maxYRange">
+                       <double>32767.000000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="0">
+                     <widget class="PyDMWaveformPlot" name="waveform1Ch2">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                        <horstretch>1</horstretch>
+                        <verstretch>1</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="toolTip">
+                       <string/>
+                      </property>
+                      <property name="showXGrid">
+                       <bool>true</bool>
+                      </property>
+                      <property name="showYGrid">
+                       <bool>true</bool>
+                      </property>
+                      <property name="axisColor">
+                       <color>
+                        <red>214</red>
+                        <green>214</green>
+                        <blue>214</blue>
+                       </color>
+                      </property>
+                      <property name="showRightAxis">
+                       <bool>true</bool>
+                      </property>
+                      <property name="title" stdset="0">
+                       <string>CH 2</string>
+                      </property>
+                      <property name="curves">
+                       <stringlist>
+                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR1:STREAM_SLOWSHORT2&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#ffff7f&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
+                       </stringlist>
+                      </property>
+                      <property name="autoRangeY">
+                       <bool>false</bool>
+                      </property>
+                      <property name="minYRange">
+                       <double>-32768.000000000000000</double>
+                      </property>
+                      <property name="maxYRange">
+                       <double>32767.000000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="1">
+                     <widget class="PyDMWaveformPlot" name="waveform1Ch3">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                        <horstretch>1</horstretch>
+                        <verstretch>1</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="toolTip">
+                       <string/>
+                      </property>
+                      <property name="showXGrid">
+                       <bool>true</bool>
+                      </property>
+                      <property name="showYGrid">
+                       <bool>true</bool>
+                      </property>
+                      <property name="axisColor">
+                       <color>
+                        <red>215</red>
+                        <green>215</green>
+                        <blue>215</blue>
+                       </color>
+                      </property>
+                      <property name="showRightAxis">
+                       <bool>true</bool>
+                      </property>
+                      <property name="title" stdset="0">
+                       <string>CH 3</string>
+                      </property>
+                      <property name="curves">
+                       <stringlist>
+                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR1:STREAM_SLOWSHORT3&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#ffaa7f&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
+                       </stringlist>
+                      </property>
+                      <property name="autoRangeY">
+                       <bool>false</bool>
+                      </property>
+                      <property name="minYRange">
+                       <double>-32768.000000000000000</double>
+                      </property>
+                      <property name="maxYRange">
+                       <double>32767.000000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PyDMLabel</class>
+   <extends>QLabel</extends>
+   <header>pydm.widgets.label</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMWaveformPlot</class>
+   <extends>QGraphicsView</extends>
+   <header>pydm.widgets.waveformplot</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMEmbeddedDisplay</class>
+   <extends>QFrame</extends>
+   <header>pydm.widgets.embedded_display</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMPushButton</class>
+   <extends>QPushButton</extends>
+   <header>pydm.widgets.pushbutton</header>
+  </customwidget>
+  <customwidget>
+   <class>PyDMRelatedDisplayButton</class>
+   <extends>QPushButton</extends>
+   <header>pydm.widgets.related_display_button</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
