@@ -173,7 +173,7 @@ class ATCACommonAsynDriver:asynPortDriver {
 #define FORMATSIGNWIDTH_STR        "formatSignWidth_%d_%d"
 #define FORMATDATAWIDTH_STR        "formatDataWidth_%d_%d"
 #define ENABLEFORMATSIGN_STR       "enableFormatSign_%d_%d"
-#define ENABLEDECIMATION_STR       "enableDecimation_%d_%d"
+#define ENABLEDECIMATION_STR       "enableDecimationAvg_%d_%d"
 
 #define WFBUFSTARTADDR_STR         "wfBuffStartAddr_%d_%d"
 #define WFBUFENDADDR_STR           "wfBuffEndAddr_%d_%d"

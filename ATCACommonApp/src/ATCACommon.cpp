@@ -126,7 +126,7 @@ asynStatus ATCACommonAsynDriver::writeInt32(asynUser *pasynUser, epicsInt32 valu
             if (value == 0)
                 decimationRateDiv = 0;
             else
-                decimationRateDiv = amcFreq/value;
+                decimationRateDiv = round(amcFreq/(double)value);
             atcaCommon->decimationRateDivisor(decimationRateDiv, i);
 
         }
@@ -140,7 +140,7 @@ asynStatus ATCACommonAsynDriver::writeInt32(asynUser *pasynUser, epicsInt32 valu
             else if(function == (p_daqMux+i)->p_formatSignWidth[j])      atcaCommon->formatSignWidth(value, i, j);
             else if(function == (p_daqMux+i)->p_formatDataWidth[j])      atcaCommon->formatDataWidth(value, i, j);
             else if(function == (p_daqMux+i)->p_enableFormatSign[j])     atcaCommon->enableFormatSign(value?1:0, i, j);
-            else if(function == (p_daqMux+i)->p_enableDecimation[j])     atcaCommon->enableDecimation(value?1:0, 1, j);
+            else if(function == (p_daqMux+i)->p_enableDecimation[j])     atcaCommon->enableDecimationAvg(value?1:0, 1, j);
         }
     }
 
@@ -338,6 +338,7 @@ void ATCACommonAsynDriver::getDaqMuxStatus(void)
             appSamplingFreq  = adcClkFreq / decimationRateDiv;
         else
             appSamplingFreq  = adcClkFreq;
+            
         setIntegerParam((p_daqMux+i)->p_appliedSamplingFrequency, appSamplingFreq);
      
     }

@@ -130,15 +130,16 @@ record(bo, "$(DEVICE):DAQMUX$(CNT)_FORMATSIGN$(CHN)")
 }
 
 
-record(bo, "$(DEVICE):DAQMUX$(CNT)_DECIMATION$(CHN)")
+record(bo, "$(DEVICE):DAQMUX$(CNT)_DECIMATIONAVG$(CHN)")
 {
-    field(DESC, "DaqMux $(CNT) Enable Decimation for CH$(CHN)")
+    field(DESC, "DaqMux $(CNT) Enable Dec. averaging for CH$(CHN)")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),0) enableDecimation_$(CNT)_$(CHN)")
+    field(OUT,  "@asyn($(PORT),0) enableDecimationAvg_$(CNT)_$(CHN)")
     field(OMSL, "supervisory")
     field(SCAN, "Passive")
     field(ZNAM, "Disable")
     field(ONAM, "Enable")
     field(PINI, "YES")
+    field(VAL,  "0")
     info(autosaveFields, "VAL")
 }
