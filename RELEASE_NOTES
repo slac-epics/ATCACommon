@@ -1,3 +1,8 @@
+R1.7.1:        08-09-2023  Mike Browne, Bruce Hill, Marcio Donadio
+               - Changes to make the module build for RHEL7 and on both EED and
+                 PCDS environments.
+               - Using yamlLoader/R2.3.5.
+
 R1.7.0:        07-02-2022  Dawood Alnajjar
                - Added cpsw release tag PV and IOC shell command
                - build against cpsw/framework R4.4.1-1.0.1
