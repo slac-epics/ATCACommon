@@ -81,6 +81,7 @@ class DebugStreamAsynDriver: public asynPortDriver {
     protected:
         unsigned rdLen[4];
         uint8_t *buff[4];
+        double  *doubleBuff[4];
         unsigned size;
         unsigned timeoutCnt;
         unsigned timeoutCnt_perStream[4];
@@ -102,9 +103,6 @@ class DebugStreamAsynDriver: public asynPortDriver {
 #define FIRST_DEBUGSTREAM_PARAM   firstDebugStreamParam
 #endif /* ASYN VERSION CHECK, under 4.32 */
 
-        int p_streamInt16[4];
-        int p_streamInt32[4];
-        int p_streamFloat32[4];
         int p_streamFloat64[4];
         int p_streamType[4];
         int p_rdCnt[4];

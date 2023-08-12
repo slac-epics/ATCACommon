@@ -15,13 +15,8 @@ include $(TOP)/configure/CONFIG
 DB += ATCACommon.db
 DB += ATCACommonDeprecated.db
 DB += crossbarCtrl.db
-DB += StreamLong.db
-DB += StreamUlong.db
-DB += StreamShort.db
-DB += StreamUshort.db
-DB += StreamFloat.db
-DB += StreamDouble.db
-DB += StreamType.db
+DB += Stream.db
+
 
 # =======================================================================
 

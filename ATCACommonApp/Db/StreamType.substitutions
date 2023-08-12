@@ -1,7 +1,0 @@
-file "streamTypeCh.db" {
-    pattern {      PORT,      DEVICE,    N }
-            { "$(PORT)",    "$(DEV)",    0 }
-            { "$(PORT)",    "$(DEV)",    1 }
-            { "$(PORT)",    "$(DEV)",    2 }
-            { "$(PORT)",    "$(DEV)",    3 }
-}
