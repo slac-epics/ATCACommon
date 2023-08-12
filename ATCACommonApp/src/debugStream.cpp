@@ -460,6 +460,10 @@ int DebugStreamAsynDriver::setChannelType(const char *type, int index)
         return -1;
     }
   
+    pList->pDrv->getAtcaCommonAPI()->enableFormatSign(0, scopeIndex, index);
+    pList->pDrv->getAtcaCommonAPI()->formatDataWidth(0, scopeIndex, index);
+    pList->pDrv->getAtcaCommonAPI()->formatSignWidth(0, scopeIndex, index); 
+            /*
     switch(s_type[index])
     {
         case int32:
@@ -482,7 +486,7 @@ int DebugStreamAsynDriver::setChannelType(const char *type, int index)
             pList->pDrv->getAtcaCommonAPI()->enableFormatSign(0, scopeIndex, index);
             pList->pDrv->getAtcaCommonAPI()->formatDataWidth(0, scopeIndex, index);
             pList->pDrv->getAtcaCommonAPI()->formatSignWidth(0, scopeIndex, index);  
-    }      
+    }      */
     return 0;
 }
 
