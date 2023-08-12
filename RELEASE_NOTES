@@ -1,3 +1,7 @@
+R2.0.0-beta4:  08-11-2023 Dawood Alnajjar
+               - Removed all stream PV types and unified them
+                 all in one PV of type double.
+
 R2.0.0-beta3:  08-04-2023 Marcio Donadio
                - Built with yamlLoader/R2.3.5.
 
