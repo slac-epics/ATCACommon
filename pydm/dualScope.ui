@@ -335,7 +335,7 @@
                       </property>
                       <property name="curves">
                        <stringlist>
-                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR${MUX}:STREAM_SLOWSHORT${CH}&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;cyan&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 2, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
+                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR${MUX}:STREAM_SLOWDOUBLE${CH}&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;cyan&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 2, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
                        </stringlist>
                       </property>
                       <property name="autoRangeY">
@@ -523,7 +523,7 @@ QPushButton:hover{
                       </property>
                       <property name="curves">
                        <stringlist>
-                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR0:STREAM_SLOWSHORT1&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#55ff7f&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
+                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR0:STREAM_SLOWDOUBLE1&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#55ff7f&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
                        </stringlist>
                       </property>
                       <property name="autoRangeY">
@@ -569,7 +569,7 @@ QPushButton:hover{
                       </property>
                       <property name="curves">
                        <stringlist>
-                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR0:STREAM_SLOWSHORT3&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#ffaa7f&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
+                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR0:STREAM_SLOWDOUBLE3&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#ffaa7f&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
                        </stringlist>
                       </property>
                       <property name="autoRangeY">
@@ -615,7 +615,7 @@ QPushButton:hover{
                       </property>
                       <property name="curves">
                        <stringlist>
-                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR0:STREAM_SLOWSHORT2&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#ffff7f&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
+                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR0:STREAM_SLOWDOUBLE2&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#ffff7f&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
                        </stringlist>
                       </property>
                       <property name="autoRangeY">
@@ -664,7 +664,7 @@ QPushButton:hover{
                       </property>
                       <property name="curves">
                        <stringlist>
-                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR0:STREAM_SLOWSHORT0&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#55ffff&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
+                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR0:STREAM_SLOWDOUBLE0&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#55ffff&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
                        </stringlist>
                       </property>
                       <property name="autoRangeY">
@@ -937,7 +937,7 @@ QPushButton:hover{
                       </property>
                       <property name="curves">
                        <stringlist>
-                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR${MUX}:STREAM_SLOWSHORT${CH}&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;cyan&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 2, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
+                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR${MUX}:STREAM_SLOWDOUBLE${CH}&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;cyan&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 2, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
                        </stringlist>
                       </property>
                       <property name="autoRangeY">
@@ -1143,7 +1143,7 @@ QPushButton:hover{
                       </property>
                       <property name="curves">
                        <stringlist>
-                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR1:STREAM_SLOWSHORT0&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#55ffff&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
+                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR1:STREAM_SLOWDOUBLE0&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#55ffff&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
                        </stringlist>
                       </property>
                       <property name="autoRangeY">
@@ -1189,7 +1189,7 @@ QPushButton:hover{
                       </property>
                       <property name="curves">
                        <stringlist>
-                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR1:STREAM_SLOWSHORT1&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#55ff7f&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
+                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR1:STREAM_SLOWDOUBLE1&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#55ff7f&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
                        </stringlist>
                       </property>
                       <property name="autoRangeY">
@@ -1235,7 +1235,7 @@ QPushButton:hover{
                       </property>
                       <property name="curves">
                        <stringlist>
-                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR1:STREAM_SLOWSHORT2&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#ffff7f&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
+                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR1:STREAM_SLOWDOUBLE2&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#ffff7f&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
                        </stringlist>
                       </property>
                       <property name="autoRangeY">
@@ -1281,7 +1281,7 @@ QPushButton:hover{
                       </property>
                       <property name="curves">
                        <stringlist>
-                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR1:STREAM_SLOWSHORT3&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#ffaa7f&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
+                        <string>{&quot;y_channel&quot;: &quot;ca://${DEVICE}:STR1:STREAM_SLOWDOUBLE3&quot;, &quot;x_channel&quot;: null, &quot;plot_style&quot;: null, &quot;name&quot;: &quot;&quot;, &quot;color&quot;: &quot;#ffaa7f&quot;, &quot;lineStyle&quot;: 1, &quot;lineWidth&quot;: 3, &quot;symbol&quot;: null, &quot;symbolSize&quot;: 10, &quot;yAxisName&quot;: &quot;Axis 1&quot;, &quot;barWidth&quot;: null, &quot;upperThreshold&quot;: null, &quot;lowerThreshold&quot;: null, &quot;thresholdColor&quot;: &quot;white&quot;, &quot;redraw_mode&quot;: 2}</string>
                        </stringlist>
                       </property>
                       <property name="autoRangeY">

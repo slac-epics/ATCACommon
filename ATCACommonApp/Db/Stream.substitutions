@@ -1,0 +1,16 @@
+file "streamTypeCh.db" {
+    pattern {      PORT,      DEVICE,    N }
+            { "$(PORT)",    "$(DEV)",    0 }
+            { "$(PORT)",    "$(DEV)",    1 }
+            { "$(PORT)",    "$(DEV)",    2 }
+            { "$(PORT)",    "$(DEV)",    3 }
+}
+
+file "streamWf.db"  {
+    pattern {      PORT,   DEVICE,    WIDTH,  N,   TYPE,                DTYP,      FTVL,       NELM,    TSE      }
+            { "$(PORT)", "$(DEV)",  "Float64", 0, "DOUBLE", "asynFloat64ArrayOut",   "DOUBLE",  "$(NELM\=4096)", "$(TSE)"    }
+            { "$(PORT)", "$(DEV)",  "Float64", 1, "DOUBLE", "asynFloat64ArrayOut",   "DOUBLE",  "$(NELM\=4096)", "$(TSE)"    }
+            { "$(PORT)", "$(DEV)",  "Float64", 2, "DOUBLE", "asynFloat64ArrayOut",   "DOUBLE",  "$(NELM\=4096)", "$(TSE)"    }
+            { "$(PORT)", "$(DEV)",  "Float64", 3, "DOUBLE", "asynFloat64ArrayOut",   "DOUBLE",  "$(NELM\=4096)", "$(TSE)"    }
+
+}

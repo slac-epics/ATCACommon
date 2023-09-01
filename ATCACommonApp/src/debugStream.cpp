@@ -84,6 +84,10 @@ DebugStreamAsynDriver::DebugStreamAsynDriver(const char *portName, const char *n
         this->timeoutCnt_perStream[i] = 0;
         this->rdLen[i] = 0;
         this->s_type[i] = uint32;
+        /* At this point we do not know how many samples we are expecting. We just know that the minimum
+         * size is 2 bytes / sample (uint16_t). That is sizeof(double)/sizeof(uint16_t) times smaller 
+         * than double. */
+        this->doubleBuff[i] = (double *) mallocMustSucceed(size*sizeof(double)/sizeof(uint16_t), "DebugStreamAsynDriverDoubleBuff");                
         this->buff[i] = (uint8_t *) mallocMustSucceed(size, "DebugStreamAsynDriver");
         this->dumpStreamInfo[i].remainingPackets = 0;
     }
@@ -160,9 +164,7 @@ void DebugStreamAsynDriver::parameterSetup(void)
     char param_name[40];
 
     for(int i = 0; i< 4; i++) {
-        sprintf(param_name, STREAMINT16_STR,     i); createParam(param_name, asynParamInt16Array,   &p_streamInt16[i]);
-        sprintf(param_name, STREAMINT32_STR,     i); createParam(param_name, asynParamInt32Array,   &p_streamInt32[i]);
-        sprintf(param_name, STREAMFLOAT32_STR,   i); createParam(param_name, asynParamFloat32Array, &p_streamFloat32[i]);
+        sprintf(param_name, STREAMFLOAT64_STR,   i); createParam(param_name, asynParamFloat64Array, &p_streamFloat64[i]);
         sprintf(param_name, STREAMTYPE_STR,      i); createParam(param_name, asynParamInt32,        &p_streamType[i]);
         sprintf(param_name, READCOUNT_STR,       i); createParam(param_name, asynParamInt32,        &p_rdCnt[i]);
     }
@@ -219,6 +221,7 @@ void DebugStreamAsynDriver::streamPoll(const int i)
 
     epicsTimeStamp time;
     int timeslot;
+    int totalElements = 0;
 
     try {
         rdLen[i] = _stream[i]->read(buff[i], size, CTimeout(2000000));
@@ -268,19 +271,29 @@ void DebugStreamAsynDriver::streamPoll(const int i)
         switch(s_type[i]) {
             case uint32:
             case int32:
-                doCallbacksInt32Array(&p->payload.int32, (rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t))/sizeof(epicsInt32), p_streamInt32[i], 0);
+                totalElements = (rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t))/sizeof(epicsInt32);
+                for (int elementIndex = 0; elementIndex < totalElements; elementIndex++)
+                    doubleBuff[i][elementIndex] = (double)((&p->payload.int32)[elementIndex]);                   
                 break;
             case uint16:
             case int16:
-                doCallbacksInt16Array(&p->payload.int16, (rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t))/sizeof(epicsInt16), p_streamInt16[i], 0);
+                totalElements = (rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t))/sizeof(epicsInt16);
+                for (int elementIndex = 0; elementIndex < totalElements; elementIndex++)
+                    doubleBuff[i][elementIndex] = (double)((&p->payload.int16)[elementIndex]);                 
                 break;
             case float32:
-                doCallbacksFloat32Array(&p->payload.float32, (rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t))/sizeof(epicsFloat32), p_streamFloat32[i], 0);
+                totalElements = (rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t))/sizeof(epicsFloat32);
+                for (int elementIndex = 0; elementIndex < totalElements; elementIndex++)
+                    doubleBuff[i][elementIndex] = (double)((&p->payload.float32)[elementIndex]);                  
                 break;
             case float64:
-                doCallbacksFloat64Array(&p->payload.float64, (rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t))/sizeof(epicsFloat64), p_streamFloat64[i], 0);
+                totalElements = (rdLen[i] - sizeof(timing_header_t) - sizeof(packet_header_t))/sizeof(epicsFloat64);
+                for (int elementIndex = 0; elementIndex < totalElements; elementIndex++)
+                    doubleBuff[i][elementIndex] = (double)((&p->payload.float64)[elementIndex]);   
                 break;
         }
+
+        doCallbacksFloat64Array(doubleBuff[i], totalElements, p_streamFloat64[i], 0);
 
         // Print data decoded from stream dump
         if (dumpStreamInfo[i].remainingPackets > 0) {
@@ -300,20 +313,28 @@ void DebugStreamAsynDriver::streamPoll(const int i)
         switch(s_type[i]) {
             case uint32:
             case int32:
-                doCallbacksInt32Array(&p->payload.int32, (rdLen[i] - sizeof(packet_header_t))/sizeof(epicsInt32), p_streamInt32[i], 0);
+                totalElements = (rdLen[i] - sizeof(packet_header_t))/sizeof(epicsInt32);
+                for (int elementIndex = 0; elementIndex < totalElements; elementIndex++)
+                    doubleBuff[i][elementIndex] = (double)((&p->payload.int32)[elementIndex]);                
                 break;
             case uint16:
             case int16:
-                doCallbacksInt16Array(&p->payload.int16, (rdLen[i] - sizeof(packet_header_t))/sizeof(epicsInt16), p_streamInt16[i], 0);
+                totalElements = (rdLen[i] - sizeof(packet_header_t))/sizeof(epicsInt16);
+                for (int elementIndex = 0; elementIndex < totalElements; elementIndex++)
+                    doubleBuff[i][elementIndex] = (double)((&p->payload.int16)[elementIndex]);                 
                 break;
             case float32:
-                doCallbacksFloat32Array(&p->payload.float32, (rdLen[i] - sizeof(packet_header_t))/sizeof(epicsFloat32), p_streamFloat32[i], 0);
+                totalElements = (rdLen[i] - sizeof(packet_header_t))/sizeof(epicsFloat32);
+                for (int elementIndex = 0; elementIndex < totalElements; elementIndex++)
+                    doubleBuff[i][elementIndex] = (double)((&p->payload.float32)[elementIndex]);                 
                 break;
             case float64:
-                doCallbacksFloat64Array(&p->payload.float64, (rdLen[i] - sizeof(packet_header_t))/sizeof(epicsFloat64), p_streamFloat64[i], 0);
+                totalElements = (rdLen[i] - sizeof(packet_header_t))/sizeof(epicsFloat64);
+                for (int elementIndex = 0; elementIndex < totalElements; elementIndex++)
+                    doubleBuff[i][elementIndex] = (double)((&p->payload.float64)[elementIndex]);                 
                 break;
         }
-
+        doCallbacksFloat64Array(doubleBuff[i], totalElements, p_streamFloat64[i], 0);
         triggerCallbacks(i, &(p->payload), rdLen[i] - sizeof(packet_header_t), time, timeslot);
     }
 
@@ -439,6 +460,10 @@ int DebugStreamAsynDriver::setChannelType(const char *type, int index)
         return -1;
     }
   
+    pList->pDrv->getAtcaCommonAPI()->enableFormatSign(0, scopeIndex, index);
+    pList->pDrv->getAtcaCommonAPI()->formatDataWidth(0, scopeIndex, index);
+    pList->pDrv->getAtcaCommonAPI()->formatSignWidth(0, scopeIndex, index); 
+            /*
     switch(s_type[index])
     {
         case int32:
@@ -461,7 +486,7 @@ int DebugStreamAsynDriver::setChannelType(const char *type, int index)
             pList->pDrv->getAtcaCommonAPI()->enableFormatSign(0, scopeIndex, index);
             pList->pDrv->getAtcaCommonAPI()->formatDataWidth(0, scopeIndex, index);
             pList->pDrv->getAtcaCommonAPI()->formatSignWidth(0, scopeIndex, index);  
-    }      
+    }      */
     return 0;
 }
 

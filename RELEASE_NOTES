@@ -1,6 +1,8 @@
 R2.0.0:        08-31-2023  Dawood Alnajjar
                - Overall refactoring of the osciloscope feature (a.k.a DaqMux)
                  to improve usability and avoid memory conflicts with BSA.
+               - Removed all stream PV types and unified them
+                 all in one PV of type double.
                - Added a new scope function that automatically
                  configures the DaQMux and the waveform engine.
                - Removed exposure of several firmware specific PVs:
