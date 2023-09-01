@@ -105,7 +105,7 @@ asynStatus ATCACommonAsynDriver::writeInt32(asynUser *pasynUser, epicsInt32 valu
     int function = pasynUser->reason;
     asynStatus status = asynSuccess;
     const char *functionName = "writeInt32";
-
+    epicsInt32 amcFreq;
     status = (asynStatus) setIntegerParam(function, value);
 
     if(function == p_jesdCnt_reset) jesdCnt_reset  = 1;
@@ -120,7 +120,18 @@ asynStatus ATCACommonAsynDriver::writeInt32(asynUser *pasynUser, epicsInt32 valu
         else if(function == (p_daqMux+i)->p_daqMode)                     atcaCommon->daqMode(value?1:0, i);
         else if(function == (p_daqMux+i)->p_enablePacketHeader)          atcaCommon->enablePacketHeader(value?1:0, i);
         else if(function == (p_daqMux+i)->p_enableHardwareFreeze)        atcaCommon->enableHardwareFreeze(value?1:0, i);
-        else if(function == (p_daqMux+i)->p_decimationRateDivisor)       atcaCommon->decimationRateDivisor(value, i);
+        else if(function == (p_daqMux+i)->p_rqSamplingFrequency)
+        {           
+            getIntegerParam((p_daqMux+i)->p_adcClkFreq, &amcFreq);
+            if (value == 0)
+                decimationRateDiv = 0;
+            else
+                decimationRateDiv = round(amcFreq/(double)value);
+            atcaCommon->decimationRateDivisor(decimationRateDiv, i);
+
+        }
+        else if(function == (p_daqMux+i)->p_decimationRateDivisor)       atcaCommon->decimationRateDivisor(value, i); 
+        else if(function == (p_daqMux+i)->p_dataBufferSize)              atcaCommon->dataBufferSize(value, i);
         else
         for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) {
             if(function == (p_daqMux+i)->p_inputMuxSelect[j]) {          atcaCommon->inputMuxSelect(value, i, j);
@@ -129,12 +140,21 @@ asynStatus ATCACommonAsynDriver::writeInt32(asynUser *pasynUser, epicsInt32 valu
             else if(function == (p_daqMux+i)->p_formatSignWidth[j])      atcaCommon->formatSignWidth(value, i, j);
             else if(function == (p_daqMux+i)->p_formatDataWidth[j])      atcaCommon->formatDataWidth(value, i, j);
             else if(function == (p_daqMux+i)->p_enableFormatSign[j])     atcaCommon->enableFormatSign(value?1:0, i, j);
-            else if(function == (p_daqMux+i)->p_enableDecimation[j])     atcaCommon->enableDecimation(value?1:0, 1, j);
+            else if(function == (p_daqMux+i)->p_enableDecimation[j])     atcaCommon->enableDecimationAvg(value?1:0, 1, j);
         }
     }
 
     for(int i = 0; i < MAX_WAVEFORMENGINE_CNT; i++) {
         if(function == (p_waveformEngine+i)->p_initialize      && value) atcaCommon->initWfEngine(i);
+        for(int j = 0; j < MAX_WAVEFORMENGINE_CHN_CNT; j++) {
+            if(function == (p_waveformEngine+i)->p_startAddr[j])         atcaCommon->setWfEngineStartAddr((uint64_t) value, i, j);
+            else if(function == (p_waveformEngine+i)->p_endAddr[j])      atcaCommon->setWfEngineEndAddr((uint64_t) value, i, j);
+            else if(function == (p_waveformEngine+i)->p_enabled[j])      atcaCommon->enableWfEngine((value)?1:0, i, j);
+            else if(function == (p_waveformEngine+i)->p_mode[j])         atcaCommon->setWfEngineMode((value)?1:0, i, j);
+            else if(function == (p_waveformEngine+i)->p_msgDest[j])      atcaCommon->setWfEngineMsgDest((value)?1:0, i, j);
+            else if(function == (p_waveformEngine+i)->p_framesAfterTrigger[j])
+                                                                         atcaCommon->setWfEngineFramesAfterTrigger(value, i, j);
+        }
     }
 
     return status;
@@ -171,7 +191,12 @@ void ATCACommonAsynDriver::ParameterSetup(void)
         sprintf(param_name, DAQMODE_STR,            i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_daqMode);
         sprintf(param_name, ENABLEPACKETHEADER_STR, i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_enablePacketHeader);
         sprintf(param_name, ENABLEHARDWAREFREEZE_STR, i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_enableHardwareFreeze);
+        sprintf(param_name, RQSAMPLINGFREQ_STR,     i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_rqSamplingFrequency);
+        sprintf(param_name, APPLIEDSAMPLINGFREQ_STR, i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_appliedSamplingFrequency);
+        sprintf(param_name, ADCCLKFREQ_STR,         i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_adcClkFreq);
+        
         sprintf(param_name, DECIMATIONRATEDIVISOR_STR, i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_decimationRateDivisor);
+        sprintf(param_name, DATABUFFERSIZE_STR,        i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_dataBufferSize);
         sprintf(param_name, TIMESTAMP_SEC_STR,         i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_timestamp_sec);
         sprintf(param_name, TIMESTAMP_NSEC_STR,        i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_timestamp_nsec);
         sprintf(param_name, TRIGGERCOUNT_STR,          i); createParam(param_name, asynParamInt32, &(p_daqMux+i)->p_triggerCount);
@@ -197,7 +222,15 @@ void ATCACommonAsynDriver::ParameterSetup(void)
 
     for(int i = 0; i < MAX_WAVEFORMENGINE_CNT; i++) {
         for(int j = 0; j < MAX_WAVEFORMENGINE_CHN_CNT; j++) {
+            sprintf(param_name, WFBUFSTARTADDR_STR, i, j); createParam(param_name, asynParamInt32, &(p_waveformEngine+i)->p_startAddr[j]);
+            sprintf(param_name, WFBUFENDADDR_STR, i, j);   createParam(param_name, asynParamInt32, &(p_waveformEngine+i)->p_endAddr[j]);
+            sprintf(param_name, WFBUFWRADDR_STR, i, j);    createParam(param_name, asynParamInt32, &(p_waveformEngine+i)->p_wrAddr[j]);
+            sprintf(param_name, WFBUFENABLE_STR, i, j);    createParam(param_name, asynParamInt32, &(p_waveformEngine+i)->p_enabled[j]);
+            sprintf(param_name, WFBUFMODE_STR, i, j);      createParam(param_name, asynParamInt32, &(p_waveformEngine+i)->p_mode[j]);
             sprintf(param_name, WFBUFSTATUS_STR, i, j);    createParam(param_name, asynParamInt32, &(p_waveformEngine+i)->p_status[j]);
+            sprintf(param_name, WFBUFMSGDEST_STR, i, j);   createParam(param_name, asynParamInt32, &(p_waveformEngine+i)->p_msgDest[j]);
+            sprintf(param_name, WFBUFFRAFTTRG_STR, i, j);  createParam(param_name, asynParamInt32, &(p_waveformEngine+i)->p_framesAfterTrigger[j]);
+
         }
         sprintf(param_name, WFBUFINIT_STR, i);             createParam(param_name, asynParamInt32, &(p_waveformEngine+i)->p_initialize);
     }
@@ -257,6 +290,10 @@ void ATCACommonAsynDriver::getWaveformEngineStatus(void)
 
     for(int i = 0; i < MAX_WAVEFORMENGINE_CNT; i++) {
         for(int j = 0; j < MAX_WAVEFORMENGINE_CHN_CNT; j++) {
+            // commet out reading of start addr and end addr since, PVs will set it up
+            // atcaCommon->getWfEngineStartAddr(&val, i, j); setIntegerParam((p_waveformEngine+i)->p_startAddr[j], (int) val);
+            // atcaCommon->getWfEngineEndAddr(&val, i, j);   setIntegerParam((p_waveformEngine+i)->p_endAddr[j], (int) val);
+            atcaCommon->getWfEngineWrAddr(&val64, i, j);    setIntegerParam((p_waveformEngine+i)->p_wrAddr[j], (int) val64);
             atcaCommon->getWfEngineStatus(&val32, i, j);    setIntegerParam((p_waveformEngine+i)->p_status[j], (int) val32);
         }
     }
@@ -265,37 +302,45 @@ void ATCACommonAsynDriver::getWaveformEngineStatus(void)
 void ATCACommonAsynDriver::getDaqMuxStatus(void)
 {
     for(int i = 0; i < MAX_DAQMUX_CNT; i++) {
-      uint32_t val[MAX_DAQMUX_CHN_CNT];
-      uint32_t v;
+        uint32_t val[MAX_DAQMUX_CHN_CNT];
+        uint32_t v, adcClkFreq, appSamplingFreq;
+        atcaCommon->getFrameCount(val, i); 
+        for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_frameCount[j], val[j]);
 
-      atcaCommon->getFrameCount(val, i); 
-      for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_frameCount[j], val[j]);
+        atcaCommon->getStreamEnabled(val, i);
+        for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_streamEnabled[j], val[j]?1:0);
 
-      atcaCommon->getStreamEnabled(val, i);
-      for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_streamEnabled[j], val[j]?1:0);
+        atcaCommon->getInputDataValid(val, i);
+        for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_inputDataValid[j], val[j]?1:0);
 
-      atcaCommon->getInputDataValid(val, i);
-      for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_inputDataValid[j], val[j]?1:0);
+        atcaCommon->getStreamError(val, i);
+        for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_streamError[j], val[j]?1:0);
 
-      atcaCommon->getStreamError(val, i);
-      for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_streamError[j], val[j]?1:0);
+        atcaCommon->getStreamOverflow(val, i);
+        for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_streamOverflow[j], val[j]?1:0);
 
-      atcaCommon->getStreamOverflow(val, i);
-      for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_streamOverflow[j], val[j]?1:0);
+        atcaCommon->getStreamReady(val, i);
+        for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_streamReady[j], val[j]?1:0);
 
-      atcaCommon->getStreamReady(val, i);
-      for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_streamReady[j], val[j]?1:0);
+        atcaCommon->getStreamPause(val, i);
+        for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_streamPause[j], val[j]?1:0);
 
-      atcaCommon->getStreamPause(val, i);
-      for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) setIntegerParam((p_daqMux+i)->p_streamPause[j], val[j]?1:0);
+        atcaCommon->dbgLinkReady(&v, i);  setIntegerParam((p_daqMux+i)->p_dbgLinkReady, v);
+        atcaCommon->dbgInputValid(&v, i); setIntegerParam((p_daqMux+i)->p_dbgInputValid, v);
+        atcaCommon->getTriggerCount(&v, i); setIntegerParam((p_daqMux+i)->p_triggerCount, v);
 
-      atcaCommon->dbgLinkReady(&v, i);  setIntegerParam((p_daqMux+i)->p_dbgLinkReady, v);
-      atcaCommon->dbgInputValid(&v, i); setIntegerParam((p_daqMux+i)->p_dbgInputValid, v);
-      atcaCommon->getTriggerCount(&v, i); setIntegerParam((p_daqMux+i)->p_triggerCount, v);
+        atcaCommon->getTimestamp(val+0, val+1, i); setIntegerParam((p_daqMux+i)->p_timestamp_sec, val[0]);
+                                                    setIntegerParam((p_daqMux+i)->p_timestamp_nsec, val[1]);
 
-      atcaCommon->getTimestamp(val+0, val+1, i); setIntegerParam((p_daqMux+i)->p_timestamp_sec, val[0]);
-                                                 setIntegerParam((p_daqMux+i)->p_timestamp_nsec, val[1]);
-  
+        atcaCommon->getAmcClkFreq(&adcClkFreq, i);   setIntegerParam((p_daqMux+i)->p_adcClkFreq, adcClkFreq);
+
+        if(decimationRateDiv != 0)
+            appSamplingFreq  = adcClkFreq / decimationRateDiv;
+        else
+            appSamplingFreq  = adcClkFreq;
+            
+        setIntegerParam((p_daqMux+i)->p_appliedSamplingFrequency, appSamplingFreq);
+     
     }
 }
 
@@ -312,6 +357,11 @@ const char * ATCACommonAsynDriver::inputMuxSelString(int idx)
 void ATCACommonAsynDriver::report(int level)
 {
     printf("Driver Class: %s, (port, %s, path: %s)\n", driverName, port, path);
+}
+
+ATCACommonFw ATCACommonAsynDriver::getAtcaCommonAPI()
+{
+    return atcaCommon;
 }
 
 void ATCACommonAsynDriver::poll(void)

@@ -24,6 +24,11 @@
 #define MAX_DAQMUX_CNT     2
 #define MAX_DAQMUX_CHN_CNT 4
 
+#define DAQMUX_SAMPLES     4096UL
+#define DAQMUX_HEADER      14UL
+
+#define HEADER_EN_STRING   "header_enabled"
+
 #include "debugStreamInterface.h"
 
 typedef enum {
@@ -34,6 +39,11 @@ typedef enum {
    float32,
    float64
 } stream_type_t;
+
+typedef enum {
+   cfg_default = 0,
+   cfg_advanced
+} scope_cfg_type_t;
 
 struct dumpStreamInfo_t {
     int remainingPackets;
@@ -58,11 +68,15 @@ class DebugStreamAsynDriver: public asynPortDriver {
         bool isChannelValid(int ch);
         void dumpStreamContents(int ch, int wordQty, int packQty);
         bool hasHeader();
+        void setScopeIndex(int);
+        int  getScopeIndex(void);
+        int  setChannelType(const char * type, int index);
     private:
         char *named_root;
         char *port;
         void parameterSetup(void);
         ELLLIST* callback_list;
+        int8_t scopeIndex;
 
     protected:
         unsigned rdLen[4];
@@ -110,6 +124,8 @@ typedef struct {
     char *portName;
     char *streamNames[4];
     DebugStreamAsynDriver *pDrv;
+    unsigned sizeInBytes;
+    unsigned scopeIndex;
 } debugStreamNode_t;
 
 typedef struct {
@@ -124,6 +140,7 @@ void streamStop(void *u);
 int createStreamThread(int ch, const char *prefix_name, void *p, int (*streamThreadFunc)(void *));
 int createStreamThreads(debugStreamNode_t *p, int (*streamThreadFunc)(void *));
 int searchDebugStreamDriver(const char* streamPortName, DebugStreamAsynDriver** pDrv);
+
 
 extern "C" {
 int debugStreamAsynDriver_createStreamThreads(void);

@@ -1,0 +1,177 @@
+record(bo, "$(DEVICE):DAQMUX$(CNT)_TRGDAQ")
+{
+    field(DESC, "DaqMux Trigger DAQ ($(CNT))")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) triggerDaq_$(CNT)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+    field(ZNAM, "Normal")
+    field(ONAM, "Trigger")
+}
+
+record(bo, "$(DEVICE):DAQMUX$(CNT)_ARMHWTRG")
+{
+    field(DESC, "DaqMux Arm Hw Trigger ($(CNT))")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) armHwTrigger_$(CNT)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+    field(ZNAM, "Normal")
+    field(ONAM, "Arm")
+}
+
+
+record(bo, "$(DEVICE):DAQMUX$(CNT)_FRZBUF")
+{
+    field(DESC, "DaqMux Freeze Buffer ($(CNT))")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) freezeBuffer_$(CNT)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+    field(ZNAM, "Normal")
+    field(ONAM, "Freeze")
+}
+
+
+record(bo, "$(DEVICE):DAQMUX$(CNT)_CLRTRGST")
+{
+    field(DESC, "DaqMux clear trigger status ($(CNT))")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) clearTriggerStatus_$(CNT)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+    field(ZNAM, "Normal")
+    field(ONAM, "Freeze")
+}
+
+
+record(bo, "$(DEVICE):DAQMUX$(CNT)_CSCDTRG")
+{
+    field(DESC, "DaqMux cascaded trigger enable ($(CNT))")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) cascadedTrigger_$(CNT)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+    field(ZNAM, "Disable")
+    field(ONAM, "Enable")
+    field(PINI, "YES")
+    info(autosaveFields, "VAL")
+}
+
+
+record(bo, "$(DEVICE):DAQMUX$(CNT)_AUTOREARM")
+{
+    field(DESC, "DaqMux auto re-arm ($(CNT))")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) hardwareAutoRearm_$(CNT)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+    field(ZNAM, "Disable")
+    field(ONAM, "Auto Rearm")
+    field(PINI, "YES")
+#    info(autosaveFields, "VAL")
+}
+
+
+record(bo, "$(DEVICE):DAQMUX$(CNT)_DAQMODE")
+{
+    field(DESC, "DaqMux Trigger Mode ($(CNT))")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) daqMode_$(CNT)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+    field(ZNAM, "Trigger")
+    field(ONAM, "Continue")
+}
+
+
+record(bo, "$(DEVICE):DAQMUX$(CNT)_PACKETHEADER")
+{
+    field(DESC, "DaqMux Packet Header ($(CNT))")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) enablePacketHeader_$(CNT)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+    field(ZNAM, "Disable")
+    field(ONAM, "Enable")
+}
+
+
+record(bo, "$(DEVICE):DAQMUX$(CNT)_HWFRZ")
+{
+    field(DESC, "DaqMux Hardware Freeze ($(CNT))")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) enableHardwareFreeze_$(CNT)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+    field(ZNAM, "Disable")
+    field(ONAM, "Enable")
+}
+
+
+record(longout, "$(DEVICE):DAQMUX$(CNT)_DECRATEDIV")
+{
+    field(DESC, "DaqMux Decimate Rate Divisor ($(CNT))")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) decimateRateDivisor_$(CNT)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+}
+
+
+record(longout, "$(DEVICE):DAQMUX$(CNT)_BUFFSIZE")
+{
+    field(DESC, "DaqMux Data Buffer Size ($(CNT))")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),0) dataBufferSize_$(CNT)")
+    field(OMSL, "supervisory")
+    field(SCAN, "Passive")
+}
+
+
+
+record(longin, "$(DEVICE):DAQMUX$(CNT)_TRGCNT")
+{
+    field(DESC, "DaqMux Trigger Count ($(CNT))")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0) triggerCount_$(CNT)")
+    field(SCAN, "I/O Intr")
+}
+
+
+record(longin, "$(DEVICE):DAQMUX$(CNT)_DBGINPVALID")
+{
+    field(DESC, "DaqMux Dbg Input Valid ($(CNT))")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0) dbgInputValid_$(CNT)")
+    field(SCAN, "I/O Intr")
+}
+
+
+record(longin, "$(DEVICE):DAQMUX$(CNT)_DBGLNKRDY")
+{
+    field(DESC, "DaqMux Dbg Link Ready ($(CNT))")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0) dbgLinkReady_$(CNT)")
+    field(SCAN, "I/O Intr")
+}
+
+
+
+record(longin, "$(DEVICE):DAQMUX$(CNT)_TS_SEC")
+{
+    field(DESC, "DaqMux Timestamp Sec ($(CNT))")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0) timestamp_sec_$(CNT)")
+    field(SCAN, "I/O Intr")
+}
+
+
+record(longin, "$(DEVICE):DAQMUX$(CNT)_TS_NSEC")
+{
+    field(DESC, "DaqMux Timestamp NSec ($(CNT))")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),0) timestamp_nsec_$(CNT)")
+    field(SCAN, "I/O Intr")
+}
+

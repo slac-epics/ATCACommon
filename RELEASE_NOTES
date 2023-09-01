@@ -1,8 +1,17 @@
-R2.0.0-beta:   07-19-2022 Dawood Alnajjar
-               - Removed exposure of several firmware specific PVs
+R2.0.0:        08-31-2023  Dawood Alnajjar
+               - Overall refactoring of the osciloscope feature (a.k.a DaqMux)
+                 to improve usability and avoid memory conflicts with BSA.
+               - Added a new scope function that automatically
+                 configures the DaQMux and the waveform engine.
+               - Removed exposure of several firmware specific PVs:
                  - DaqMux buffer size
                  - Waveform engine enable, mode, msgdst
                    startAddr, endAddr, wrAddr, frameAfter Trigger
+
+R1.7.1:        08-09-2023  Mike Browne, Bruce Hill, Marcio Donadio
+               - Changes to make the module build for RHEL7 and on both EED and
+                 PCDS environments.
+               - Using yamlLoader/R2.3.5.
 
 R1.7.0:        07-02-2022  Dawood Alnajjar
                - Added cpsw release tag PV and IOC shell command
