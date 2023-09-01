@@ -33,6 +33,8 @@ class ATCACommonAsynDriver:asynPortDriver {
 
         void report(int level);
         void poll(void);
+        ATCACommonFw getAtcaCommonAPI();
+        uint32_t decimationRateDiv;
 
     private:
         char *port;
@@ -76,6 +78,9 @@ class ATCACommonAsynDriver:asynPortDriver {
             int p_enablePacketHeader;
             int p_enableHardwareFreeze;
             int p_decimationRateDivisor;
+            int p_rqSamplingFrequency;
+            int p_appliedSamplingFrequency;
+            int p_adcClkFreq;
             int p_dataBufferSize;
             int p_timestamp_sec;
             int p_timestamp_nsec;
@@ -144,9 +149,12 @@ class ATCACommonAsynDriver:asynPortDriver {
 #define CASCADEDTRIGGER_STR        "cascadedTrigger_%d"
 #define HARDWAREAUTOREARM_STR      "hardwareAutoRearm_%d"
 #define DAQMODE_STR                "daqMode_%d"
+#define RQSAMPLINGFREQ_STR         "requestedSamplingFreq_%d"
+#define APPLIEDSAMPLINGFREQ_STR    "appliedSamplingFreq_%d"
 #define ENABLEPACKETHEADER_STR     "enablePacketHeader_%d"
 #define ENABLEHARDWAREFREEZE_STR   "enableHardwareFreeze_%d"
 #define DECIMATIONRATEDIVISOR_STR  "decimateRateDivisor_%d"
+#define ADCCLKFREQ_STR             "adcClkFreq_%d"
 #define DATABUFFERSIZE_STR         "dataBufferSize_%d"
 #define TIMESTAMP_SEC_STR          "timestamp_sec_%d"
 #define TIMESTAMP_NSEC_STR         "timestamp_nsec_%d"
@@ -165,7 +173,7 @@ class ATCACommonAsynDriver:asynPortDriver {
 #define FORMATSIGNWIDTH_STR        "formatSignWidth_%d_%d"
 #define FORMATDATAWIDTH_STR        "formatDataWidth_%d_%d"
 #define ENABLEFORMATSIGN_STR       "enableFormatSign_%d_%d"
-#define ENABLEDECIMATION_STR       "enableDecimation_%d_%d"
+#define ENABLEDECIMATION_STR       "enableDecimationAvg_%d_%d"
 
 #define WFBUFSTARTADDR_STR         "wfBuffStartAddr_%d_%d"
 #define WFBUFENDADDR_STR           "wfBuffEndAddr_%d_%d"
@@ -175,6 +183,7 @@ class ATCACommonAsynDriver:asynPortDriver {
 #define WFBUFSTATUS_STR            "wfBuffStatus_%d_%d"
 #define WFBUFMSGDEST_STR           "wfBuffMsgDest_%d_%d"
 #define WFBUFFRAFTTRG_STR          "wfBuffFramesAfterTrigger_%d_%d"
+
 #define WFBUFINIT_STR              "wfBuffInit_%d"
 
 // Debug Stream

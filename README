@@ -13,8 +13,8 @@ applications:
 
 1.1) configure/RELEASE
 ATCA_COMMON_MODULE_VERSION=<module version>
-CROSSBARCONTROL=$(EPICS_MODULES)/crossbarControl/$(CROSSBARCONTROL_MODULE_VERSION)
- 
+ATCACOMMON=$(EPICS_MODULES)/ATCACommon/$(ATCACOMMON_MODULE_VERSION)
+
 1.2) configure/CONFIG_SITE
 # ATCA COMMON API
 COMMONATCA_PACKAGE_NAME=atca/commonATCA
@@ -28,14 +28,16 @@ USR_INCLUDES += -I$(COMMONATCA_INCLUDE)
 commonATCA_DIR = $(COMMONATCA_LIB)
 USR_LIBS_Linux += commonATCA
 <app>_DBD += ATCACommon.dbd
+<app>_DBD += crossbarControl.dbd
 <app>_LIBS += ATCACommon
  
-1.4) Db/Makefile
-You need do verify what type of data is being sent through the DaqMux waveforms. Pick up the right database file for your case:
+1.4.a) Db/Makefile (To be deprecated)
+You need to verify what type of data is being sent through the DaqMux waveforms. Pick up the right database file for your case:
 
 # ATCA common
 DB_INSTALLS += $(ATCACOMMON)/db/crossbarCtrl.db
 DB_INSTALLS += $(ATCACOMMON)/db/ATCACommon.db
+DB_INSTALLS += $(ATCACOMMON)/db/ATCACommonDeprecated.db
 DB_INSTALLS += $(ATCACOMMON)/db/StreamType.db
 # Uncomment for 16-bits unsigned integer in waveform
 #DB_INSTALLS += $(ATCACOMMON)/db/StreamUshort.db
@@ -49,8 +51,28 @@ DB_INSTALLS += $(ATCACOMMON)/db/StreamType.db
 #DB_INSTALLS += $(ATCACOMMON)/db/StreamFloat.db
 # Uncomment for double precision float waveform
 #DB_INSTALLS += $(ATCACOMMON)/db/StreamDouble.db
- 
-1.5) st.cmd
+
+1.4.b) Db/Makefile
+The DaqMux/waveform engine was simplified and only the following set of files will be needed.
+
+# ATCA common
+DB_INSTALLS += $(ATCACOMMON)/db/crossbarCtrl.db
+DB_INSTALLS += $(ATCACOMMON)/db/ATCACommon.db
+# Uncomment for 16-bits unsigned integer in waveform
+#DB_INSTALLS += $(ATCACOMMON)/db/StreamUshort.db
+# Uncomment for 16-bits signed integer in waveform
+#DB_INSTALLS += $(ATCACOMMON)/db/StreamShort.db
+# Uncomment for 32-bits unsigned integer in waveform
+#DB_INSTALLS += $(ATCACOMMON)/db/StreamUlong.db
+# Uncomment for 32-bits signed integer in waveform
+#DB_INSTALLS += $(ATCACOMMON)/db/StreamLong.db
+# Uncomment for single precision float waveform
+#DB_INSTALLS += $(ATCACOMMON)/db/StreamFloat.db
+# Uncomment for double precision float waveform
+#DB_INSTALLS += $(ATCACOMMON)/db/StreamDouble.db
+
+
+1.5.a) st.cmd (To be deprecated)
 # Don't use this before cpswLoadYamlFile()
 # crossbarControlAsynDriverConfigure(Asyn port name, yaml path)
 crossbarControlAsynDriverConfigure("crossbar", "mmio/AmcCarrierCore/AxiSy56040")
@@ -59,7 +81,7 @@ crossbarControlAsynDriverConfigure("crossbar", "mmio/AmcCarrierCore/AxiSy56040")
 cpswATCACommonAsynDriverConfigure("atca", "mmio", "")
  
 # Command to access common platform ATCA DAqMux waveforms. Use the command once per AMC card.
-# cpswDebugStreamAsynDriverConfigure (Asyn port name (must be different from previous one), buffer size (samples), header_enable/header_disable, name of each of the 4 streams as defined on the yaml file)
+# cpswDebugStreamAsynDriverConfigure (Asyn port name (must be different from previous one), buffer size (bytes), header_enable/header_disable, name of each of the 4 streams as defined on the yaml file)
 cpswDebugStreamAsynDriverConfigure("atca_str0", 0x4000, "header_enabled", "Stream0", "Stream1", "Stream2", "Stream3")
 cpswDebugStreamAsynDriverConfigure("atca_str1", 0x4000, "header_enabled", "Stream4", "Stream5", "Stream6", "Stream7")
  
@@ -87,7 +109,73 @@ dbLoadRecords("db/StreamType.db", "DEV=${P}:STR1, PORT=atca_str1")
 # Uncomment for double precision float waveform
 #dbLoadRecords("db/StreamDouble.db", "DEV=${P}:STR0, PORT=atca_str0, NELM=4096, TSE=-2")
 #dbLoadRecords("db/StreamDouble.db", "DEV=${P}:STR1, PORT=atca_str1, NELM=4096, TSE=-2")
+
+1.5.b) st.cmd
+# Don't use this before cpswLoadYamlFile()
+# crossbarControlAsynDriverConfigure(Asyn port name, yaml path)
+crossbarControlAsynDriverConfigure("crossbar", "mmio/AmcCarrierCore/AxiSy56040")
+# Command to access common platform FPGA registers
+# cpswATCACommonAsynDriverConfigure(Asyn port name, yaml path, named root (optional))
+cpswATCACommonAsynDriverConfigure("atca", "mmio", "")
  
+# Command to access common platform ATCA DAqMux waveforms. Use the command once per AMC card.
+# scopeAsynDriverConfigure (Asyn port name (must be different from previous one), scope index, channel types, and an optional STRING number of samples. If not passed the default is used = 4096 @ 16-bit, 2048 @ 32-bit , 1024 @ 64-bit )
+scopeAsynDriverConfigure("atca_str0", 0, "int16", "int32", "int16", "float64")
+scopeAsynDriverConfigure("atca_str0", 1, "int16", "int16", "uint16", "float32")
+
+OR (not default number of samples used)
+
+scopeAsynDriverConfigure("atca_str0", 0, "int16", "int32", "int16", "float64", "8192")
+scopeAsynDriverConfigure("atca_str0", 1, "int16", "int16", "uint16", "float32", "8192")
+
+# ATCA common features
+
+dbLoadRecords("db/ATCACommon.db", "DEV=${P},PORT=atca")
+dbLoadRecords("db/crossbarCtrl.db", "DEV=$(P), PORT=crossbar")
+
+Default numbre of elements is 4096 samples.
+
+# Uncomment for 16-bits unsigned integer in waveform
+#dbLoadRecords("db/StreamUshort.db", "DEV=${P}:STR0, PORT=atca_str0, TSE=-2")
+#dbLoadRecords("db/StreamUshort.db", "DEV=${P}:STR1, PORT=atca_str1,  TSE=-2")
+# Uncomment for 16-bits signed integer in waveform
+#dbLoadRecords("db/StreamShort.db", "DEV=${P}:STR0, PORT=atca_str0,  TSE=-2")
+#dbLoadRecords("db/StreamShort.db", "DEV=${P}:STR1, PORT=atca_str1,  TSE=-2")
+# Uncomment for 32-bits unsigned integer in waveform
+#dbLoadRecords("db/StreamUlong.db", "DEV=${P}:STR0, PORT=atca_str0,  TSE=-2")
+#dbLoadRecords("db/StreamUlong.db", "DEV=${P}:STR1, PORT=atca_str1,  TSE=-2")
+# Uncomment for 32-bits signed integer in waveform
+#dbLoadRecords("db/StreamLong.db", "DEV=${P}:STR0, PORT=atca_str0,  TSE=-2")
+#dbLoadRecords("db/StreamLong.db", "DEV=${P}:STR1, PORT=atca_str1,  TSE=-2")
+# Uncomment for single precision float waveform
+#dbLoadRecords("db/StreamFloat.db", "DEV=${P}:STR0, PORT=atca_str0,  TSE=-2")
+#dbLoadRecords("db/StreamFloat.db", "DEV=${P}:STR1, PORT=atca_str1,  TSE=-2")
+# Uncomment for double precision float waveform
+#dbLoadRecords("db/StreamDouble.db", "DEV=${P}:STR0, PORT=atca_str0,  TSE=-2")
+#dbLoadRecords("db/StreamDouble.db", "DEV=${P}:STR1, PORT=atca_str1,  TSE=-2")
+
+OR (not default number of samples used)
+
+# Uncomment for 16-bits unsigned integer in waveform
+#dbLoadRecords("db/StreamUshort.db", "DEV=${P}:STR0, PORT=atca_str0, NELM=8192, TSE=-2")
+#dbLoadRecords("db/StreamUshort.db", "DEV=${P}:STR1, PORT=atca_str1, NELM=8192, TSE=-2")
+# Uncomment for 16-bits signed integer in waveform
+#dbLoadRecords("db/StreamShort.db", "DEV=${P}:STR0, PORT=atca_str0, NELM=8192, TSE=-2")
+#dbLoadRecords("db/StreamShort.db", "DEV=${P}:STR1, PORT=atca_str1, NELM=8192, TSE=-2")
+# Uncomment for 32-bits unsigned integer in waveform
+#dbLoadRecords("db/StreamUlong.db", "DEV=${P}:STR0, PORT=atca_str0, NELM=4096, TSE=-2")
+#dbLoadRecords("db/StreamUlong.db", "DEV=${P}:STR1, PORT=atca_str1, NELM=4096, TSE=-2")
+# Uncomment for 32-bits signed integer in waveform
+#dbLoadRecords("db/StreamLong.db", "DEV=${P}:STR0, PORT=atca_str0, NELM=4096, TSE=-2")
+#dbLoadRecords("db/StreamLong.db", "DEV=${P}:STR1, PORT=atca_str1, NELM=4096, TSE=-2")
+# Uncomment for single precision float waveform
+#dbLoadRecords("db/StreamFloat.db", "DEV=${P}:STR0, PORT=atca_str0, NELM=4096, TSE=-2")
+#dbLoadRecords("db/StreamFloat.db", "DEV=${P}:STR1, PORT=atca_str1, NELM=4096, TSE=-2")
+# Uncomment for double precision float waveform
+#dbLoadRecords("db/StreamDouble.db", "DEV=${P}:STR0, PORT=atca_str0, NELM=2048, TSE=-2")
+#dbLoadRecords("db/StreamDouble.db", "DEV=${P}:STR1, PORT=atca_str1, NELM=2048, TSE=-2")
+
+
 **************
 * 2) Screens *
 **************
@@ -115,9 +203,9 @@ Press the "JESD Diagnostics" button. Take a look if all fields are connected. Yo
 1.2) Timing:
 The "Timing" button lets you to configure the crossbar and check if the timing is arriving to the FPGA. From this screen you should also be allowed to configure the triggers (the trigger PVs are not part of the ATCACommon module, though).
 
-********************************
-* 3) Configuring the waveforms *
-********************************
+**************************************************
+* 3) Configuring the waveforms (To be deprecated)*
+**************************************************
 
 First thing, you have to tell the ATCACommon module what is the type of data arriving at the waveform. You do this with "caput <record base name>:<STR0 or STR1>:STREAM_TYPE<Chanel number> <type>. Change <record base name> according to your IOC application, use STR0 for AMC0 and STR1 for AMC1. <Chanel number> goes from 0 to 4 and <type> can be any of these strings:
 unit32 -ULONG
@@ -129,50 +217,108 @@ float64-DOUBLE
 
 The configured data type is autosaved and you will need to do this only once.
 
-On the main screen, click on the "DatMux Settings Setup" button.
+On the main screen, click on the "DaqMux Settings Setup" button.
 
 3.1) Waveform Engine Settings:
 
-On the "Waveform Engine Settings" use the following values for Start and End addresses (this usually works with all the firmwares but you may need to check with the firmware engineer):
-DaqMux0:
-    CH 0:
-        Start: 0x0
-        End: 0x00004000
-    CH 1:
-        Start: 0x10000000
-        End: 0x10004000
-    CH 2:
-        Start: 0x20000000
-        End: 0x20004000
-    CH 3:
-        Start: 0x30000000
-        End: 0x30004000
-DaqMux1:
-    CH 0:
-        Start: 0x40000000
-        End: 0x40004000
-    CH 1:
-        Start: 0x50000000
-        End: 0x50004000
-    CH 2:
-        Start: 0x60000000
-        End: 0x60004000
-    CH 3:
-        Start: 0x70000000
-        End: 0x70004000
+In previous versions of the ATCACommon module it was possible to change the parameters of the Waveform Engine on the screen. This was a source of confusion and generated waste of time with people copying the configuration of one IOC to another. Also, choosing wrong values for the addresses could interfere with the BSA data.
 
-For all channels activate the 3 buttons "Enable", "DoneWhenFull", and "Auto-Readout".
+To fix this, we decided to remove the PVs that give access to the Waveform Engine parameters. You still see them on screen as disconnected PVs, as the LLRF screen was not updated, yet. 
 
-All the above configuration is autosaved.
+The Waveform Engine configurations now are done in a Configuration YAML file, and are not exposed as PVs. In a future version of ATCACommon, the user can provide the number of samples for the DaqMux in an IOC shell function during the boot, and all the configuration described below will be done in the backstage by the software.
 
-Click on the "Initialize" button for DaqMux0 and DaqMux1. This is not autosaved and you will need to press this button everytime the IOC boots, or put this on st.cmd:
+Your firmware engineer should have provided you with a default configuration YAML file that has the following configurations set:
+"Enable", "DoneWhenFull", and "Auto-Readout", and a choice of start and end memory addresses for each ADC.
+
+This is an example of what your firmware engineer should have provided as a minimum in the default YAML configuration file:
+
+- AmcCarrierCore:
+    - AmcCarrierBsa:
+        - BsaWaveformEngine:
+            - WaveformEngineBuffers:
+                - FramesAfterTrigger: !<value> 0x0000
+                - MsgDest: !<value> Auto-Readout
+                - SoftTrigger: !<value> 0x0
+                - Init: !<value> 0x0
+                - Mode: !<value> DoneWhenFull
+                - Enabled: !<value>
+                    - 0x0
+                    - 0x0
+                    - 0x0
+                    - 0x0
+                    - 0x1
+                    - 0x1
+                    - 0x1
+                    - 0x1
+                - EndAddr: !<value>
+                    - 0x0000000100002000
+                    - 0x0000000120002000
+                    - 0x0000000140002000
+                    - 0x0000000160002000
+                    - 0x0000000180002000
+                    - 0x00000001a0002000
+                    - 0x00000001c0002000
+                    - 0x00000001e0002000
+                - StartAddr: !<value>
+                    - 0x0000000100000000
+                    - 0x0000000120000000
+                    - 0x0000000140000000
+                    - 0x0000000160000000
+                    - 0x0000000180000000
+                    - 0x00000001a0000000
+                    - 0x00000001c0000000
+                    - 0x00000001e0000000
+
+If you want to modify the number of samples collected by each ADC and don't use the suggestion from the firmware engineer, you need to create an additional YAML configuration file and calculate a new set for the start and end addresses. There are several requirements that must be followed:
+ 1 - The byte addresses must be between the 4GB (0x100000000) and the 8GB (0x200000000) address space
+ 2 - The difference between the start and end address (bytes) should be identical in all four channels of a 
+     single waveform engine
+ 3 - The difference between the start and end address (bytes) should be identical to the corresponding 
+     daqMux buffer size (see below). Note that the DaqMux buffer size is in unit words of 32-bits.
+
+This is an example of the new YAML configuration file that you need to create, following the rules above when defining the start and end addresses:
+
+- AmcCarrierCore:
+    - AmcCarrierBsa:
+        - BsaWaveformEngine:
+            - WaveformEngineBuffers:
+                - EndAddr: !<value>
+                    - 0x0000000100002000
+                    - 0x0000000120002000
+                    - 0x0000000140002000
+                    - 0x0000000160002000
+                    - 0x0000000180002000
+                    - 0x00000001a0002000
+                    - 0x00000001c0002000
+                    - 0x00000001e0002000
+                - StartAddr: !<value>
+                    - 0x0000000100000000
+                    - 0x0000000120000000
+                    - 0x0000000140000000
+                    - 0x0000000160000000
+                    - 0x0000000180000000
+                    - 0x00000001a0000000
+                    - 0x00000001c0000000
+                    - 0x00000001e0000000
+
+This YAML now need to be loaded in the IOC boot, using the IOC shell function cpswLoadConfigFile in the st.cmd file.
+
+Now back to the user interface, click on the "Initialize" button for the waveform engine. This is not autosaved and you will need to press this button everytime the IOC boots, or put this on st.cmd:
 dbpf $(DEV):WFENG0_INIT 1
 dbpf $(DEV):WFENG1_INIT 1
 
-3.2) DaqMux Settings:
-Now in the "DaqMux Settings" tab:
-    - Set "Buffer Size" to 4096. This usually works with all the firmwares. If not, check with the firmware engineer of your application.
-    - Set the buttons like this: 
+3.2) DaqMux Settings: (To be deprecated)
+
+The same as with the Waveform Engine configuration, the firmware engineer should have provided in the YAML configuration default file, a definition of the buffer size of the DaqMux following the rules described before.
+
+If you changed the start and end addresses, as described above, now you also need to configure the DaqMux buffer size accordingly. This can be done in the same YAML configuration file that you've created in 3.1 above. Just add this in the end, with the correct value for the DataBufferSize:
+
+- AppTop:
+    - DaqMuxV2:
+        - DataBufferSize: !<value> 0x400
+
+Back to the screen, in the "DaqMux Settings" tab:
+    - Other configurations can be set in the interface as follows: 
         - Cascaded Trigger "Disable"
         - "Auto Rearm"
         - "Trigger"

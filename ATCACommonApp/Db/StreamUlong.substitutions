@@ -1,9 +1,9 @@
 file "streamWf.db"  {
     pattern {      PORT,   DEVICE,   WIDTH,  N,     TYPE,            DTYP,      FTVL,       NELM,    TSE      }
-            { "$(PORT)", "$(DEV)", "Int32",  0,  "ULONG", "asynInt32ArrayOut",   "ULONG",  "$(NELM)", "$(TSE)"    }
-            { "$(PORT)", "$(DEV)", "Int32",  1,  "ULONG", "asynInt32ArrayOut",   "ULONG",  "$(NELM)", "$(TSE)"    }
-            { "$(PORT)", "$(DEV)", "Int32",  2,  "ULONG", "asynInt32ArrayOut",   "ULONG",  "$(NELM)", "$(TSE)"    }
-            { "$(PORT)", "$(DEV)", "Int32",  3,  "ULONG", "asynInt32ArrayOut",   "ULONG",  "$(NELM)", "$(TSE)"    }
+            { "$(PORT)", "$(DEV)", "Int32",  0,  "ULONG", "asynInt32ArrayOut",   "ULONG",  "$(NELM\=2048)", "$(TSE)"    }
+            { "$(PORT)", "$(DEV)", "Int32",  1,  "ULONG", "asynInt32ArrayOut",   "ULONG",  "$(NELM\=2048)", "$(TSE)"    }
+            { "$(PORT)", "$(DEV)", "Int32",  2,  "ULONG", "asynInt32ArrayOut",   "ULONG",  "$(NELM\=2048)", "$(TSE)"    }
+            { "$(PORT)", "$(DEV)", "Int32",  3,  "ULONG", "asynInt32ArrayOut",   "ULONG",  "$(NELM\=2048)", "$(TSE)"    }
 
 }
 

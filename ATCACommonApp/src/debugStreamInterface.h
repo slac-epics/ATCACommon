@@ -14,7 +14,15 @@ typedef struct {
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+/**
+ * @brief Register a callback when data arrives on a specific channel of stream
+ * 
+ * @param portName : name of the asyn port generating the stream
+ * @param stream_channel : Number of the channel to be parsed (1-4)
+ * @param cb_func : callback function to register
+ * @param cb_usr : private structure that will be passed to the callback
+ * @return int : -1 if channel not found, else 0
+ */
 int registerStreamCallback(const char *portName, const int stream_channel, STREAM_CALLBACK_FUNCTION cb_func, void *cb_usr);
 
 #ifdef __cplusplus
