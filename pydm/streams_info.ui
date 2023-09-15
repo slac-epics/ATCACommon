@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>335</width>
-    <height>122</height>
+    <height>118</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -729,6 +729,18 @@ QComboBox {
    </item>
    <item row="0" column="3">
     <widget class="PyDMEnumComboBox" name="PyDMEnumComboBox_5">
+     <property name="minimumSize">
+      <size>
+       <width>72</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>72</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <property name="toolTip">
       <string/>
      </property>
@@ -739,6 +751,18 @@ QComboBox {
    </item>
    <item row="1" column="3">
     <widget class="PyDMEnumComboBox" name="PyDMEnumComboBox_6">
+     <property name="minimumSize">
+      <size>
+       <width>72</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>72</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <property name="toolTip">
       <string/>
      </property>
@@ -749,8 +773,23 @@ QComboBox {
    </item>
    <item row="2" column="3">
     <widget class="PyDMEnumComboBox" name="PyDMEnumComboBox_7">
+     <property name="minimumSize">
+      <size>
+       <width>72</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>72</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <property name="toolTip">
       <string/>
+     </property>
+     <property name="maxCount">
+      <number>7</number>
      </property>
      <property name="channel" stdset="0">
       <string>ca://${DEVICE}:STR${MUX}:STREAM_TYPE2</string>
@@ -759,6 +798,18 @@ QComboBox {
    </item>
    <item row="3" column="3">
     <widget class="PyDMEnumComboBox" name="PyDMEnumComboBox_8">
+     <property name="minimumSize">
+      <size>
+       <width>72</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>72</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <property name="toolTip">
       <string/>
      </property>
