@@ -1,3 +1,6 @@
+R2.0.1:        09-15-2023  Dawood Alnajjar
+               - Added stream type PV to interface
+
 R2.0.0:        08-31-2023  Dawood Alnajjar
                - Overall refactoring of the osciloscope feature (a.k.a DaqMux)
                  to improve usability and avoid memory conflicts with BSA.
