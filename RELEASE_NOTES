@@ -1,3 +1,6 @@
+R1.6.2-1.0     09-29-2023     Kukhee Kim
+               - make 4 colons PV name for crossbar control, for XCAV application
+
 R1.6.2-four_colons_pv    09-29-2023   Kukhee Kim
                          - branch out from R1.6.2
 
