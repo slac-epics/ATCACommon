@@ -1,4 +1,4 @@
-record(mbbo, "$(DEVICE):TCRB$(N):OUTPUTCONFIG")
+record(mbbo, "$(DEVICE):TCRB$(N)_OUTPUTCONFIG")
 {
     field(PINI, "YES")
     field(DESC, "$(DESC)")

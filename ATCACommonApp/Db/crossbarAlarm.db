@@ -5,9 +5,9 @@ record(calc, "$(DEV,undefined):CROSSBAR_STATSUMY")
      field(DESC, "Crossbar control alarm sum")
      field(SCAN, "Passive")
      field(CALC, "A+B+C+D")
-     field(INPA, "$(DEV,undefined):TCRB0:OUTPUTCONFIG.SEVR CPP MS")
-     field(INPB, "$(DEV,undefined):TCRB1:OUTPUTCONFIG.SEVR CPP MS")
-     field(INPC, "$(DEV,undefined):TCRB2:OUTPUTCONFIG.SEVR CPP MS")
-     field(INPD, "$(DEV,undefined):TCRB3:OUTPUTCONFIG.SEVR CPP MS") 
+     field(INPA, "$(DEV,undefined):TCRB0_OUTPUTCONFIG.SEVR CPP MS")
+     field(INPB, "$(DEV,undefined):TCRB1_OUTPUTCONFIG.SEVR CPP MS")
+     field(INPC, "$(DEV,undefined):TCRB2_OUTPUTCONFIG.SEVR CPP MS")
+     field(INPD, "$(DEV,undefined):TCRB3_OUTPUTCONFIG.SEVR CPP MS") 
 }
 
