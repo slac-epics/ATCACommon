@@ -1,3 +1,6 @@
+R1.6.2-2.0     10-17-2023     Kukhee Kim
+               - build against yamlLoader R2.3.5
+
 R1.6.2-1.0     09-29-2023     Kukhee Kim
                - make 4 colons PV name for crossbar control, for XCAV application
 
