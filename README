@@ -5,7 +5,7 @@ This module brings FPGA registers that are common to all ATCA-based IOC
 applications:
     - Crossbar control
     - JESD configurations
-    - DaqMux configuration
+    - Scope configuration
 
 ***************************************************************
 * 1) Building the IOC application with the ATCACommon module *
@@ -32,7 +32,7 @@ USR_LIBS_Linux += commonATCA
 <app>_LIBS += ATCACommon
  
 1.4.a) Db/Makefile
-You need to verify what type of data is being sent through the DaqMux waveforms. Pick up the right database file for your case:
+You need to add the following db file.
 
 # ATCA common
 DB_INSTALLS += $(ATCACOMMON)/db/crossbarCtrl.db
