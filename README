@@ -48,7 +48,7 @@ crossbarControlAsynDriverConfigure("crossbar", "mmio/AmcCarrierCore/AxiSy56040")
 # cpswATCACommonAsynDriverConfigure(Asyn port name, yaml path, named root (optional))
 cpswATCACommonAsynDriverConfigure("atca", "mmio", "")
 
-1.5a) Simple instantiation of scope (One configuration of all channels)
+1.5a) Simple instantiation of scope (one configuration fits all channels of an AMC)
 
 # Command to access common platform ATCA DAqMux waveforms. Use the command once per AMC card.
 # scopeAsynDriverConfigure (
@@ -67,7 +67,7 @@ scopeAsynDriverConfigure("atca_str1", 1, "int16", "8192")
 
 Note that the channel configuration can be modified dynamically later in runtime.
 
-1.5b) Advanced instantiation of scope (individual configuration for each channel initial configuration)
+1.5b) Advanced instantiation of scope (individual initial configuration for each channel of an AMC)
  
 # Command to access common platform ATCA DAqMux waveforms. Use the command once per AMC card.
 # scopeAdvancedAsynDriverConfigure (
@@ -114,9 +114,9 @@ pydm -m "DEVICE=<record base name>" ATCACommon.ui &
 example: pydm -m "DEVICE=EM1K0:GMD:HPS" ./ATCACommon.ui &
 
 The main screen provides three buttons
-1- Dual scope screen: Allows the visualization and configuration of scope 0 and scope 1
+1- Dual scope screen: allows the visualization and configuration of scope 0 and scope 1
 2- JESD Diagnostics : opens some JESD diagnostics
-3- Crossbar configuration : Allows 4-input/4-output crossbar configuration
+3- Crossbar configuration : allows 4-input/4-output crossbar configuration
 
 2.1) Dual scope screen
 The dual scope screen allows the visualization of both scopes, 0 and 1 (AMC0 and AMC1 respectively). The following configrations are permitted
