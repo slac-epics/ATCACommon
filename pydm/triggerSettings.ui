@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>344</width>
+    <width>590</width>
     <height>202</height>
    </rect>
   </property>
@@ -34,7 +34,7 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,0,0,0,0,0,0,0">
+     <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,0,0,0,0,0,0">
       <property name="leftMargin">
        <number>2</number>
       </property>
@@ -184,6 +184,12 @@
           </property>
           <property name="channel" stdset="0">
            <string>ca://${DEVICE}:DAQMUX${MUX}_TRGDAQ </string>
+          </property>
+          <property name="pressValue" stdset="0">
+           <string>1</string>
+          </property>
+          <property name="releaseValue" stdset="0">
+           <string>0</string>
           </property>
          </widget>
         </item>
