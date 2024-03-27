@@ -119,14 +119,26 @@ The main screen provides three buttons
 3- Crossbar configuration : allows 4-input/4-output crossbar configuration
 
 2.1) Dual scope screen
-The dual scope screen allows the visualization of both scopes, 0 and 1 (AMC0 and AMC1 respectively). The following configrations are permitted
-- Configure channel type and source dynamically
-- Arm a single HW trigger or set it to automatic arming
-- Enable cascading of trigger between Scope 0 and Scope 1. Note that the physical routing 
-  from Scope 0 to Scope 1 and viceversa is already implemented. Meaning that enabling cascading
-  in Scope 0 will enable using Scope 1 trigger for Scope 0 and viceversa.
-- Enable averaging
-- Enable downsampling
+
+Generic user interfaces developed in PyDM are provided to the user to control the oscilloscope and enrich
+the user’s seamless overall experience. The Scope standard interface using PyDM is in the Dual scope screen. The
+ATCA Scope probes are configured dynamically by the user to probe up to four inputs of the ATCA ADC/DAC daughter
+cards. The stream data type interpretation is also configured dynamically as well. The user can also specify a desired
+sampling rate and the ATCA Scope will estimate the nearest possible sampling rate using the current sampling frequency,
+and perform down-sampling to try to match that rate. If the user requires averaging to be applied when the channel is
+down-sampled, then he would need to enable the averaging button for the corresponding channel. The averaging is done
+over the number of samples that were dropped. The Scope trigger configurations and information screen contains:
+• Trigger Count: the number of triggers that the Scope
+received up to that point.
+• Button Clear: clears Trigger Count.
+• Button Trigger: induces a manual trigger event by clicking the trigger button.
+  Buttons Auto-Re-arm and Arm Hardware Trig: if Auto Rearm is selected, every time the trigger event occurs,
+  the next trigger will automatically be armed. If Disable is selected, the user needs to arm the trigger by clicking
+  on the Arm trigger button and, after the trigger happens, select the Normal position of the button again.
+• Button Cascaded Trigger: if Cascaded Trigger is enabled for Scope 1, it will trigger together with Scope 0
+  and vice-versa.
+• Timestamp (s:ns): shows seconds and nanoseconds for
+  the last trigger.
 
 2.2) JESD diagnostics
 Shows some few JESD configurations and status
@@ -134,3 +146,81 @@ Shows some few JESD configurations and status
 2.3) Crossbar configuration
 Allows the user to choose the routing of the following destinations: RTM_OUT0, FPGA, Back plane, RTM_OUT1. 
 The sources are: RTM_IN0, FPGA, Back plane, RTM_IN1
+
+
+Firmware support
+
+In order to get stream data from the scopes in firmware, the firmware 000TopLevel.yaml 
+file must contain all the following instantiations with the exact naming as follows
+
+stream: &stream
+    SRP:
+      protocolVersion: SRP_UDP_NONE
+    UDP:
+      port: *udpPortNumber1
+      numRxThreads: 2
+      threadPriority: *udpPri
+    RSSI:
+        <<: *rssiParams
+        threadPriority: 81
+        inpQueueDepth: 32
+    depack:
+      protocolVersion: *depacketizerProtocolVersion
+    TDESTMux:
+      TDEST: 0x80
+      stripHeader: yes
+
+# streams must be instantiated in the NetIODev
+NetIODev: &BPMNetIODev
+  ipAddr: 10.0.1.102
+  class: NetIODev
+  configPrio: 1
+  children:
+     Stream0:
+       class: Field
+       at:
+         <<: *stream
+         TDESTMux:
+           TDEST: 0x80
+     Stream1:
+       class: Field
+       at:
+         <<: *stream
+         TDESTMux:
+           TDEST: 0x81
+     Stream2:
+       class: Field
+       at:
+         <<: *stream
+         TDESTMux:
+           TDEST: 0x82
+     Stream3:
+       class: Field
+       at:
+         <<: *stream
+         TDESTMux:
+           TDEST: 0x83
+     Stream4:
+       class: Field
+       at:
+         <<: *stream
+         TDESTMux:
+           TDEST: 0x84
+     Stream5:
+       class: Field
+       at:
+         <<: *stream
+         TDESTMux:
+           TDEST: 0x85
+     Stream6:
+       class: Field
+       at:
+         <<: *stream
+         TDESTMux:
+           TDEST: 0x86
+     Stream7:
+       class: Field
+       at:
+         <<: *stream
+         TDESTMux:
+           TDEST: 0x87
