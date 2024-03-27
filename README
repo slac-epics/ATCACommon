@@ -32,7 +32,7 @@ USR_LIBS_Linux += commonATCA
 <app>_LIBS += ATCACommon
  
 1.4.a) Db/Makefile
-You need to add the following db file.
+You need to add the following db files
 
 # ATCA common
 DB_INSTALLS += $(ATCACOMMON)/db/crossbarCtrl.db

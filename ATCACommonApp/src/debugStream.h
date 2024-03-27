@@ -37,13 +37,24 @@ typedef enum {
    uint16,
    int16,
    float32,
-   float64
+   float64,
+   undefined
 } stream_type_t;
 
 typedef enum {
    cfg_default = 0,
    cfg_advanced
 } scope_cfg_type_t;
+
+typedef enum {
+   scope_d32 = 0,
+   scope_d16 = 1
+} scope_dwidth_t;
+
+typedef enum {
+   scope_dunsigned = 0,
+   scope_dsigned = 1
+} scope_dsign_t;
 
 struct dumpStreamInfo_t {
     int remainingPackets;
@@ -70,7 +81,8 @@ class DebugStreamAsynDriver: public asynPortDriver {
         bool hasHeader();
         void setScopeIndex(int);
         int  getScopeIndex(void);
-        int  setChannelType(const char * type, int index);
+        stream_type_t getChannelTypeEnum(const char *type);
+        int  setChannelType(stream_type_t type, int index);        
     private:
         char *named_root;
         char *port;
