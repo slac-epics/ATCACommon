@@ -151,7 +151,9 @@ The sources are: RTM_IN0, FPGA, Back plane, RTM_IN1
 Firmware support
 
 In order to get stream data from the scopes in firmware, the firmware 000TopLevel.yaml 
-file must contain all the following instantiations with the exact naming as follows
+file must contain all the following instantiations with the exact naming as follows. 
+Note that Stream0 - Stream3 belong to Scope 0, and Stream4 - Stream7 belong to Scope 1. 
+You may instantiate only the streams of scope 0 or scope 1 or both.
 
 stream: &stream
     SRP:
