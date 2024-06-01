@@ -63,7 +63,7 @@ static void  atcaFirmVersionCallFunc(const iocshArgBuf *args)
     // Commands to attach to the FPGA register map in order to access the atcaCommon API
     Path p_root;
     Path p_atcaCommon;
-    char* named_root;
+    char* named_root = NULL;
     ATCACommonFw atcaCommon;
 
     p_root = (named_root && strlen(named_root))? cpswGetNamedRoot(named_root): cpswGetRoot();
