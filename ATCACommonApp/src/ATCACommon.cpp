@@ -108,53 +108,61 @@ asynStatus ATCACommonAsynDriver::writeInt32(asynUser *pasynUser, epicsInt32 valu
     epicsInt32 amcFreq;
     status = (asynStatus) setIntegerParam(function, value);
 
-    if(function == p_jesdCnt_reset) jesdCnt_reset  = 1;
-    else
-    for(int i = 0; i < MAX_DAQMUX_CNT; i++) {
-        if(function == (p_daqMux+i)->p_triggerDaq              && value) atcaCommon->triggerDaq(i);
-        else if(function == (p_daqMux+i)->p_armHwTrigger       && value) atcaCommon->armHwTrigger(i);
-        else if(function == (p_daqMux+i)->p_freezeBuffer       && value) atcaCommon->freezeBuffer(i);
-        else if(function == (p_daqMux+i)->p_clearTriggerStatus && value) atcaCommon->clearTriggerStatus(i);
-        else if(function == (p_daqMux+i)->p_cascadedTrigger)             atcaCommon->cascadedTrigger(value?1:0, i);
-        else if(function == (p_daqMux+i)->p_hardwareAutoRearm)           atcaCommon->hardwareAutoRearm(value?1:0, i);
-        else if(function == (p_daqMux+i)->p_daqMode)                     atcaCommon->daqMode(value?1:0, i);
-        else if(function == (p_daqMux+i)->p_enablePacketHeader)          atcaCommon->enablePacketHeader(value?1:0, i);
-        else if(function == (p_daqMux+i)->p_enableHardwareFreeze)        atcaCommon->enableHardwareFreeze(value?1:0, i);
-        else if(function == (p_daqMux+i)->p_rqSamplingFrequency)
-        {           
-            getIntegerParam((p_daqMux+i)->p_adcClkFreq, &amcFreq);
-            if (value == 0)
-                decimationRateDiv = 0;
-            else
-                decimationRateDiv = round(amcFreq/(double)value);
-            atcaCommon->decimationRateDivisor(decimationRateDiv, i);
+    try {
 
-        }
-        else if(function == (p_daqMux+i)->p_decimationRateDivisor)       atcaCommon->decimationRateDivisor(value, i); 
-        else if(function == (p_daqMux+i)->p_dataBufferSize)              atcaCommon->dataBufferSize(value, i);
+        if(function == p_jesdCnt_reset) jesdCnt_reset  = 1;
         else
-        for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) {
-            if(function == (p_daqMux+i)->p_inputMuxSelect[j]) {          atcaCommon->inputMuxSelect(value, i, j);
-                                                                         setStringParam((p_daqMux+i)->p_readInpMuxSel[j], inputMuxSelString(value));
-            }
-            else if(function == (p_daqMux+i)->p_formatSignWidth[j])      atcaCommon->formatSignWidth(value, i, j);
-            else if(function == (p_daqMux+i)->p_formatDataWidth[j])      atcaCommon->formatDataWidth(value, i, j);
-            else if(function == (p_daqMux+i)->p_enableFormatSign[j])     atcaCommon->enableFormatSign(value?1:0, i, j);
-            else if(function == (p_daqMux+i)->p_enableDecimation[j])     atcaCommon->enableDecimationAvg(value?1:0, 1, j);
-        }
-    }
+        for(int i = 0; i < MAX_DAQMUX_CNT; i++) {
+            if(function == (p_daqMux+i)->p_triggerDaq              && value) atcaCommon->triggerDaq(i);
+            else if(function == (p_daqMux+i)->p_armHwTrigger       && value) atcaCommon->armHwTrigger(i);
+            else if(function == (p_daqMux+i)->p_freezeBuffer       && value) atcaCommon->freezeBuffer(i);
+            else if(function == (p_daqMux+i)->p_clearTriggerStatus && value) atcaCommon->clearTriggerStatus(i);
+            else if(function == (p_daqMux+i)->p_cascadedTrigger)             atcaCommon->cascadedTrigger(value?1:0, i);
+            else if(function == (p_daqMux+i)->p_hardwareAutoRearm)           atcaCommon->hardwareAutoRearm(value?1:0, i);
+            else if(function == (p_daqMux+i)->p_daqMode)                     atcaCommon->daqMode(value?1:0, i);
+            else if(function == (p_daqMux+i)->p_enablePacketHeader)          atcaCommon->enablePacketHeader(value?1:0, i);
+            else if(function == (p_daqMux+i)->p_enableHardwareFreeze)        atcaCommon->enableHardwareFreeze(value?1:0, i);
+            else if(function == (p_daqMux+i)->p_rqSamplingFrequency)
+            {           
+                getIntegerParam((p_daqMux+i)->p_adcClkFreq, &amcFreq);
+                if (value == 0)
+                    decimationRateDiv = 0;
+                else
+                    decimationRateDiv = round(amcFreq/(double)value);
+                atcaCommon->decimationRateDivisor(decimationRateDiv, i);
 
-    for(int i = 0; i < MAX_WAVEFORMENGINE_CNT; i++) {
-        if(function == (p_waveformEngine+i)->p_initialize      && value) atcaCommon->initWfEngine(i);
-        for(int j = 0; j < MAX_WAVEFORMENGINE_CHN_CNT; j++) {
-            if(function == (p_waveformEngine+i)->p_startAddr[j])         atcaCommon->setWfEngineStartAddr((uint64_t) value, i, j);
-            else if(function == (p_waveformEngine+i)->p_endAddr[j])      atcaCommon->setWfEngineEndAddr((uint64_t) value, i, j);
-            else if(function == (p_waveformEngine+i)->p_enabled[j])      atcaCommon->enableWfEngine((value)?1:0, i, j);
-            else if(function == (p_waveformEngine+i)->p_mode[j])         atcaCommon->setWfEngineMode((value)?1:0, i, j);
-            else if(function == (p_waveformEngine+i)->p_msgDest[j])      atcaCommon->setWfEngineMsgDest((value)?1:0, i, j);
-            else if(function == (p_waveformEngine+i)->p_framesAfterTrigger[j])
-                                                                         atcaCommon->setWfEngineFramesAfterTrigger(value, i, j);
+            }
+            else if(function == (p_daqMux+i)->p_decimationRateDivisor)       atcaCommon->decimationRateDivisor(value, i); 
+            else if(function == (p_daqMux+i)->p_dataBufferSize)              atcaCommon->dataBufferSize(value, i);
+            else
+            for(int j = 0; j < MAX_DAQMUX_CHN_CNT; j++) {
+                if(function == (p_daqMux+i)->p_inputMuxSelect[j]) {          atcaCommon->inputMuxSelect(value, i, j);
+                                                                         setStringParam((p_daqMux+i)->p_readInpMuxSel[j], inputMuxSelString(value));
+                }
+                else if(function == (p_daqMux+i)->p_formatSignWidth[j])      atcaCommon->formatSignWidth(value, i, j);
+                else if(function == (p_daqMux+i)->p_formatDataWidth[j])      atcaCommon->formatDataWidth(value, i, j);
+                else if(function == (p_daqMux+i)->p_enableFormatSign[j])     atcaCommon->enableFormatSign(value?1:0, i, j);
+                else if(function == (p_daqMux+i)->p_enableDecimation[j])     atcaCommon->enableDecimationAvg(value?1:0, 1, j);
+            }
         }
+
+        for(int i = 0; i < MAX_WAVEFORMENGINE_CNT; i++) {
+            if(function == (p_waveformEngine+i)->p_initialize      && value) atcaCommon->initWfEngine(i);
+            for(int j = 0; j < MAX_WAVEFORMENGINE_CHN_CNT; j++) {
+                if(function == (p_waveformEngine+i)->p_startAddr[j])         atcaCommon->setWfEngineStartAddr((uint64_t) value, i, j);
+                else if(function == (p_waveformEngine+i)->p_endAddr[j])      atcaCommon->setWfEngineEndAddr((uint64_t) value, i, j);
+                else if(function == (p_waveformEngine+i)->p_enabled[j])      atcaCommon->enableWfEngine((value)?1:0, i, j);
+                else if(function == (p_waveformEngine+i)->p_mode[j])         atcaCommon->setWfEngineMode((value)?1:0, i, j);
+                else if(function == (p_waveformEngine+i)->p_msgDest[j])      atcaCommon->setWfEngineMsgDest((value)?1:0, i, j);
+                else if(function == (p_waveformEngine+i)->p_framesAfterTrigger[j])
+                                                                         atcaCommon->setWfEngineFramesAfterTrigger(value, i, j);
+            }
+        }
+
+    }
+    catch(const CPSWError& e) {
+        fprintf(stderr, "%s: error while writing parameter %d: %s\n", functionName, function, e.getInfo().c_str());
+        return asynError;
     }
 
     return status;
