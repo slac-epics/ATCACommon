@@ -93,7 +93,7 @@ void CrossbarControlDriver::Report(void)
         return;
     }
     printf("OutputConfig[0]: %s <--- %s\n", timing_out_string[0].timing_name, timing_source_string[pCrossbarApi->GetOutputConfig0()].timing_name);
-    printf("OutputConfig[1]: %s <-- -%s\n", timing_out_string[1].timing_name, timing_source_string[pCrossbarApi->GetOutputConfig1()].timing_name);
+    printf("OutputConfig[1]: %s <--- %s\n", timing_out_string[1].timing_name, timing_source_string[pCrossbarApi->GetOutputConfig1()].timing_name);
     printf("OutputConfig[2]: %s <--- %s\n", timing_out_string[2].timing_name, timing_source_string[pCrossbarApi->GetOutputConfig2()].timing_name);
     printf("OutputConfig[3]: %s <--- %s\n", timing_out_string[3].timing_name, timing_source_string[pCrossbarApi->GetOutputConfig3()].timing_name);
 }
@@ -294,7 +294,24 @@ int crossbarControlAsynDriverConfigure(const char *port, const char *path, const
     p->port       = epicsStrDup(port);
     p->description = NULL;
 
-    p->pAsynDrv = new CrossbarControlAsynDriver(port, p->pDrv = new CrossbarControlDriver(path, named_root));
+	try {
+    	p->pAsynDrv = new CrossbarControlAsynDriver(port, p->pDrv = new CrossbarControlDriver(path, named_root));
+	}
+	catch(const CPSWError& error) {
+		printf("crossbarControlAsynDriverConfigure: error encountered while creating asyn driver: %s\n", error.what());
+	}
+	catch(...) {
+		printf("crossbarControlAsynDriverConfigure: error encountered while creating asyn driver: Unknown error\n");
+	}
+
+	/* Driver failed to create */
+	if (!p->pAsynDrv) {
+		if (named_root)
+			free(p->named_root);
+		free(p->port);
+		free(p);
+		return -1;
+	}
 
     ellAdd(pCrossbarList, &p->node);
 
@@ -317,7 +334,23 @@ int crossbarControlDriverConfigure(const char *path, const char *named_root)
     p->description = NULL;
     p->pAsynDrv    = NULL;
 
-    p->pDrv = new CrossbarControlDriver(path, named_root);
+	try {
+    	p->pDrv = new CrossbarControlDriver(path, named_root);
+	}
+	catch(const CPSWError& e) {
+		printf("crossbarControlDriverConfigure: error encountered while creating driver: %s\n", e.what());
+	}
+	catch(...) {
+		printf("crossbarControlDriverConfigure: error encountered while creating driver: Unknown error\n");
+	}
+
+	/* Driver failed to create */
+	if (!p->pDrv) {
+		if (named_root)
+			free(p->named_root);
+		free(p);
+		return -1;
+	}
 
     ellAdd(pCrossbarList, &p->node);
 
@@ -366,9 +399,9 @@ static const iocshFuncDef initAsynFuncDef    = { "crossbarControlAsynDriverConfi
 static void  initAsynCallFunc(const iocshArgBuf *args)
 {
 
-    crossbarControlAsynDriverConfigure((const char *) args[0].sval, (const char *) args[1].sval,
+    int result = crossbarControlAsynDriverConfigure((const char *) args[0].sval, (const char *) args[1].sval,
                                        (const char *) (args[2].sval && strlen(args[2].sval))? args[2].sval: NULL);
-
+	iocshSetError(result);
 } 
 
 static const iocshArg initArg0 = { "path for AmcCarrierCore", iocshArgString };
@@ -379,10 +412,9 @@ static const iocshFuncDef initFuncDef = { "crossbarControlDriverConfigure", 2, i
 static void  initCallFunc(const iocshArgBuf *args)
 {
 
-    crossbarControlDriverConfigure((const char *) args[0].sval,
+    int result = crossbarControlDriverConfigure((const char *) args[0].sval,
                                    (const char *) (args[1].sval && strlen(args[1].sval))? args[1].sval: NULL);
-    
-   
+    iocshSetError(result);
 }
 
 static const iocshFuncDef reportFuncDef = {"crossbarControlDriverReport", 0, NULL};
@@ -400,14 +432,10 @@ static const iocshArg* const controlArgs [] = { &controlArg0,
 static const iocshFuncDef controlFuncDef = {"crossbarControl", 3, controlArgs};
 static void  controlCallFunc(const iocshArgBuf *args)
 {
-
-
-    crossbarControl((const char *) args[0].sval, (const char *) args[1].sval,
+    int result = crossbarControl((const char *) args[0].sval, (const char *) args[1].sval,
                     (const char *)(args[2].sval && strlen(args[2].sval))?args[2].sval: NULL);
+	iocshSetError(result);
 } 
-
- 
-
 
 void crossbarControlDriverRegister(void)
 {
