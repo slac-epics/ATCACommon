@@ -28,7 +28,7 @@ static const iocshArg atcaFirmVersionArg1 = { "List of accepted firmware version
 static const iocshArg* const atcaFirmVersionArgs [] = { &atcaFirmVersionArg0,
                                                         &atcaFirmVersionArg1 };
 static const iocshFuncDef atcaFirmVersionFuncDef = {"atcaCheckFirmwareVersion", 2, atcaFirmVersionArgs};
-static void  atcaFirmVersionCallFunc(const iocshArgBuf *args)
+static int atcaFirmVersionGuts(const iocshArgBuf *args)
 {
     int c, iii;
     bool stopIOC;
@@ -53,7 +53,7 @@ static void  atcaFirmVersionCallFunc(const iocshArgBuf *args)
             break;
         default:
             printf ("atcaCheckFirmwareVersion. Please, use Y or N with the first parameter -> Stop IOC?\n");
-            return;
+            return -1;
     }
 
 
@@ -69,15 +69,28 @@ static void  atcaFirmVersionCallFunc(const iocshArgBuf *args)
     p_root = (named_root && strlen(named_root))? cpswGetNamedRoot(named_root): cpswGetRoot();
     if (! p_root) {
         printf ("atcaCheckFirmwareVersion depends on the command cpswLoadYamlFile. Please, run cpswLoadYamlFile first. atcaCheckFirmwareVersion will exit now without any action.\n");
-        return;
+        return -1;
     }
 
-    p_atcaCommon = p_root->findByName("mmio");
+    try {
+        p_atcaCommon = p_root->findByName("mmio");
+    }
+    catch(const CPSWError& e) {
+        printf("atcaCheckFirmwareVersion: error while checking version: %s\n", e.getInfo().c_str());
+        return -1;
+    }
+
     atcaCommon = IATCACommonFw::create(p_atcaCommon);
     atcaCommon = IATCACommonFw::create(p_atcaCommon);
-     
-    atcaCommon->getGitHash((uint8_t *) gitHash);
-    atcaCommon->getFpgaVersion(&fpgaVersion);
+
+    try {
+        atcaCommon->getGitHash((uint8_t *) gitHash);
+        atcaCommon->getFpgaVersion(&fpgaVersion);
+    }
+    catch(const CPSWError& e) {
+        printf("atcaCheckFirmwareVersion: error while getting Git hash and FPGA version: %s\n", e.getInfo().c_str());
+        return -1;
+    }
 
     bool versionMatch = false;
 
@@ -103,7 +116,14 @@ static void  atcaFirmVersionCallFunc(const iocshArgBuf *args)
     } else {
         printf("The firmware is compatible with the provided list of versions.\\n");
     }
-} 
+
+    return 0;
+}
+
+static void atcaFirmVersionCallFunc(const iocshArgBuf* args)
+{
+    iocshSetError(atcaFirmVersionGuts(args));
+}
 
 void versionComparatorDriverRegister(void)
 {
