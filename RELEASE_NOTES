@@ -1,3 +1,7 @@
+R2.0.2:        11-1-2024 Jeremy Lorelli
+               - Upgrade commonATCA to R2.0.1
+               - Upgrade asyn to R4.39-1.0.2 and yamlLoader to R2.3.7
+
 R2.0.0:        08-31-2023  Dawood Alnajjar
                - Overall refactoring of the osciloscope feature (a.k.a DaqMux)
                  to improve usability and avoid memory conflicts with BSA.
