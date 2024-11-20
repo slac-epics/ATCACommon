@@ -511,7 +511,7 @@ epicsExportAddress(int, Gen2UpConvYaml);
 /* consideration for Cexp */
 int cpswATCACommonAsynDriverConfigure(const char *portName, const char *pathName, const char *named_root)
 {
-    drvNode_t *p = (drvNode_t *) mallocMustSucceed(sizeof(drvNode_t), "ATCACommon Drvier");
+    drvNode_t *p = (drvNode_t *) mallocMustSucceed(sizeof(drvNode_t), "ATCACommon Driver");
 
     p->named_root = epicsStrDup( (named_root && strlen(named_root))? named_root: cpswGetRootName() );
     p->portName = epicsStrDup(portName);

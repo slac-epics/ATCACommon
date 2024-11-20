@@ -38,7 +38,7 @@ class Scope(Display):
                 for b_i, bay in enumerate(bays):
                     bay_data = {}
                     for ch in channels:
-                        y_channel = "{}STR{}:STREAM_SLOWSHORT{}".format(
+                        y_channel = "{}STR{}:STREAM_SLOWDOUBLE{}".format(
                             ioc, b_i, ch)
                         name = "CH {}".format(ch)
 

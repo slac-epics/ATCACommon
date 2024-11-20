@@ -291,6 +291,9 @@ void DebugStreamAsynDriver::streamPoll(const int i)
                 for (int elementIndex = 0; elementIndex < totalElements; elementIndex++)
                     doubleBuff[i][elementIndex] = (double)((&p->payload.float64)[elementIndex]);   
                 break;
+            case undefined:
+                printf("streamPoll encountered undefined waveform type. Ignoring this round.\n");
+                return;
         }
 
         doCallbacksFloat64Array(doubleBuff[i], totalElements, p_streamFloat64[i], 0);
@@ -333,6 +336,9 @@ void DebugStreamAsynDriver::streamPoll(const int i)
                 for (int elementIndex = 0; elementIndex < totalElements; elementIndex++)
                     doubleBuff[i][elementIndex] = (double)((&p->payload.float64)[elementIndex]);                 
                 break;
+            case undefined:
+                printf("streamPoll encountered undefined waveform type. Ignoring this round.\n");
+                return;                
         }
         doCallbacksFloat64Array(doubleBuff[i], totalElements, p_streamFloat64[i], 0);
         triggerCallbacks(i, &(p->payload), rdLen[i] - sizeof(packet_header_t), time, timeslot);
@@ -395,7 +401,7 @@ asynStatus DebugStreamAsynDriver::writeInt32(asynUser *pasynUser, epicsInt32 val
 
     for(int i = 0; i< 4; i++) {
         if(function == p_streamType[i]) {
-            s_type[i] = (stream_type_t) value;
+            setChannelType((stream_type_t) value, i);
             break;
         }
     }
@@ -432,26 +438,34 @@ void DebugStreamAsynDriver::setScopeIndex(int index)
     scopeIndex = index;
 }
 
-int DebugStreamAsynDriver::setChannelType(const char *type, int index)
+stream_type_t DebugStreamAsynDriver::getChannelTypeEnum(const char *type)
+{
+    if (strcmp(type, "uint32") == 0)
+        return uint32;
+    else if (strcmp(type, "int32") == 0)
+        return int32;
+    else if (strcmp(type, "uint16") == 0)
+        return uint16;
+    else if (strcmp(type, "int16") == 0)
+        return int16; 
+    else if (strcmp(type, "float32") == 0)
+        return float32;    
+    else if (strcmp(type, "float64") == 0)
+        return float64;               
+    else
+        return undefined;
+}
+
+int DebugStreamAsynDriver::setChannelType(stream_type_t type, int index)
 {
     drvNode_t *pList;
-    if (strcmp(type, "uint32") == 0)
-        s_type[index] = uint32;
-    else if (strcmp(type, "int32") == 0)
-        s_type[index] = int32;
-    else if (strcmp(type, "uint16") == 0)
-        s_type[index] = uint16;
-    else if (strcmp(type, "int16") == 0)
-        s_type[index] = int16; 
-    else if (strcmp(type, "float32") == 0)
-        s_type[index] = float32;    
-    else if (strcmp(type, "float64") == 0)
-        s_type[index] = float64;               
-    else 
+    if (type == undefined)
     {
-        printf("Type %s for channel %d not recognized. Must be uint32, int32, uint16 or int16\n", type, index);
+        printf("Type undefine for channel %d not recognized. Must be uint32, int32, uint16 or int16\n", index);
         return -1;
     }
+    else
+        s_type[index] = type;
 
     pList = last_drvList_ATCACommon();
     if ( !(pList && pList->named_root) )
@@ -460,33 +474,39 @@ int DebugStreamAsynDriver::setChannelType(const char *type, int index)
         return -1;
     }
   
-    pList->pDrv->getAtcaCommonAPI()->enableFormatSign(0, scopeIndex, index);
-    pList->pDrv->getAtcaCommonAPI()->formatDataWidth(0, scopeIndex, index);
-    pList->pDrv->getAtcaCommonAPI()->formatSignWidth(0, scopeIndex, index); 
-            /*
+    if (scopeIndex != 0 && scopeIndex != 1)
+    {   
+        printf("setChannelType called with invalid scopeIndex value %d %d %d. Returning error.\n", s_type[index], scopeIndex, index);
+        return -1;
+    }
     switch(s_type[index])
     {
+        
         case int32:
-            pList->pDrv->getAtcaCommonAPI()->enableFormatSign(1, scopeIndex, index);
-            pList->pDrv->getAtcaCommonAPI()->formatDataWidth(0, scopeIndex, index);
+            pList->pDrv->getAtcaCommonAPI()->enableFormatSign(scope_dsigned, scopeIndex, index);
+            pList->pDrv->getAtcaCommonAPI()->formatDataWidth(scope_d32, scopeIndex, index);
             pList->pDrv->getAtcaCommonAPI()->formatSignWidth(31, scopeIndex, index);
             break;                    
         case uint16:
-            pList->pDrv->getAtcaCommonAPI()->enableFormatSign(0, scopeIndex, index);
-            pList->pDrv->getAtcaCommonAPI()->formatDataWidth(1, scopeIndex, index);
-            pList->pDrv->getAtcaCommonAPI()->formatSignWidth(0, scopeIndex, index);
+            pList->pDrv->getAtcaCommonAPI()->enableFormatSign(scope_dunsigned, scopeIndex, index);
+            pList->pDrv->getAtcaCommonAPI()->formatDataWidth(scope_d16, scopeIndex, index);
+            // If sign is 0 the following is ignored in firmware
+            // https://github.com/slaclab/amc-carrier-core/blob/7b6e31e7d5f0f64409da4ac595d82a84bc9795eb/DaqMuxV2/rtl/DaqTestSig.vhd#L84            
+            pList->pDrv->getAtcaCommonAPI()->formatSignWidth(15, scopeIndex, index);
             break;                    
         case int16:
-            pList->pDrv->getAtcaCommonAPI()->enableFormatSign(1, scopeIndex, index);
-            pList->pDrv->getAtcaCommonAPI()->formatDataWidth(1, scopeIndex, index);
+            pList->pDrv->getAtcaCommonAPI()->enableFormatSign(scope_dsigned, scopeIndex, index);
+            pList->pDrv->getAtcaCommonAPI()->formatDataWidth(scope_d16, scopeIndex, index);
             pList->pDrv->getAtcaCommonAPI()->formatSignWidth(15, scopeIndex, index);
             break;     
         case uint32:
         default:
-            pList->pDrv->getAtcaCommonAPI()->enableFormatSign(0, scopeIndex, index);
-            pList->pDrv->getAtcaCommonAPI()->formatDataWidth(0, scopeIndex, index);
-            pList->pDrv->getAtcaCommonAPI()->formatSignWidth(0, scopeIndex, index);  
-    }      */
+            pList->pDrv->getAtcaCommonAPI()->enableFormatSign(scope_dunsigned, scopeIndex, index);
+            pList->pDrv->getAtcaCommonAPI()->formatDataWidth(scope_d32, scopeIndex, index);
+            // If sign is 0 the following is ignored in firmware
+            // https://github.com/slaclab/amc-carrier-core/blob/7b6e31e7d5f0f64409da4ac595d82a84bc9795eb/DaqMuxV2/rtl/DaqTestSig.vhd#L84
+            pList->pDrv->getAtcaCommonAPI()->formatSignWidth(31, scopeIndex, index);  
+    }
     return 0;
 }
 
@@ -787,19 +807,17 @@ int scopeAsynDriverConfigure(const char *scopePortName,
         return -1;
     }
 
-
-
     /* Override stored scope index value */
     pDebugStreamDrv->setScopeIndex(scopeIndex);
 
     /* Override channel type */
-    if (0 != pDebugStreamDrv->setChannelType(channel0Type, 0))
+    if (0 != pDebugStreamDrv->setChannelType(pDebugStreamDrv->getChannelTypeEnum(channel0Type), 0))
         return -1;
-    if (0 != pDebugStreamDrv->setChannelType(channel1Type, 1))
+    if (0 != pDebugStreamDrv->setChannelType(pDebugStreamDrv->getChannelTypeEnum(channel1Type), 1))
         return -1;
-    if (0 != pDebugStreamDrv->setChannelType(channel2Type, 2))
+    if (0 != pDebugStreamDrv->setChannelType(pDebugStreamDrv->getChannelTypeEnum(channel2Type), 2))
         return -1;
-    if (0 != pDebugStreamDrv->setChannelType(channel3Type, 3))
+    if (0 != pDebugStreamDrv->setChannelType(pDebugStreamDrv->getChannelTypeEnum(channel3Type), 3))
         return -1;
 
     return 0;

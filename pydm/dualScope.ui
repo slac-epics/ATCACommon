@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1200</width>
-    <height>850</height>
+    <width>1274</width>
+    <height>718</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -54,8 +54,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>1194</width>
-        <height>844</height>
+        <width>1268</width>
+        <height>712</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1">
@@ -149,6 +149,12 @@
                    </property>
                    <property name="channel" stdset="0">
                     <string>ca://${DEVICE}:DAQMUX0_TRGDAQ </string>
+                   </property>
+                   <property name="pressValue" stdset="0">
+                    <string>1</string>
+                   </property>
+                   <property name="releaseValue" stdset="0">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>
@@ -820,6 +826,12 @@ QPushButton:hover{
                    </property>
                    <property name="channel" stdset="0">
                     <string>ca://${DEVICE}:DAQMUX1_TRGDAQ </string>
+                   </property>
+                   <property name="pressValue" stdset="0">
+                    <string>1</string>
+                   </property>
+                   <property name="releaseValue" stdset="0">
+                    <string>0</string>
                    </property>
                   </widget>
                  </item>

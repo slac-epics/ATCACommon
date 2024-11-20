@@ -1,6 +1,16 @@
+R2.0.3:        11-19-2024 Marcio Donadio
+               - Merged pre-release into master
+
 R2.0.2:        11-1-2024 Jeremy Lorelli
                - Upgrade commonATCA to R2.0.1
                - Upgrade asyn to R4.39-1.0.2 and yamlLoader to R2.3.7
+
+               03-26-2024  Dawood Alnajjar
+               - Fixed readme and corrected some typos in UI and code
+               - Corrected trigger button bug
+
+R2.0.1:        09-15-2023  Dawood Alnajjar
+               - Added stream type PV to interface
 
 R2.0.0:        08-31-2023  Dawood Alnajjar
                - Overall refactoring of the osciloscope feature (a.k.a DaqMux)
